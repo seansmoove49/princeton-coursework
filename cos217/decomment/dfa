@@ -1,0 +1,36 @@
+START (accept) <-- the start state
+	/: START_OF_/ (nothing)
+	": INSIDE_STRING (print ")
+	': INSIDE_CHAR (print ')
+	other (all char except /"'): START (print the char)
+
+START_OF_/ (accept)
+	*: INSIDE_COMMENT (print space)
+	other (all char except *): START (print /char)
+
+INSIDE_COMMENT (reject)
+	new line char: INSIDE_COMMENT (print new line char)
+	*: *_END_OF_COMMENT (nothing)
+	other (all char except new line char, *): INSIDE_COMMENT (nothing)
+
+*_END_OF_COMMENT (reject)
+	new line char: INSIDE_COMMENT (print new line char)
+	/: START (nothing)
+	other (all char except new line char, /): INSIDE_COMMENT (nothing)
+
+INSIDE_STRING (accept)
+	": START (print ")
+	\: START_OF_\_INSIDE_STRING (print \)
+	other (all char except ",\): INSIDE_STRING (print char)
+
+START_OF_\_INSIDE_STRING (accept)
+	all char: INSIDE_STRING (print char)
+
+INSIDE_CHAR (accept)
+	': START (print ')
+	\: START_OF_\_INSIDE_CHAR (print \)
+	other (all char except ',\): INSIDE_CHAR (print char)
+
+START_OF_\_INSIDE_CHAR (accept)
+	all char: INSIDE_CHAR (print char)
+
