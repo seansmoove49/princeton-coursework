@@ -212,9 +212,9 @@ int main(void)
 {
     
     
-    int c; // each character read from stdin.
-    int lineNumber = 1; // current line number
-    //line number on which an unterminated comment begins
+    int c; /* each character read from stdin. */
+    int lineNumber = 1; /* current line number */
+    /* line number on which an unterminated comment begins */
     int commentStartLineNumber = 0; 
     
     enum Statetype state = NORMAL;
