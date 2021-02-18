@@ -9,14 +9,14 @@
 enum Statetype {NORMAL, STARTCOMMENT, INCOMMENT, ENDCOMMENT, 
     INSTRING, BACKSLASH_INSTRING, INCHAR, BACKSLASH_INCHAR};
 
-int lineNumber = 1;
-int commentStartLineNumber = 0;
+
 
 /* Implement the NORMAL state of the DFA. c is the current DFA character.
+plineNumber is a pointer, pointing to the memory address of lineNumber.
 Write c to stdout (or not), as specified by the DFA. 
-Update global variable lineNumber. Return the next state. */
+Update the variable lineNumber. Return the next state. */
 
-enum Statetype handleNormal(int c){
+enum Statetype handleNormal(int c, int* plineNumber){
     enum Statetype state;
     if (c=='/'){
         state = STARTCOMMENT;
@@ -32,7 +32,7 @@ enum Statetype handleNormal(int c){
     else if (c=='\n'){
         putchar(c);
         state = NORMAL;
-        lineNumber++;
+        *plineNumber+=1;
     }
     else{
         putchar(c);
@@ -42,22 +42,25 @@ enum Statetype handleNormal(int c){
 }
 
 /* Implement the StartComment state of the DFA. c is the current DFA character.
+plineNumber is a pointer, pointing to the memory address of lineNumber.
+pcommentStartLineNumber is a pointer, pointing to the memory address of 
+commentStartLineNumber.
 Write a character to stdout, as specified by the DFA. 
-Update global variables lineNumber and commentStartLineNumber.
+Update  variables lineNumber and commentStartLineNumber.
 Return the next state. */
 
-enum Statetype handleStartComment(int c){
+enum Statetype handleStartComment(int c, int* plineNumber, int* pcommentStartLineNumber){
     enum Statetype state;
     if (c=='*'){
         putchar(' ');
         state = INCOMMENT;
-        commentStartLineNumber = lineNumber;
+        *pcommentStartLineNumber = *plineNumber;
     }
     else if (c=='\n'){
         putchar('/');
         putchar(c);
         state = NORMAL;
-        lineNumber++;
+        *plineNumber+=1;
     }
     else{
         putchar('/');
@@ -68,15 +71,16 @@ enum Statetype handleStartComment(int c){
 }
 
 /* Implement the InComment state of the DFA. c is the current DFA character.
+plineNumber is a pointer, pointing to the memory address of lineNumber.
 Write a character (or not) to stdout, as specified by the DFA. 
-Update global variable lineNumber. Return the next state. */
+Update variable lineNumber. Return the next state. */
 
-enum Statetype handleInComment(int c){
+enum Statetype handleInComment(int c, int* plineNumber){
     enum Statetype state;
     if (c=='\n'){
         putchar(c);
         state = INCOMMENT;
-        lineNumber++;
+        *plineNumber+=1;
     }
     else if (c=='*'){
         state = ENDCOMMENT;
@@ -88,18 +92,22 @@ enum Statetype handleInComment(int c){
 }
 
 /* Implement the EndComment state of the DFA. c is the current DFA character.
+plineNumber is a pointer, pointing to the memory address of lineNumber.
+pcommentStartLineNumber is a pointer, pointing to the memory address of 
+commentStartLineNumber.
 Write a character (or not) to stdout, as specified by the DFA. 
-Update global variable lineNumber. Return the next state. */
+Update the variables lineNumber and commentStartLineNumber. 
+Return the next state. */
 
-enum Statetype handleEndComment(int c){
+enum Statetype handleEndComment(int c, int* plineNumber, int* pcommentStartLineNumber){
     enum Statetype state;
     if (c=='\n'){
         putchar(c);
         state = INCOMMENT;
-        lineNumber++;
+        *plineNumber+=1;
     }
     else if (c=='/'){
-        commentStartLineNumber = 0;
+        *pcommentStartLineNumber = 0;
         state = NORMAL;
     }
     else{
@@ -109,10 +117,11 @@ enum Statetype handleEndComment(int c){
 }
 
 /* Implement the InString state of the DFA. c is the current DFA character.
+plineNumber is a pointer, pointing to the memory address of lineNumber.
 Write c to stdout, as specified by the DFA. 
-Update global variable lineNumber. Return the next state. */
+Update variable lineNumber. Return the next state. */
 
-enum Statetype handleInString(int c){
+enum Statetype handleInString(int c, int* plineNumber){
     enum Statetype state;
     if (c=='\"'){
         putchar(c);
@@ -125,7 +134,7 @@ enum Statetype handleInString(int c){
     else if (c=='\n'){
         putchar(c);
         state = INSTRING;
-        lineNumber++;
+        *plineNumber+=1;
     }
     else{
         putchar(c);
@@ -136,13 +145,14 @@ enum Statetype handleInString(int c){
 
 /* Implement the BackslashInString state of the DFA. 
 c is the current DFA character.
+plineNumber is a pointer, pointing to the memory address of lineNumber.
 Write c to stdout, as specified by the DFA. 
-Update global variable lineNumber. Return the next state. */
+Update variable lineNumber. Return the next state. */
 
-enum Statetype handleBackslashInString(int c){
+enum Statetype handleBackslashInString(int c, int* plineNumber){
     enum Statetype state;
     if (c=='\n'){
-        lineNumber++;
+        *plineNumber+=1;
     }
     putchar(c);
     state = INSTRING;
@@ -150,10 +160,11 @@ enum Statetype handleBackslashInString(int c){
 }
 
 /* Implement the InChar state of the DFA. c is the current DFA character.
+plineNumber is a pointer, pointing to the memory address of lineNumber.
 Write c to stdout, as specified by the DFA. 
-Update global variable lineNumber. Return the next state. */
+Update variable lineNumber. Return the next state. */
 
-enum Statetype handleInChar(int c){
+enum Statetype handleInChar(int c, int* plineNumber){
     enum Statetype state;
     if (c=='\''){
         putchar(c);
@@ -166,7 +177,7 @@ enum Statetype handleInChar(int c){
     else if (c=='\n'){
         putchar(c);
         state = INCHAR;
-        lineNumber++;
+        *plineNumber+=1;
     }
     else{
         putchar(c);
@@ -177,13 +188,14 @@ enum Statetype handleInChar(int c){
 
 /* Implement the BackslashInChar state of the DFA. 
 c is the current DFA character.
+plineNumber is a pointer, pointing to the memory address of lineNumber.
 Write c to stdout, as specified by the DFA. 
-Update global variable lineNumber. Return the next state. */
+Update variable lineNumber. Return the next state. */
 
-enum Statetype handleBackslashInChar(int c){
+enum Statetype handleBackslashInChar(int c, int* plineNumber){
     enum Statetype state;
     if (c=='\n'){
-        lineNumber++;
+        *plineNumber+=1;
     }
     putchar(c);
     state = INCHAR;
@@ -198,33 +210,39 @@ line number where the unterminated comment begins. Otherwise return 0.
 
 int main(void)
 {
-    int c;
+    
+    
+    int c; // each character read from stdin.
+    int lineNumber = 1; // current line number
+    //line number on which an unterminated comment begins
+    int commentStartLineNumber = 0; 
+    
     enum Statetype state = NORMAL;
     while ((c = getchar()) != EOF){
         switch (state){
             case NORMAL:
-                state = handleNormal(c);
+                state = handleNormal(c, &lineNumber);
                 break;
             case STARTCOMMENT:
-                state = handleStartComment(c);
+                state = handleStartComment(c, &lineNumber, &commentStartLineNumber);
                 break;
             case INCOMMENT:
-                state = handleInComment(c);
+                state = handleInComment(c, &lineNumber);
                 break;
             case ENDCOMMENT:
-                state = handleEndComment(c);
+                state = handleEndComment(c, &lineNumber, &commentStartLineNumber);
                 break;
             case INSTRING:
-                state = handleInString(c);
+                state = handleInString(c, &lineNumber);
                 break;
             case BACKSLASH_INSTRING:
-                state = handleBackslashInString(c);
+                state = handleBackslashInString(c, &lineNumber);
                 break;
             case INCHAR:
-                state = handleInChar(c);
+                state = handleInChar(c, &lineNumber);
                 break;
             case BACKSLASH_INCHAR:
-                state = handleBackslashInChar(c);
+                state = handleBackslashInChar(c, &lineNumber);
                 break;
         }
     }
