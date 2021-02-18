@@ -62,6 +62,20 @@ enum Statetype handleStartComment(int c, int* plineNumber, int* pcommentStartLin
         state = NORMAL;
         *plineNumber+=1;
     }
+    else if (c=='/'){
+        putchar('/');
+        state = STARTCOMMENT;
+    }
+    else if (c=='\"'){
+        putchar('/');
+        putchar(c);
+        state = INSTRING;
+    }
+    else if (c=='\''){
+        putchar('/');
+        putchar(c);
+        state = INCHAR;
+    }
     else{
         putchar('/');
         putchar(c);
@@ -105,6 +119,9 @@ enum Statetype handleEndComment(int c, int* plineNumber, int* pcommentStartLineN
         putchar(c);
         state = INCOMMENT;
         *plineNumber+=1;
+    }
+    else if (c=='*'){
+        state = ENDCOMMENT;
     }
     else if (c=='/'){
         *pcommentStartLineNumber = 0;
@@ -212,13 +229,15 @@ int main(void)
 {
     
     
-    int c; /* each character read from stdin. */
-    int lineNumber = 1; /* current line number */
-    /* line number on which an unterminated comment begins */
+    int c; /*each character read from stdin.*/
+    int lineNumber = 1; /*current line number*/
+    /*line number on which an unterminated comment begins*/
     int commentStartLineNumber = 0; 
+    int finalChar; /*the last character in stdin before EOF*/
     
     enum Statetype state = NORMAL;
     while ((c = getchar()) != EOF){
+        finalChar = c;
         switch (state){
             case NORMAL:
                 state = handleNormal(c, &lineNumber);
@@ -245,6 +264,10 @@ int main(void)
                 state = handleBackslashInChar(c, &lineNumber);
                 break;
         }
+    }
+    /* catch the sitution if the last char before EOF is a / */
+    if (finalChar == '/'){
+        putchar(finalChar);
     }
     if (commentStartLineNumber!=0){
         fprintf(stderr, "Error: line %d: unterminated comment\n", commentStartLineNumber);
