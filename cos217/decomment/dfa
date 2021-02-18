@@ -6,7 +6,10 @@ NORMAL (accept) <-- the start state
 
 STARTCOMMENT (accept)
 	*: INCOMMENT (print space)
-	other (all char except *): NORMAL (print /char)
+	/: STARTCOMMENT (print /)
+	": INSTRING (print /")
+	': INCHAR (print /')
+	other (all char except */"'): NORMAL (print /char)
 
 INCOMMENT (reject)
 	new line char: INCOMMENT (print new line char)
@@ -15,8 +18,9 @@ INCOMMENT (reject)
 
 ENDCOMMENT (reject)
 	new line char: INCOMMENT (print new line char)
+	*: ENDCOMMENT (nothing)
 	/: NORMAL (nothing)
-	other (all char except new line char, /): INCOMMENT (nothing)
+	other (all char except new line char /*): INCOMMENT (nothing)
 
 INSTRING (accept)
 	": NORMAL (print ")
