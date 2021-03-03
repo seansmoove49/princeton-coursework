@@ -1,7 +1,6 @@
 #include "str.h"
 #include <assert.h>
 #include <stddef.h>
-#include <string.h>
 
 size_t Str_getLength(const char pcSrc[])
 {
@@ -11,6 +10,7 @@ size_t Str_getLength(const char pcSrc[])
       uLength++;
    return uLength;
 }
+
 
 char *Str_copy(char pcDest[], const char pcSrc[])
 {
@@ -58,23 +58,38 @@ int Str_compare(const char pcString1[], const char pcString2[]){
 char *Str_search(const char pcHaystack[], const char pcNeedle[]){
     size_t indexHaystack = 0;
     size_t indexNeedle = 0;
+    size_t startIndex = 0;
+    size_t numMatch = 0;
     char *pc = NULL;
+    size_t needleLength = Str_getLength(pcNeedle);
     assert(pcHaystack != NULL);
     assert(pcNeedle != NULL);
+
+    if (pcNeedle[indexNeedle] == '\0'){
+        return (char*) pcHaystack;
+    }
     while(pcHaystack[indexHaystack]!='\0' && pcNeedle[indexNeedle]!='\0'){
         if(pcNeedle[indexNeedle]==pcHaystack[indexHaystack]){
-            if (pc==NULL){
-                pc = (char*) &pcHaystack[indexHaystack];
+            if (numMatch==0){
+                startIndex = indexHaystack;
             }
+            numMatch++;
             indexNeedle++;
         }
         else{
-            pc = NULL;
+            indexHaystack = indexHaystack-numMatch;
+            numMatch = 0;
             indexNeedle = 0;
         }
         indexHaystack++;
+        
     }
-    return pc;
+    if ((numMatch != 0) && (indexNeedle == needleLength)){
+        return (char*) &pcHaystack[startIndex];
+    }
+    else{
+        return NULL;
+    }
 
 }
 
