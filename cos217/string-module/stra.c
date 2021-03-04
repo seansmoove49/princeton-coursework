@@ -31,8 +31,7 @@ char *Str_concat(char pcDest[], const char pcSrc[])
     size_t i = 0;
     assert(pcSrc != NULL);
     assert(pcDest != NULL);
-    size_t pcDestLen;
-    pcDestLen = Str_getLength(pcDest);
+    size_t pcDestLen = Str_getLength(pcDest);
     while (pcSrc[i]!='\0'){
         pcDest[i+pcDestLen] = pcSrc[i];
         i++;
@@ -60,7 +59,6 @@ char *Str_search(const char pcHaystack[], const char pcNeedle[]){
     size_t indexNeedle = 0;
     size_t startIndex = 0;
     size_t numMatch = 0;
-    char *pc = NULL;
     size_t needleLength = Str_getLength(pcNeedle);
     assert(pcHaystack != NULL);
     assert(pcNeedle != NULL);
