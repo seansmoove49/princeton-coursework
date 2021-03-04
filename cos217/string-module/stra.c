@@ -1,3 +1,8 @@
+/*--------------------------------------------------------------------*/
+/* stra.c                                                             */
+/* Author: Sean Wang                                                  */
+/*--------------------------------------------------------------------*/
+
 #include "str.h"
 #include <assert.h>
 #include <stddef.h>
@@ -43,8 +48,12 @@ char *Str_concat(char pcDest[], const char pcSrc[])
 
 int Str_compare(const char pcString1[], const char pcString2[]){
     size_t i = 0;
+    int string1Length;
+    int string2Length;
     assert(pcString1 != NULL);
     assert(pcString2 != NULL);
+    string1Length = Str_getLength(pcString1);
+    string2Length = Str_getLength(pcString2);
     while(pcString1[i]!='\0' && pcString2[i]!='\0'){
         if((pcString1[i] - pcString2[i])<0)
             return -1;
@@ -52,17 +61,24 @@ int Str_compare(const char pcString1[], const char pcString2[]){
             return 1;   
         i++;
     }
-    return (Str_getLength(pcString1)-Str_getLength(pcString2));
+    /* covers the cases where every char is the same */
+    return (string1Length-string2Length);
 }
 
 char *Str_search(const char pcHaystack[], const char pcNeedle[]){
     size_t indexHaystack = 0;
     size_t indexNeedle = 0;
+    /* startIndex helps track the beginning of the substring 
+    in pcHaystack*/
     size_t startIndex = 0;
+    /* numMatches is a counter for consecutive char matches */
     size_t numMatch = 0;
-    size_t needleLength = Str_getLength(pcNeedle);
+    size_t needleLength;
+
     assert(pcHaystack != NULL);
     assert(pcNeedle != NULL);
+
+    needleLength = Str_getLength(pcNeedle);
 
     if (pcNeedle[indexNeedle] == '\0'){
         return (char*) pcHaystack;
@@ -76,12 +92,12 @@ char *Str_search(const char pcHaystack[], const char pcNeedle[]){
             indexNeedle++;
         }
         else{
+            /* moves the index of pcHaystack back */
             indexHaystack = indexHaystack-numMatch;
             numMatch = 0;
             indexNeedle = 0;
         }
         indexHaystack++;
-        
     }
     if ((numMatch != 0) && (indexNeedle == needleLength)){
         return (char*) &pcHaystack[startIndex];
