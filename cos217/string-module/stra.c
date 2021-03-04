@@ -85,9 +85,8 @@ char *Str_search(const char pcHaystack[], const char pcNeedle[]){
     if ((numMatch != 0) && (indexNeedle == needleLength)){
         return (char*) &pcHaystack[startIndex];
     }
-    else{
-        return NULL;
-    }
+    return NULL;
+    
 
 }
 
