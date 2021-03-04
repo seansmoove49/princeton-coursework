@@ -48,7 +48,8 @@ None
 ------------------------------------------------------------------------
 What is your assessment of the assignment? Was it helpful? Was it fun?
 
-It was pretty difficult
+It was pretty difficult, but I felt happy after figuring out the 
+challenge portion.
 
 ------------------------------------------------------------------------
 (optional) What information can you provide about your submission that
@@ -64,14 +65,13 @@ disagreement after each warning. If there are no warnings, then write
 "None."
 
 
-
 ------------------------------------------------------------------------
 What warnings does critTer generate on stra.c, and what are your
 disagreements with them? Copy the critTer warnings here, and express
 your disagreement after each warning. If there are no warnings, then
 write "None."
 
-
+None
 
 
 
@@ -104,7 +104,7 @@ What warnings does critTer generate on replace.c, and what are your
 disagreements with them? Copy the critTer warnings here, and express
 your disagreement after each warning. If there are no warnings, then
 write "None."
-
+None
 
 
 ------------------------------------------------------------------------

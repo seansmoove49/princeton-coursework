@@ -52,12 +52,12 @@ int Str_compare(const char pcString1[], const char pcString2[]){
     int string2Length;
     assert(pcString1 != NULL);
     assert(pcString2 != NULL);
-    string1Length = Str_getLength(pcString1);
-    string2Length = Str_getLength(pcString2);
+    string1Length = (int) Str_getLength(pcString1);
+    string2Length = (int) Str_getLength(pcString2);
     while(pcString1[i]!='\0' && pcString2[i]!='\0'){
-        if((pcString1[i] - pcString2[i])<0)
+        if((int)(pcString1[i] - pcString2[i])<0)
             return -1;
-        else if ((pcString1[i] - pcString2[i])>0)
+        else if ((int)(pcString1[i] - pcString2[i])>0)
             return 1;   
         i++;
     }
