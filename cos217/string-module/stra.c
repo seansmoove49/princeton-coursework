@@ -29,9 +29,10 @@ char *Str_copy(char pcDest[], const char pcSrc[])
 char *Str_concat(char pcDest[], const char pcSrc[])
 {
     size_t i = 0;
+    size_t pcDestLen;
     assert(pcSrc != NULL);
     assert(pcDest != NULL);
-    size_t pcDestLen = Str_getLength(pcDest);
+    pcDestLen = Str_getLength(pcDest);
     while (pcSrc[i]!='\0'){
         pcDest[i+pcDestLen] = pcSrc[i];
         i++;

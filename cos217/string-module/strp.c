@@ -30,9 +30,10 @@ char *Str_copy(char *pcDest, const char *pcSrc)
 
 char *Str_concat(char *pcDest, const char *pcSrc)
 {
-    assert(pcSrc != NULL);
-    assert(pcDest != NULL);
-    char *pc = pcDest;
+   char *pc;
+   assert(pcSrc != NULL);
+   assert(pcDest != NULL);
+   pc = pcDest;
     while (*pc != '\0'){
        pc++;
     }
@@ -77,10 +78,10 @@ static int Strn_compare(const char pcString1[], const char pcString2[], size_t n
 
 
 char *Str_search(const char *pcHaystack, const char *pcNeedle){
+   size_t needleLength;
    assert(pcHaystack != NULL);
    assert(pcNeedle != NULL);
-   size_t haystackLength = Str_getLength(pcHaystack);
-   size_t needleLength = Str_getLength(pcNeedle);
+   needleLength = Str_getLength(pcNeedle);
    if (*pcNeedle == '\0'){
         return (char*) pcHaystack;
     }
