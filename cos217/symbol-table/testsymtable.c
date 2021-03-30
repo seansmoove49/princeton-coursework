@@ -960,8 +960,10 @@ int main(int argc, char *argv[])
    testNullValue();
    testLongKey();
    testTableOfTables();
+   /*
    testCollisions();
    testLargeTable(iBindingCount);
+   */
 
    printf("------------------------------------------------------\n");
    printf("End of %s.\n", argv[0]);

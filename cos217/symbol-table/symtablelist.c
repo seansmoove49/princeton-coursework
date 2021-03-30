@@ -82,11 +82,12 @@ size_t SymTable_getLength(SymTable_T oSymTable)
 int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue)
 {
    struct SymTableNode *psNewNode;
+   int contains;
 
    assert(oSymTable != NULL);
 
    psNewNode = (struct SymTableNode*)malloc(sizeof(struct SymTableNode));
-   int contains = SymTable_contains(oSymTable, pcKey);
+   contains = SymTable_contains(oSymTable, pcKey);
    if ((psNewNode == NULL) || (contains == 1))
       return 0;
    psNewNode->pvValue = pvValue;
@@ -103,12 +104,13 @@ void *SymTable_replace(SymTable_T oSymTable, const char *pcKey,
 {
     struct SymTableNode *psCurrentNode;
     const void *pvOldValue;
+    int comparison;
     assert(oSymTable != NULL);
     for (psCurrentNode = oSymTable->psFirstNode;
         psCurrentNode != NULL;
         psCurrentNode = psCurrentNode->psNextNode)
     {
-        int comparison = strcmp(pcKey, psCurrentNode->pcKey);
+        comparison = strcmp(pcKey, psCurrentNode->pcKey);
         if (comparison == 0){
             pvOldValue = psCurrentNode->pvValue;
             psCurrentNode->pvValue = pvValue;
@@ -121,12 +123,13 @@ void *SymTable_replace(SymTable_T oSymTable, const char *pcKey,
 int SymTable_contains(SymTable_T oSymTable, const char *pcKey)
 {
     struct SymTableNode *psCurrentNode;
+    int comparison;
     assert(oSymTable != NULL);
     for (psCurrentNode = oSymTable->psFirstNode;
         psCurrentNode != NULL;
         psCurrentNode = psCurrentNode->psNextNode)
     {
-        int comparison = strcmp(pcKey, psCurrentNode->pcKey);
+        comparison = strcmp(pcKey, psCurrentNode->pcKey);
         if (comparison == 0){
             return 1;
         }
