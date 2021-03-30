@@ -757,6 +757,7 @@ static void testCollisions(void)
    pcValue = SymTable_get(oSymTable, "2016");
    ASSURE(pcValue == acRightField);
 
+
    pcValue = SymTable_remove(oSymTable, "947");
    ASSURE(pcValue == acFirstBase);
 
@@ -766,11 +767,14 @@ static void testCollisions(void)
    pcValue = SymTable_remove(oSymTable, "250");
    ASSURE(pcValue == acCenterField);
 
+
    pcValue = SymTable_get(oSymTable, "469");
    ASSURE(pcValue == acCatcher);
 
    pcValue = SymTable_get(oSymTable, "1303");
    ASSURE(pcValue == acRightField);
+
+   
 
    SymTable_free(oSymTable);
 }
@@ -960,11 +964,9 @@ int main(int argc, char *argv[])
    testNullValue();
    testLongKey();
    testTableOfTables();
-   /*
-   testCollisions();
    
-   */
-  testLargeTable(iBindingCount);
+   testCollisions();
+   testLargeTable(iBindingCount);
 
    printf("------------------------------------------------------\n");
    printf("End of %s.\n", argv[0]);

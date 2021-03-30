@@ -64,6 +64,7 @@ void SymTable_free(SymTable_T oSymTable)
         psCurrentNode = psNextNode)
    {
       psNextNode = psCurrentNode->psNextNode;
+      free((char*)psCurrentNode->pcKey);
       free(psCurrentNode);
    }
    oSymTable->numNodes = 0;
@@ -174,13 +175,15 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey)
    if (SymTable_contains(oSymTable, pcKey) == 0){
        return NULL;
    }
-   /* Checks if the first node has the same key */
    psCurrentNode = oSymTable->psFirstNode;
    comparison = strcmp(pcKey, psCurrentNode->pcKey);
+
+   /* Checks if the first node has the same key */
    if (comparison == 0){
        oSymTable->numNodes = oSymTable->numNodes-1;
        pvValue = psCurrentNode->pvValue;
        oSymTable->psFirstNode = psCurrentNode->psNextNode;
+       free((char*)psCurrentNode->pcKey);
        free(psCurrentNode);
        return (void*) pvValue;
    }
@@ -194,9 +197,10 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey)
         if (comparison == 0){
             oSymTable->numNodes = oSymTable->numNodes-1;
             pvValue = psCurrentNode->pvValue;
-            psCurrentNode = psCurrentNode->psNextNode;
-            psPrevNode->psNextNode = psCurrentNode;
+
+            psPrevNode->psNextNode = psCurrentNode->psNextNode;
             free(psCurrentNode);
+            free((char*)psCurrentNode->pcKey);
             return (void*) pvValue;
         }
     }
