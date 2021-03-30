@@ -10,9 +10,9 @@
 #include <stdio.h>
 
 /* Array of bucket counts */
-size_t BUCKET_COUNTS[] = {509, 1021, 2039, 4093, 8191, 16381, 32749, 65521};
+static size_t BUCKET_COUNTS[] = {509, 1021, 2039, 4093, 8191, 16381, 32749, 65521};
 /* Index for the current bucket count */
-int INDEX_BUCKET_COUNTS = 0;
+static size_t INDEX_BUCKET_COUNTS = 0;
 /* A SymTableNode holds each node which consists of a key and a value */
 typedef struct SymTableNode SymTableNode;
 

@@ -2,7 +2,7 @@ Assignment 3 readme File
 
 ------------------------------------------------------------------------
 What is your name?
-
+Sean Wang
 
 
 ------------------------------------------------------------------------
@@ -30,12 +30,12 @@ interaction, may additionally require the interaction being reported
 to the Committee on Discipline. Write "None" if you used no
 unauthorized sources of information.
 
-
+None
 
 ------------------------------------------------------------------------
 What is your assessment of the assignment? Was it helpful? Was it fun?
 
-
+It was a bit tedious. 
 
 ------------------------------------------------------------------------
 (optional) What information can you provide about your submission that
@@ -57,6 +57,11 @@ What warnings does critTer generate on symtablelist.c, and what are your
 disagreements with them? Copy the critTer warnings here, and express
 your disagreement after each warning. If there are no warnings, then
 write "None."
+symtablelist.c: line 225: medium priority:
+   Do you want to validate 'pvExtra' through an assert?
+
+I don't want to validate pvExtra because the function may not require 
+extra information.
 
 
 
@@ -74,6 +79,10 @@ disagreements with them? Copy the critTer warnings here, and express
 your disagreement after each warning. If there are no warnings, then
 write "None."
 
+symtablehash.c: line 351: medium priority:
+   Do you want to validate 'pvExtra' through an assert?
+I don't want to validate pvExtra because the function may not require 
+extra information.
 
 
 ------------------------------------------------------------------------
