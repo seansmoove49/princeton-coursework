@@ -236,6 +236,7 @@ static void testBasics(void)
    /* Test SymTable_free(). */
 
    SymTable_free(oSymTable);
+
 }
 
 /*--------------------------------------------------------------------*/
@@ -323,7 +324,7 @@ static void testRemove(void)
    printf("Testing the SymTable_remove() function.\n");
    printf("No output should appear here:\n");
    fflush(stdout);
-
+   
    oSymTable = SymTable_new();
    ASSURE(oSymTable != NULL);
 

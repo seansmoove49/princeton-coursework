@@ -46,6 +46,7 @@ SymTable_T SymTable_new(void)
       return NULL;
 
    oSymTable->psFirstNode = NULL;
+   oSymTable->numNodes = 0;
    return oSymTable;
 }
 
@@ -65,6 +66,7 @@ void SymTable_free(SymTable_T oSymTable)
       psNextNode = psCurrentNode->psNextNode;
       free(psCurrentNode);
    }
+   oSymTable->numNodes = 0;
 
    free(oSymTable);
 }
@@ -156,7 +158,6 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey)
     struct SymTableNode *psPrevNode;
 
    assert(oSymTable != NULL);
-   assert(oSymTable->psFirstNode != NULL);
    /* checks if the SymTable contains a node with the same key */
    if (SymTable_contains(oSymTable, pcKey) == 0){
        return NULL;
