@@ -87,11 +87,18 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue)
    assert(oSymTable != NULL);
 
    psNewNode = (struct SymTableNode*)malloc(sizeof(struct SymTableNode));
+   if (psNewNode == NULL){
+       return 0;
+   }
    contains = SymTable_contains(oSymTable, pcKey);
-   if ((psNewNode == NULL) || (contains == 1))
-      return 0;
+   if (contains == 1){
+       return 0;
+   }
    psNewNode->pvValue = pvValue;
    psNewNode->pcKey = (const char*)malloc(strlen(pcKey)+1);
+   if (psNewNode->pcKey == NULL){
+       return 0;
+   } 
    strcpy((char*)psNewNode->pcKey, pcKey);
    psNewNode->psNextNode = oSymTable->psFirstNode;
    oSymTable->psFirstNode = psNewNode;

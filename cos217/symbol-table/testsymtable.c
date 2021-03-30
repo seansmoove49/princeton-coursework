@@ -962,8 +962,9 @@ int main(int argc, char *argv[])
    testTableOfTables();
    /*
    testCollisions();
-   testLargeTable(iBindingCount);
+   
    */
+  testLargeTable(iBindingCount);
 
    printf("------------------------------------------------------\n");
    printf("End of %s.\n", argv[0]);
