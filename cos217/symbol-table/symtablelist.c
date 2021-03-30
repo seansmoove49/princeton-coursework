@@ -159,6 +159,8 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey)
     const void *pvValue;
     struct SymTableNode *psCurrentNode;
     struct SymTableNode *psPrevNode;
+    int comparison;
+
 
    assert(oSymTable != NULL);
    /* checks if the SymTable contains a node with the same key */
@@ -167,7 +169,7 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey)
    }
    /* Checks if the first node has the same key */
    psCurrentNode = oSymTable->psFirstNode;
-   int comparison = strcmp(pcKey, psCurrentNode->pcKey);
+   comparison = strcmp(pcKey, psCurrentNode->pcKey);
    if (comparison == 0){
        oSymTable->numNodes = oSymTable->numNodes-1;
        pvValue = psCurrentNode->pvValue;
@@ -181,7 +183,7 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey)
         psPrevNode = psCurrentNode;
         psCurrentNode = psCurrentNode->psNextNode;
 
-        int comparison = strcmp(pcKey, psCurrentNode->pcKey);
+        comparison = strcmp(pcKey, psCurrentNode->pcKey);
         if (comparison == 0){
             oSymTable->numNodes = oSymTable->numNodes-1;
             pvValue = psCurrentNode->pvValue;
@@ -191,6 +193,7 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey)
             return (void*) pvValue;
         }
     }
+    return NULL;
 }
 
 void SymTable_map(SymTable_T oSymTable,
