@@ -214,11 +214,11 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue)
    psNewNode->psNextNode = oSymTable->bucketArray[hashCode];
    oSymTable->bucketArray[hashCode] = psNewNode;
    oSymTable->numNodes = oSymTable->numNodes+1;
-   /*
+   
    if (oSymTable->numNodes > BUCKET_COUNTS[INDEX_BUCKET_COUNTS]){
        SymTable_grow(oSymTable);
    }
-   */
+   
 
    
    return 1;
