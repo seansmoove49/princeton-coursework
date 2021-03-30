@@ -233,7 +233,6 @@ void *SymTable_replace(SymTable_T oSymTable, const char *pcKey,
 
     assert(oSymTable != NULL);
     assert(pcKey != NULL);
-    assert(pvValue != NULL);
 
     hashCode = SymTable_hash(pcKey, oSymTable->numBuckets);
     bucket = oSymTable->bucketArray[hashCode];
