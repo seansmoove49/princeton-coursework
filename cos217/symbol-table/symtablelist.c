@@ -10,7 +10,7 @@
 
 /*--------------------------------------------------------------------*/
 
-/* Each item is stored in a StackNode.  StackNodes are linked to
+/* Each node is stored in a SymTableNode.  SymTableNodes are linked to
    form a list.  */
 
 struct SymTableNode
@@ -20,18 +20,19 @@ struct SymTableNode
    /* The value. */
    const void *pvValue;
 
-   /* The address of the next StackNode. */
+   /* The address of the next SymTableNode. */
    struct SymTableNode *psNextNode;
 };
 
 /*--------------------------------------------------------------------*/
 
-/* A Stack is a structure that points to the first StackNode. */
+/* A SymTable is a structure that points to the first SymTableNode. */
 
 struct SymTable
 {
    /* The address of the first SymTableNode. */
    struct SymTableNode *psFirstNode;
+   /* The number of SymTableNodes in SymTable */
    size_t numNodes;
 };
 
@@ -86,6 +87,8 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue)
    int contains;
 
    assert(oSymTable != NULL);
+   assert(pcKey != NULL);
+   assert(pvValue != NULL);
 
    psNewNode = (struct SymTableNode*)malloc(sizeof(struct SymTableNode));
    if (psNewNode == NULL){
@@ -113,7 +116,11 @@ void *SymTable_replace(SymTable_T oSymTable, const char *pcKey,
     struct SymTableNode *psCurrentNode;
     const void *pvOldValue;
     int comparison;
+
     assert(oSymTable != NULL);
+    assert(pcKey != NULL);
+    assert(pvValue != NULL);
+
     for (psCurrentNode = oSymTable->psFirstNode;
         psCurrentNode != NULL;
         psCurrentNode = psCurrentNode->psNextNode)
@@ -133,6 +140,8 @@ int SymTable_contains(SymTable_T oSymTable, const char *pcKey)
     struct SymTableNode *psCurrentNode;
     int comparison;
     assert(oSymTable != NULL);
+    assert(pcKey != NULL);
+
     for (psCurrentNode = oSymTable->psFirstNode;
         psCurrentNode != NULL;
         psCurrentNode = psCurrentNode->psNextNode)
@@ -149,6 +158,7 @@ void *SymTable_get(SymTable_T oSymTable, const char *pcKey)
 {
     struct SymTableNode *psCurrentNode;
     assert(oSymTable != NULL);
+    assert(pcKey != NULL);
     for (psCurrentNode = oSymTable->psFirstNode;
         psCurrentNode != NULL;
         psCurrentNode = psCurrentNode->psNextNode)
@@ -171,6 +181,8 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey)
 
 
    assert(oSymTable != NULL);
+   assert(pcKey != NULL);
+   
    /* checks if the SymTable contains a node with the same key */
    if (SymTable_contains(oSymTable, pcKey) == 0){
        return NULL;

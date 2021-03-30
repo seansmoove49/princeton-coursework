@@ -9,7 +9,7 @@
 #include "symtable.h"
 #include <stdio.h>
 
-int BUCKET_COUNTS[] = {509, 1021, 2039, 4093, 8191, 16381, 32749, 65521};
+size_t BUCKET_COUNTS[] = {509, 1021, 2039, 4093, 8191, 16381, 32749, 65521};
 int INDEX_BUCKET_COUNTS = 0;
 /* Return a hash code for pcKey that is between 0 and uBucketCount-1,
         inclusive. */
@@ -61,7 +61,7 @@ SymTable_T SymTable_new(void)
 {
     const size_t INITIAL_LENGTH = 509;
     SymTable_T oSymTable;
-
+    size_t i;
 
    oSymTable = (SymTable_T)malloc(sizeof(struct SymTable));
    if (oSymTable == NULL)
@@ -75,7 +75,6 @@ SymTable_T SymTable_new(void)
         free(oSymTable);
         return NULL;
     }
-    int i;
     for (i = 0; i< oSymTable->numBuckets; i++){
         oSymTable->bucketArray[i] = NULL;
     } 
@@ -89,9 +88,9 @@ void SymTable_free(SymTable_T oSymTable)
    struct SymTableNode *psCurrentNode;
    struct SymTableNode *psNextNode;
    struct SymTableNode *bucket;
+   size_t i;
 
    assert(oSymTable != NULL);
-   int i;
    for (i=0; i<oSymTable->numBuckets; i++) {
         bucket = oSymTable->bucketArray[i];
         for (psCurrentNode = bucket;
@@ -126,7 +125,7 @@ static int SymTable_grow(SymTable_T oSymTable)
    struct SymTableNode *psNewNode;
    struct SymTableNode *psCurrentNode;
    struct SymTableNode *psNextNode;
-   int i;
+   size_t i;
    assert(oSymTable != NULL);
    
    if (INDEX_BUCKET_COUNTS+1 == (sizeof(BUCKET_COUNTS)/sizeof(*BUCKET_COUNTS))){
@@ -241,7 +240,6 @@ int SymTable_contains(SymTable_T oSymTable, const char *pcKey)
     struct SymTableNode *psCurrentNode;
     struct SymTableNode *bucket; 
     int comparison;
-    int i;
     size_t hashCode;
     assert(oSymTable != NULL);
     hashCode = SymTable_hash(pcKey, oSymTable->numBuckets);
@@ -337,11 +335,12 @@ void SymTable_map(SymTable_T oSymTable,
 {
     struct SymTableNode *psCurrentNode;
     struct SymTableNode *bucket; 
+    size_t i;
 
 
     assert(oSymTable != NULL);
     assert(pfApply != NULL);
-    int i;
+    
     for (i = 0; i<oSymTable->numBuckets; i++){
         bucket = oSymTable->bucketArray[i];
         for (psCurrentNode = bucket; psCurrentNode != NULL;
