@@ -351,11 +351,11 @@ void SymTable_map(SymTable_T oSymTable,
 {
     struct SymTableNode *psCurrentNode;
     struct SymTableNode *bucket; 
+    size_t i;
 
 
     assert(oSymTable != NULL);
     assert(pfApply != NULL);
-    size_t i;
     for (i = 0; i<oSymTable->numBuckets; i++){
         bucket = oSymTable->bucketArray[i];
         for (psCurrentNode = bucket; psCurrentNode != NULL;
