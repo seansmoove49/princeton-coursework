@@ -15,11 +15,20 @@ What authorized sources of information did you use to complete
 the assignment? COPY THE LIST of authorized sources of information
 given in the "Policies" web page to this section of the readme file,
 and edit it as appropriate.
+The course's lectures.
 
+The course's precepts.
+
+The course's website.
+
+Documents that are referenced directly by the course's website. 
+Such documents include the course's lecture slides and precept handouts.
+
+The course's textbooks.
 
 
 ------------------------------------------------------------------------
-What unauthorized sources of information did you use to complete the
+What un`auth`orized sources of information did you use to complete the
 assignment? List any unauthorized sources of information that you used
 to complete the assignment, and describe how you used them. The course
 "Policies" web page defines unauthorized sources of information, and
@@ -35,7 +44,8 @@ None
 ------------------------------------------------------------------------
 What is your assessment of the assignment? Was it helpful? Was it fun?
 
-It was a bit tedious. 
+It was a bit tedious as the logic for both implementations was mostly the
+same.
 
 ------------------------------------------------------------------------
 (optional) What information can you provide about your submission that
@@ -98,10 +108,10 @@ implementation, (2) your non-expanding hash table implementation, and
 (3) your expanding hash table implementation? Fill in the blanks.
 
 The linked list implementation with:
--- 50 bindings consumed ________ seconds.
--- 500 bindings consumed ________ seconds.
--- 5000 bindings consumed ________ seconds.
--- 50000 bindings consumed ________ seconds.
+-- 50 bindings consumed 0.000000 seconds.
+-- 500 bindings consumed 0.010000 seconds
+-- 5000 bindings consumed 1.210000 seconds
+-- 50000 bindings consumed 119.690000 seconds.
 -- 500000 bindings consumed ________ seconds.
 
 The non-expanding hash table implementation with:
