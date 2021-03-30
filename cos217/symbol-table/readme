@@ -50,6 +50,7 @@ disagreements with them? Copy the splint warnings here, and express your
 disagreement after each warning. If there are no warnings, then write
 "None."
 
+None other than the sprintf suggestion.
 
 
 ------------------------------------------------------------------------
@@ -70,7 +71,12 @@ What warnings does splint generate on symtablehash.c, and what are your
 disagreements with them? Copy the splint warnings here, and express your
 disagreement after each warning. If there are no warnings, then write
 "None."
-
+symtablehash.c: (in function SymTable_grow)
+symtablehash.c:160:41: Value newBucketArray[] used before definition
+  An rvalue is used that may not be initialized to a value on 
+  some execution path. (Use -usedef to inhibit warning)
+Not sure why there is a warning considering I initialized all of 
+the values in newBucketArray to NULL.
 
 
 ------------------------------------------------------------------------
