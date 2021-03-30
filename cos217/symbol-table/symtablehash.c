@@ -1,6 +1,6 @@
 /*--------------------------------------------------------------------*/
-/* stack.c (Version 5)                                                */
-/* Author: Bob Dondero                                                */
+/* symtablehash.c                                                     */
+/* Author: Sean Wang                                                  */
 /*--------------------------------------------------------------------*/
 
 #include <assert.h>
@@ -117,8 +117,8 @@ size_t SymTable_getLength(SymTable_T oSymTable)
 /*--------------------------------------------------------------------*/
 
 /* Increase the physical length (number of buckets) of *oSymTable.  
-Return 1 (TRUE) if 
-successful, or 0 (FALSE) if insufficient memory is available. */
+Return 1 (TRUE) if successful, or 0 (FALSE) 
+if insufficient memory is available. */
 
 static int SymTable_grow(SymTable_T oSymTable)
 {
@@ -132,6 +132,8 @@ static int SymTable_grow(SymTable_T oSymTable)
    size_t i;
    assert(oSymTable != NULL);
    
+   /* Unsuccessful when INDEX_BUCKET_COUNTS reaches the last element 
+   of BUCKET_COUNTS */
    if (INDEX_BUCKET_COUNTS+1 == (sizeof(BUCKET_COUNTS)/sizeof(*BUCKET_COUNTS))){
        return 0;
    }
@@ -141,7 +143,13 @@ static int SymTable_grow(SymTable_T oSymTable)
    if (newBucketArray == NULL){
        return 0;
    }
+   /* Initialize all the values in newBucketArray to null */
+   for (i = 0; i< newNumBuckets; i++){
+        newBucketArray[i] = NULL;
+    } 
    
+   /* loop through the current bucket array and copy then 
+   reposition the nodes in the new bucket array */
    for (i = 0; i<oSymTable->numBuckets; i++){
        bucket = oSymTable->bucketArray[i];
        for (psCurrentNode = bucket; psCurrentNode != NULL;
