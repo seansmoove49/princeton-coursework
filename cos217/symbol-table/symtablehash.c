@@ -9,11 +9,15 @@
 #include "symtable.h"
 #include <stdio.h>
 
+/* Array of bucket counts */
 size_t BUCKET_COUNTS[] = {509, 1021, 2039, 4093, 8191, 16381, 32749, 65521};
+/* Index for the current bucket count */
 int INDEX_BUCKET_COUNTS = 0;
+/* A SymTableNode holds each node which consists of a key and a value */
+typedef struct SymTableNode SymTableNode;
+
 /* Return a hash code for pcKey that is between 0 and uBucketCount-1,
-        inclusive. */
-        
+        inclusive. */        
 static size_t SymTable_hash(const char *pcKey, size_t uBucketCount)
 {
         const size_t HASH_MULTIPLIER = 65599;
@@ -28,11 +32,8 @@ static size_t SymTable_hash(const char *pcKey, size_t uBucketCount)
         return uHash % uBucketCount;
 }
 
-
-typedef struct SymTableNode SymTableNode;
-/* Each item is stored in a StackNode.  StackNodes are linked to
+/* Each item is stored in a SymTableNode.  SymTableNodes are linked to
    form a list.  */
-
 struct SymTableNode
 {
     /* The key. */
@@ -46,11 +47,13 @@ struct SymTableNode
 
 /*--------------------------------------------------------------------*/
 
-/* A SymTable is an array of buckets. */
+/* A SymTable is an array of buckets which point to a SymTableNode. */
 struct SymTable {
-
+    /* The array in which the buckets are stored */
     struct SymTableNode **bucketArray;
+    /* The number of nodes in the SymTable */
     size_t numNodes;
+    /* The number of buckets in the SymTable */
     size_t numBuckets;
 
 };
@@ -113,8 +116,9 @@ size_t SymTable_getLength(SymTable_T oSymTable)
 }
 /*--------------------------------------------------------------------*/
 
-/* Increase the physical length of *psStack.  Return 1 (TRUE) if
-   successful, or 0 (FALSE) if insufficient memory is available. */
+/* Increase the physical length (number of buckets) of *oSymTable.  
+Return 1 (TRUE) if 
+successful, or 0 (FALSE) if insufficient memory is available. */
 
 static int SymTable_grow(SymTable_T oSymTable)
 {
@@ -182,6 +186,8 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue)
    size_t hashCode;
 
    assert(oSymTable != NULL);
+   assert(pcKey != NULL);
+   assert(pvValue != NULL);
 
    psNewNode = (struct SymTableNode*)malloc(sizeof(struct SymTableNode));
    if (psNewNode == NULL){
@@ -219,6 +225,9 @@ void *SymTable_replace(SymTable_T oSymTable, const char *pcKey,
     size_t hashCode;
 
     assert(oSymTable != NULL);
+    assert(pcKey != NULL);
+    assert(pvValue != NULL);
+
     hashCode = SymTable_hash(pcKey, oSymTable->numBuckets);
     bucket = oSymTable->bucketArray[hashCode];
     for (psCurrentNode = bucket;
@@ -241,7 +250,10 @@ int SymTable_contains(SymTable_T oSymTable, const char *pcKey)
     struct SymTableNode *bucket; 
     int comparison;
     size_t hashCode;
+    
     assert(oSymTable != NULL);
+    assert(pcKey != NULL);
+
     hashCode = SymTable_hash(pcKey, oSymTable->numBuckets);
     bucket = oSymTable->bucketArray[hashCode];
     for (psCurrentNode = bucket; psCurrentNode != NULL; 
@@ -263,6 +275,8 @@ void *SymTable_get(SymTable_T oSymTable, const char *pcKey)
     size_t hashCode;
 
     assert(oSymTable != NULL);
+    assert(pcKey != NULL);
+
     hashCode = SymTable_hash(pcKey, oSymTable->numBuckets);
     bucket = oSymTable->bucketArray[hashCode];
 
@@ -290,6 +304,8 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey)
 
 
    assert(oSymTable != NULL);
+   assert(pcKey != NULL);
+
    hashCode = SymTable_hash(pcKey, oSymTable->numBuckets);
    bucket = oSymTable->bucketArray[hashCode];
    /* checks if the SymTable contains a node with the same key */
@@ -335,12 +351,11 @@ void SymTable_map(SymTable_T oSymTable,
 {
     struct SymTableNode *psCurrentNode;
     struct SymTableNode *bucket; 
-    size_t i;
 
 
     assert(oSymTable != NULL);
     assert(pfApply != NULL);
-    
+    size_t i;
     for (i = 0; i<oSymTable->numBuckets; i++){
         bucket = oSymTable->bucketArray[i];
         for (psCurrentNode = bucket; psCurrentNode != NULL;

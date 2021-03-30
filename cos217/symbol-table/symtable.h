@@ -27,8 +27,8 @@ key pcKey exists.
 Return 1 (TRUE) if successful, or 0 (FALSE) if insufficient memory is available. */
 int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue);
 
-/* Replace value of node with key pcKey to pvValue and return the old value.
-Return NULL if unsuccessful. */
+/* Replace value of node in oSymTable with key pcKey to pvValue 
+and return the old value. Return NULL if unsuccessful. */
 void *SymTable_replace(SymTable_T oSymTable, const char *pcKey,
     const void *pvValue);
 
