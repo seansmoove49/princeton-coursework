@@ -209,8 +209,8 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey)
             pvValue = psCurrentNode->pvValue;
 
             psPrevNode->psNextNode = psCurrentNode->psNextNode;
-            free(psCurrentNode);
             free((char*)psCurrentNode->pcKey);
+            free(psCurrentNode);
             return (void*) pvValue;
         }
     }
