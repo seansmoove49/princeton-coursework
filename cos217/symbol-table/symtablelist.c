@@ -100,6 +100,7 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue)
    psNewNode->pvValue = pvValue;
    psNewNode->pcKey = (const char*)malloc(strlen(pcKey)+1);
    if (psNewNode->pcKey == NULL){
+       free(psNewNode);
        return 0;
    } 
    strcpy((char*)psNewNode->pcKey, pcKey);
