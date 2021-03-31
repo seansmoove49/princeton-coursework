@@ -319,7 +319,10 @@ void *SymTable_remove(SymTable_T oSymTable, const char *pcKey)
 
    hashCode = SymTable_hash(pcKey, oSymTable->numBuckets);
    bucket = oSymTable->bucketArray[hashCode];
- 
+   /* checks if the SymTable contains a node with the same key */
+   if (SymTable_contains(oSymTable, pcKey) == 0){
+       return NULL;
+   }
    psCurrentNode = bucket;
    comparison = strcmp(pcKey, psCurrentNode->pcKey);
 
