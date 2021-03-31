@@ -203,6 +203,7 @@ int SymTable_put(SymTable_T oSymTable, const char *pcKey, const void *pvValue)
    }
    contains = SymTable_contains(oSymTable, pcKey);
    if (contains == 1){
+       free(psNewNode);
        return 0;
    }
    hashCode = SymTable_hash(pcKey, oSymTable->numBuckets);
