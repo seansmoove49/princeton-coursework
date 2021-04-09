@@ -124,7 +124,7 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
             }
       }
       *numNodes = *numNodes + 1;
-      fprintf(stderr, "numNodes: %d \n", *numNodes);
+      
 
 
       for(c = 0; c < Node_getNumChildren(n); c++)
@@ -198,6 +198,7 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
    /* Now checks invariants recursively at each node from the root. */
    treeCheck = CheckerDT_treeCheck(root, &numNodes);
    fprintf(stderr, "count: %d \n", count);
+   fprintf(stderr, "numNodes: %d \n", numNodes);
    if (count != numNodes){
       return FALSE;
    }
