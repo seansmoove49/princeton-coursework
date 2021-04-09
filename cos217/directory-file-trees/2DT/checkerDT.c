@@ -37,7 +37,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
       /* Sample check that parent's path must be prefix of n's path */
       ppath = Node_getPath(parent);
       i = strlen(ppath);
-      j = Node_getPath(npath);
+      j = strlen(npath);
       if(strncmp(npath, ppath, i)) {
          fprintf(stderr, "P's path is not a prefix of C's path\n");
          return FALSE;
