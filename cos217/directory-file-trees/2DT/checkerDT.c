@@ -42,6 +42,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
          fprintf(stderr, "P's path is not a prefix of C's path\n");
          return FALSE;
       }
+      /* Sample check that n's path is not the same as its parent's path */
       if (j<=i){
          fprintf(stderr, "C's path is the same as P's path\n");
          return FALSE;
@@ -55,6 +56,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
          return FALSE;
       }
    }
+   fprintf("%d \n", strlen(Node_getPath(n)));
    /* Sample check: check if the root node 
    has a parent field not equal to NULL (not a valid node)*/
    if(strlen(Node_getPath(n)) == 1){
@@ -135,6 +137,12 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
       if(count < 0) {
          fprintf(stderr, "Initialized, but count is less than 0\n");
          return FALSE;
+      }
+      if (root != NULL){
+         if (count == 0) {
+            fprintf(stderr, "Initialized with a root node, but count is 0\n");
+            return FALSE;
+         }
       }
    }
    
