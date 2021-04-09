@@ -23,12 +23,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
       fprintf(stderr, "A node is a NULL pointer\n");
       return FALSE;
    }
-   /* Sample check: a node with a child field that is
-   a NULL pointer is not a valid node */
-   if(Node_getPath(n) == NULL) {
-      fprintf(stderr, "Node has path field that is a NULL pointer\n");
-      return FALSE;
-   }
+
    /* Sample check: a node with a path field that is
    a NULL pointer is not a valid node */
    if(Node_getPath(n) == NULL) {
@@ -113,9 +108,12 @@ static boolean CheckerDT_treeCheck(Node_T n) {
       /* If not, pass that failure back up immediately */
       if(!CheckerDT_Node_isValid(n))
          return FALSE;
+      
+      /* Sample check: check if child node 
+      has a parent field equal to NULL (not a valid node)*/
       if(strchr(Node_getPath(n), '/')!=NULL){
+         fprintf(stderr, "child: %s \n", Node_toString(n));
             if (Node_getParent(n)==NULL){
-               fprintf(stderr, "child: %s \n", Node_toString(n));
                fprintf(stderr, "The child node has a parent " 
                "field equal to NULL\n");
                return FALSE;
