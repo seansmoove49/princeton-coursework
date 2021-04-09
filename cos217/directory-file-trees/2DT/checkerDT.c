@@ -26,7 +26,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    /* Sample check: a node with a path field that is
    a NULL pointer is not a valid node */
    if(Node_getPath(n) == NULL) {
-      fprintf(stderr, "Node has path field that is a NULL pointer\n");
+      fprintf(stderr, "Node path field that is a NULL pointer\n");
       return FALSE;
    }
    
