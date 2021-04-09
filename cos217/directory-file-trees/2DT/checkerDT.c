@@ -79,16 +79,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
          return FALSE;
       } 
    }
-   /* Sample check: check if child node 
-   has a parent field equal to NULL (not a valid node)*/
-   if(strchr(Node_getPath(n), '/')!=NULL){
-      if (parent==NULL){
-         fprintf(stderr, "child: %s \n", Node_toString(n));
-         fprintf(stderr, "The child node has a parent " 
-         "field equal to NULL\n");
-         return FALSE;
-      } 
-   }
+   
 
    return TRUE;
 }
@@ -167,6 +158,8 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
          } 
          
       }
+      /* Sample check: if the root node is NULL, the count
+      should be 0 */
       if (root == NULL){
          if (count != 0) {
             fprintf(stderr, "Initialized without a root node, but count is not 0\n");
