@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "dynarray.h"
 #include "checkerDT.h"
 
@@ -104,7 +105,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
 */
 static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
    size_t c;
-   char *copyChildString,copySiblingString; 
+   char *strChild, *strSibling;
    char *tempChildToken, *tempSiblingToken; 
    char *finalChildToken, *finalSiblingToken, *token; 
    token = "/";
@@ -133,13 +134,51 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
       {
          Node_T child = Node_getChild(n, c);
          if (c+1 < Node_getNumChildren(n)){
+            
             Node_T sibling = Node_getChild(n, c+1);
-            copyChildString = Node_getPath(child);
-            copySiblingString = Node_getPath(sibling);
-            fprintf(stderr, "child: %s \n", Node_getPath(child));
-            fprintf(stderr, "child: %s \n", copyChildString);
-            fprintf(stderr, "sibling: %s \n", Node_getPath(sibling));
-            fprintf(stderr, "child: %s \n", copySiblingString);
+            strChild = (char *)malloc(strlen(Node_getPath(child)+1));
+            if (strChild == NULL){
+               fprintf(stderr, "There is not sufficient memory!\n");
+               exit(EXIT_FAILURE);
+            }
+            strSibling = (char *)malloc(strlen(Node_getPath(sibling)+1));
+            if (strSibling == NULL){
+               fprintf(stderr, "There is not sufficient memory!\n");
+               exit(EXIT_FAILURE);
+            }
+            fprintf(stderr, "child: %s \n", strChild);
+            fprintf(stderr, "sibling: %s \n", strSibling);
+            
+            strcpy(strChild, Node_getPath(child));
+            tempChildToken = strtok(strChild, "/");
+            fprintf(stderr, "tempChildToken: %s \n", tempChildToken);
+            while (tempChildToken!=NULL){
+               finalChildToken = tempChildToken;
+               tempChildToken = strtok(NULL, "/");
+               fprintf(stderr, "finalChildToken: %s \n", finalChildToken);
+               fprintf(stderr, "tempChildToken: %s \n", tempChildToken);
+
+            }
+            strcpy(strSibling, Node_getPath(sibling));
+            tempSiblingToken = strtok(strSibling, "/");
+            fprintf(stderr, "\ntempSiblingToken: %s \n", tempSiblingToken);
+            while (tempSiblingToken!=NULL){
+               finalSiblingToken = tempSiblingToken;
+               tempSiblingToken = strtok(NULL, "/");
+               fprintf(stderr, "finalSiblingToken: %s \n", finalSiblingToken);
+               fprintf(stderr, "tempSiblingToken: %s \n", tempSiblingToken);
+            }
+            if (strcmp(finalChildToken, finalSiblingToken)<=0){
+               
+               fprintf(stderr, "The children are not " 
+               "in sorted order\n");
+               return FALSE;
+            }
+            free(strSibling);
+            free(strChild);
+
+
+            
             
          
          }
