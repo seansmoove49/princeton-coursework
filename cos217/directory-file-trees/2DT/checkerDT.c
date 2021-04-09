@@ -107,8 +107,8 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes, int *isSorted) {
    size_t c;
    char *strChild, *strSibling;
    char *tempChildToken, *tempSiblingToken; 
-   char *finalChildToken, *finalSiblingToken, *token; 
-   token = "/";
+   char *finalChildToken, *finalSiblingToken, *delimiter; 
+   delimiter = "/";
 
    if(n != NULL) {
 
@@ -120,7 +120,7 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes, int *isSorted) {
       
       /* Sample check: check if child node 
       has a parent field equal to NULL (not a valid node)*/
-      if(strchr(Node_getPath(n), '/')!=NULL){
+      if(strchr(Node_getPath(n), delimiter)!=NULL){
             if (Node_getParent(n)==NULL){
                fprintf(stderr, "The child node has a parent " 
                "field equal to NULL\n");
@@ -151,19 +151,19 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes, int *isSorted) {
             
             strcpy(strChild, Node_getPath(child));
             fprintf(stderr, "child: %s \n", strChild);
-            tempChildToken = strtok(strChild, "/");
+            tempChildToken = strtok(strChild, delimiter);
             while (tempChildToken!=NULL){
                finalChildToken = tempChildToken;
-               tempChildToken = strtok(NULL, "/");
+               tempChildToken = strtok(NULL, delimiter);
 
             }
 
             strcpy(strSibling, Node_getPath(sibling));
             fprintf(stderr, "sibling: %s \n", strSibling);
-            tempSiblingToken = strtok(strSibling, "/");
+            tempSiblingToken = strtok(strSibling, delimiter);
             while (tempSiblingToken!=NULL){
                finalSiblingToken = tempSiblingToken;
-               tempSiblingToken = strtok(NULL, "/");
+               tempSiblingToken = strtok(NULL, delimiter);
             }
             if (strcmp(finalChildToken, finalSiblingToken)>=0){
                *isSorted = 0;
