@@ -137,20 +137,24 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
             fprintf(stderr, "sibling: %s \n", Node_getPath(sibling));
             tempChildToken = strtok(Node_getPath(child), token);
             tempSiblingToken = strtok(Node_getPath(sibling), token);
-            fprintf(stderr, "tempChildToken: %s \n", tempChildToken);
-            fprintf(stderr, "tempSiblingToken: %s \n", tempSiblingToken);
+   
+            
             while (tempChildToken!=NULL)
             {
+               fprintf(stderr, "tempChildToken: %s \n", tempChildToken);
+               fprintf(stderr, "finalChildToken: %s \n", finalChildToken);
                finalChildToken = tempChildToken;
                tempChildToken = strtok(NULL, token);
             }
             while (tempSiblingToken!=NULL)
             {
+               fprintf(stderr, "tempSiblingToken: %s \n", tempSiblingToken);
+               fprintf(stderr, "finalSiblingToken: %s \n", finalSiblingToken);
                finalSiblingToken = tempSiblingToken;
                tempSiblingToken = strtok(NULL, token);
             }
-            fprintf(stderr, "finalChildToken: %s \n", finalChildToken);
-            fprintf(stderr, "finalSiblingToken: %s \n", finalSiblingToken);
+      
+            
             if (strcmp(finalChildToken, finalSiblingToken)<=0){
                
                fprintf(stderr, "The children are not " 
