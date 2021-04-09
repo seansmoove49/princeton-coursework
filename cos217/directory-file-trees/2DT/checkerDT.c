@@ -137,6 +137,8 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
             fprintf(stderr, "sibling: %s \n", Node_getPath(sibling));
             tempChildToken = strtok(Node_getPath(child), token);
             tempSiblingToken = strtok(Node_getPath(sibling), token);
+            fprintf(stderr, "tempChildToken: %s \n", tempChildToken);
+            fprintf(stderr, "tempSiblingToken: %s \n", tempSiblingToken);
             while (tempChildToken!=NULL)
             {
                finalChildToken = tempChildToken;
