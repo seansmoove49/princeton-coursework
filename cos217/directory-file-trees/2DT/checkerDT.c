@@ -43,13 +43,16 @@ boolean CheckerDT_Node_isValid(Node_T n) {
          fprintf(stderr, "P's path is not a prefix of C's path\n");
          return FALSE;
       }
-      /* Sample check that n's path is not the same as its parent's path */
-      if (j<=i){
-         fprintf(stderr, "child: %s \n", Node_toString(n));
-         fprintf(stderr, "parent: %s \n", Node_toString(parent));
-         fprintf(stderr, "C's path is the same as P's path\n");
-         return FALSE;
+      else{
+         /* Sample check that n's path is not the same as its parent's path */
+         if (j==i){
+            fprintf(stderr, "child: %s \n", Node_toString(n));
+            fprintf(stderr, "parent: %s \n", Node_toString(parent));
+            fprintf(stderr, "C's path is the same as P's path\n");
+            return FALSE;
+         }
       }
+      
       /* Sample check that n's path after parent's path + '/'
          must have no further '/' characters */
       rest = npath + i;
