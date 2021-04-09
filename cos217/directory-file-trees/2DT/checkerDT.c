@@ -68,6 +68,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    
    /* Sample check: check if the root node 
    has a parent field not equal to NULL (not a valid node)*/
+   /*
    if(strchr(Node_getPath(n), '/')==NULL){
       if (parent!=NULL){
          fprintf(stderr, "child: %s \n", Node_toString(n));
@@ -77,7 +78,19 @@ boolean CheckerDT_Node_isValid(Node_T n) {
          return FALSE;
       } 
    }
-   
+   */
+   /* Sample check: check if child node 
+   has a parent field equal to NULL (not a valid node)*/
+   /*
+   if(strchr(Node_getPath(n), '/')!=NULL){
+      if (parent==NULL){
+         fprintf(stderr, "child: %s \n", Node_toString(n));
+         fprintf(stderr, "The child node has a parent " 
+         "field equal to NULL\n");
+         return FALSE;
+      } 
+   }
+   */
 
    return TRUE;
 }
@@ -100,6 +113,14 @@ static boolean CheckerDT_treeCheck(Node_T n) {
       /* If not, pass that failure back up immediately */
       if(!CheckerDT_Node_isValid(n))
          return FALSE;
+      if(strchr(Node_getPath(n), '/')!=NULL){
+            if (Node_getParent(n)==NULL){
+               fprintf(stderr, "child: %s \n", Node_toString(n));
+               fprintf(stderr, "The child node has a parent " 
+               "field equal to NULL\n");
+               return FALSE;
+            }
+         }
 
 
       for(c = 0; c < Node_getNumChildren(n); c++)
@@ -110,6 +131,7 @@ static boolean CheckerDT_treeCheck(Node_T n) {
             farther down, passes the failure back up immediately */
          if(!CheckerDT_treeCheck(child))
             return FALSE;
+         
       }
    }
    return TRUE;
