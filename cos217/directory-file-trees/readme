@@ -134,8 +134,8 @@ other three:
 The first three bad executables failed on specific lines in the gdb.
 This executable has an error that doesn't manifest until we print the
 BDT. Debugging with gdb allows us to find which specific block of code
-contains the bug, but we cannot identify the specific lines where it 
-occurs. 
+contains the bug and which function likely has issues (rmPath), but we 
+cannot identify the specific line where it occurs. 
 
 For bdtBad5, you do not have to find the bug. Instead, indicate one
 hypothesis for how the program could crash within the DynArray module,
