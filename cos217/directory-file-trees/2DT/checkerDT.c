@@ -113,6 +113,7 @@ static boolean CheckerDT_treeCheck(Node_T n) {
       has a parent field equal to NULL (not a valid node)*/
       if(strchr(Node_getPath(n), '/')!=NULL){
          fprintf(stderr, "child: %s \n", Node_toString(n));
+         fprintf(stderr, "parent: %s \n", Node_toString(Node_getParent(n)));
             if (Node_getParent(n)==NULL){
                fprintf(stderr, "The child node has a parent " 
                "field equal to NULL\n");
