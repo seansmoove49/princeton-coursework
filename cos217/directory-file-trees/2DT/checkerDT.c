@@ -70,7 +70,8 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    
    /* Sample check: check if the root node 
    has a parent field not equal to NULL (not a valid node)*/
-   if(strlen(Node_getPath(n)) == 1){
+   /* Maybe possible for a child node to have length of 1*/
+   if(strchr(Node_getPath(n), '/')==NULL){
       if (parent!=NULL){
          fprintf(stderr, "child: %s \n", Node_toString(n));
          fprintf(stderr, "parent: %s \n", Node_toString(parent));
@@ -81,7 +82,12 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    }
    /* Sample check: check if child node 
    has a parent field equal to NULL (not a valid node)*/
-   if(strlen(Node_getPath(n)) > 1){
+   /* Maybe possible for a root node to have a path length greater than 1*/
+   /* Confused on the order of tests because originally test 1a
+   failed because of Not initialized, but count is not 0
+   but now it fails because of the child node has a parent field equal to NULL */
+   /* search to see if there is a slash in it */
+   if(strchr(Node_getPath(n), '/')!=NULL){
       if (parent==NULL){
          fprintf(stderr, "child: %s \n", Node_toString(n));
          fprintf(stderr, "The child node has a parent " 
@@ -154,6 +160,12 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
       }
       if (root != NULL){
          if (count == 0) {
+            fprintf(stderr, "Initialized with a root node, but count is 0\n");
+            return FALSE;
+         }
+      }
+      if (root == NULL){
+         if (count != 0) {
             fprintf(stderr, "Initialized with a root node, but count is 0\n");
             return FALSE;
          }
