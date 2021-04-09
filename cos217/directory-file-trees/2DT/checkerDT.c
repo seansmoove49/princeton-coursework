@@ -65,9 +65,6 @@ boolean CheckerDT_Node_isValid(Node_T n) {
       }
    }
 
-   if (parent == NULL){
-      
-   }
    
    /* Sample check: check if the root node 
    has a parent field not equal to NULL (not a valid node)*/
