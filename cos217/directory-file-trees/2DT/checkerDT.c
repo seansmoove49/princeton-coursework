@@ -124,6 +124,7 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
             }
       }
       *numNodes = *numNodes + 1;
+      fprintf(stderr, "numNodes: %d \n", *numNodes);
 
 
       for(c = 0; c < Node_getNumChildren(n); c++)
@@ -164,10 +165,6 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
       or equal to 0 */
    if(isInit)
    {
-      if(count < 0) {
-         fprintf(stderr, "Initialized, but count is less than 0\n");
-         return FALSE;
-      }
       if (root != NULL){
          if (count == 0) {
             fprintf(stderr, "Initialized with a root node, but count is 0\n");
@@ -200,7 +197,6 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
 
    /* Now checks invariants recursively at each node from the root. */
    treeCheck = CheckerDT_treeCheck(root, numNodes);
-   fprintf(stderr, "numNodes: %d \n", numNodes);
    fprintf(stderr, "count: %d \n", count);
    if (count != numNodes){
       return FALSE;
