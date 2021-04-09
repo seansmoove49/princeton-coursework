@@ -1,0 +1,45 @@
++break main
+Breakpoint 1 at 0x40274c: file bdt_client.c, line 22.
++break bdt_client.c:28
+Breakpoint 2 at 0x4027e8: file bdt_client.c, line 28.
++break bdt_client.c:39
+Breakpoint 3 at 0x4028b4: file bdt_client.c, line 39.
++break bdt_client.c:51
+Breakpoint 4 at 0x402a44: file bdt_client.c, line 51.
++break bdt_client.c:61
+Breakpoint 5 at 0x402b6c: file bdt_client.c, line 61.
++run
+Starting program: /u/tgdinh/Assignment4/1BDT/bdtBad5 
+
+Breakpoint 1, main () at bdt_client.c:22
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:22:814:beg:0x40274c
+Missing separate debuginfos, use: debuginfo-install glibc-2.17-222.sd7.aarch64
++continue
+Continuing.
+
+Breakpoint 2, main () at bdt_client.c:29
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:29:1143:beg:0x4027e8
++continue
+Continuing.
+
+Program received signal SIGABRT, Aborted.
+0x0000ffffbe5f50e8 in raise () from /lib64/libc.so.6
++kill
+Kill the program being debugged? (y or n) +run
+Starting program: /u/tgdinh/Assignment4/1BDT/bdtBad5 
+
+Breakpoint 1, main () at bdt_client.c:22
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:22:814:beg:0x40274c
++continue
+Continuing.
+
+Breakpoint 2, main () at bdt_client.c:29
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:29:1143:beg:0x4027e8
++next
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:30:1176:beg:0x402814
++next
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:31:1222:beg:0x402848
++next
+
+Program received signal SIGABRT, Aborted.
+0x0000ffffbe5f50e8 in raise () from /lib64/libc.so.6
