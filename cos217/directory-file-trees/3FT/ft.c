@@ -9,7 +9,26 @@
 #include "ft.h"
 #include "node.h"
 
+/* A File Tree is an AO with 3 state variables: */
+/* a flag for if it is in an initialized state (TRUE) or not (FALSE) */
+static boolean isInitialized;
+/* a pointer to the root node in the hierarchy */
+static Node_T root;
+/* a count of the number of nodes in the hierarchy */
+static size_t count;
+
 /*--------------------------------------------------------------------*/
+
+/*
+   Inserts a new directory into the tree at path, if possible.
+   Returns SUCCESS if the new directory is inserted.
+   Returns INITIALIZATION_ERROR if not in an initialized state.
+   Returns CONFLICTING_PATH if path is not underneath existing root.
+   Returns NOT_A_DIRECTORY if a proper prefix of path exists as a file.
+   Returns ALREADY_IN_TREE if the path already exists (as dir or file).
+   Returns PARENT_CHILD_ERROR if a new child cannot be added in path.
+   Returns MEMORY_ERROR if unable to allocate sufficient memory.
+*/
 
 int FT_insertDir(char *path) {
    return 0;

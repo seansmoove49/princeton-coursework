@@ -4,6 +4,8 @@
 /*--------------------------------------------------------------------*/
 
 #include <stddef.h>
+#include <string.h>
+
 #include "node.h"
 #include "dynarray.h"
 #include "checkerFT.h"
@@ -23,16 +25,51 @@ struct node {
    /* the subdirectories of this directory
       stored in sorted order by pathname */
    DynArray_T children;
+
+	/* represents whether this node is a file (TRUE) or dir (FALSE) */
+	boolean file;
+
+	/* the contents of the file if this node represents a file */
+	void* contents;
 };
 
+/*
+  	returns a path with contents
+  	n->path/dir
+  	or NULL if there is an allocation error.
+
+  	Allocates memory for the returned string,
+  	which is then owned by the caller!
+*/
+static char* Node_buildPath(Node_T n, const char* dir) {
+   char* path;
+	size_t dirLen;
+
+   assert(dir != NULL);
+
+	dirLen = strlen(dir);
+
+   if(n == NULL)
+      path = malloc(dirLen+1);
+   else
+      path = malloc(strlen(n->path) + dirLen + 2);
+
+   if(path == NULL)
+      return NULL;
+   *path = '\0';
+
+   if(n != NULL) {
+      strcpy(path, n->path);
+      strcat(path, "/");
+   }
+   strcat(path, dir);
+
+   return path;
+}
 
 
 /*
-   Given a parent node and a directory string dir, returns a new
-   Node_T or NULL if any allocation error occurs in creating
-   the node or its fields.
-
-   The new structure is initialized to have its path as the parent's
+	The new structure is initialized to have its path as the parent's
    path (if it exists) prefixed to the directory string parameter,
    separated by a slash. It is also initialized with its parent link
    as the parent parameter value, but the parent itself is not changed
@@ -40,9 +77,88 @@ struct node {
    do not point to any children.
 */
 
-Node_T Node_create(const char* dir, Node_T parent) {
+Node_T Node_createDir(const char* dir, const Node_T parent) {
+	Node_T new;
+
+	assert(parent == NULL || CheckerFT_Node_isValid(parent));
+	assert(dir != NULL);
+
+	/* original function keeps repeating the same assert even though
+	   this function never modifies the parent - make parent const
+		to fix this */
+
+	new = malloc(sizeof(struct node));
+	if (new == NULL) 
+		return NULL;
+	
+	new->path = Node_buildPath(parent, dir);
+
+	if (new->path == NULL) {
+		free(new);
+		return NULL;
+	}
+
+	new->file = FALSE;
+	new->contents = NULL;
+
+	new->parent = parent;
+	new->children = DynArray_new(0);
+	if (new->children == NULL) {
+		free(new->path);
+		free(new);
+		return NULL;
+	}
+
+	assert(CheckerFT_Node_isValid(new));
+	return new;
+}
+
+/*
+	same as above, but allocates space for the file contents
+	file contents can be null
+*/
+
+Node_T Node_createFile(const char* dir, Node_T parent, void *contents, 
+							  size_t length) {
+	Node_T new;
+	void *contentCpy = NULL;
+
+	assert(parent == NULL || CheckerFT_Node_isValid(parent));
+	assert(dir != NULL);
+
+	new = malloc(sizeof(struct node));
+	if (new == NULL) 
+		return NULL;
+
+	new->path = Node_buildPath(parent, dir);
+
+	if (new->path == NULL) {
+		free(new);
+		return NULL;
+	}
+
+	/* file contents - memory given to the client */
+	if (contents != NULL) {
+		contentCpy = malloc(length); /* not null terminated */
+		if (contents == NULL)
+			return NULL;
+
+		memcpy(contentCpy, contents, length);
+	}
+
+	new->contents = contentCpy;
+	new->file = TRUE;
+	
+	new->parent = parent;
+	new->children = DynArray_new(0);
+	if (new->children == NULL) {
+		free(new->path);
+		free(new);
+		return NULL;
+	}
+
 	return NULL;
-  }
+}
 
 /*
 	Destroys the entire hierarchy of nodes rooted at n,
