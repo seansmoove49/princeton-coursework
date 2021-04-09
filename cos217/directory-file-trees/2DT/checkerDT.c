@@ -42,7 +42,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
          fprintf(stderr, "P's path is not a prefix of C's path\n");
          return FALSE;
       }
-      if (j==i){
+      if (j<=i){
          fprintf(stderr, "C's path is the same as P's path\n");
          return FALSE;
       }
