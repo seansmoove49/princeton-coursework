@@ -44,8 +44,6 @@ boolean CheckerDT_Node_isValid(Node_T n) {
       ppath = Node_getPath(parent);
       i = strlen(ppath);
       j = strlen(npath);
-      fprintf(stderr,"i:%d \n", i);
-      fprintf(stderr,"j:%d \n", j);
       if(strncmp(npath, ppath, i)) {
          fprintf(stderr, "P's path is not a prefix of C's path\n");
          return FALSE;
