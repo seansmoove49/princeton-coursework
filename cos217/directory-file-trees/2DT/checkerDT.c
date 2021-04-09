@@ -115,8 +115,6 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
       /* Sample check: check if child node 
       has a parent field equal to NULL (not a valid node)*/
       if(strchr(Node_getPath(n), '/')!=NULL){
-         fprintf(stderr, "child: %s \n", Node_toString(n));
-         fprintf(stderr, "parent: %s \n", Node_toString(Node_getParent(n)));
             if (Node_getParent(n)==NULL){
                fprintf(stderr, "The child node has a parent " 
                "field equal to NULL\n");
@@ -200,6 +198,7 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
    fprintf(stderr, "count: %d \n", count);
    fprintf(stderr, "numNodes: %d \n", numNodes);
    if (count != numNodes){
+      fprintf(stderr, "The count does not match the number of nodes\n");
       return FALSE;
    }
    return treeCheck;
