@@ -104,6 +104,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
 */
 static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
    size_t c;
+   char *tempChildToken, *tempSiblingToken; 
    char *finalChildToken, *finalSiblingToken, *token; 
    token = "\\";
 
@@ -132,15 +133,17 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
          Node_T child = Node_getChild(n, c);
          if (c+1 < Node_getNumChildren(n)){
             Node_T sibling = Node_getChild(n, c+1);
-            finalChildToken = strtok(Node_getPath(child), token);
-            finalSiblingToken = strtok(Node_getPath(sibling), token);
-            while (finalChildToken!=NULL)
+            tempChildToken = strtok(Node_getPath(child), token);
+            tempSiblingToken = strtok(Node_getPath(sibling), token);
+            while (tempChildToken!=NULL)
             {
-               finalChildToken = strtok(NULL, token);
+               finalChildToken = tempChildToken;
+               tempChildToken = strtok(NULL, token);
             }
-            while (finalSiblingToken!=NULL)
+            while (tempSiblingToken!=NULL)
             {
-               finalSiblingToken = strtok(NULL, token);
+               finalSiblingToken = tempSiblingToken;
+               tempSiblingToken = strtok(NULL, token);
             }
             fprintf(stderr, "finalChildToken: %s \n", finalChildToken);
             fprintf(stderr, "finalSiblingToken: %s \n", finalSiblingToken);
