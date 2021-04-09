@@ -104,6 +104,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
 */
 static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
    size_t c;
+   char *copyChildString,copySiblingString; 
    char *tempChildToken, *tempSiblingToken; 
    char *finalChildToken, *finalSiblingToken, *token; 
    token = "/";
@@ -133,35 +134,13 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
          Node_T child = Node_getChild(n, c);
          if (c+1 < Node_getNumChildren(n)){
             Node_T sibling = Node_getChild(n, c+1);
+            strcpy(copyChildString,Node_getPath(child));
+            strcpy(copySiblingString,Node_getPath(sibling));
             fprintf(stderr, "child: %s \n", Node_getPath(child));
+            fprintf(stderr, "child: %s \n", copyChildString);
             fprintf(stderr, "sibling: %s \n", Node_getPath(sibling));
-            tempChildToken = strtok(Node_getPath(child), "/");
-            tempSiblingToken = strtok(Node_getPath(sibling), "/");
-            fprintf(stderr, "tempChildToken: %s \n", tempChildToken);
+            fprintf(stderr, "child: %s \n", copySiblingString);
             
-            while (tempChildToken!=NULL)
-            {
-               finalChildToken = tempChildToken;
-               tempChildToken = strtok(NULL, "/");
-               fprintf(stderr, "finalChildToken: %s \n", finalChildToken);
-               fprintf(stderr, "tempChildToken: %s \n", tempChildToken);
-            }
-            fprintf(stderr, "\ntempSiblingToken: %s \n", tempSiblingToken);
-            while (tempSiblingToken!=NULL)
-            {
-               finalSiblingToken = tempSiblingToken;
-               tempSiblingToken = strtok(NULL, "/");
-               fprintf(stderr, "finalSiblingToken: %s \n", finalSiblingToken);
-               fprintf(stderr, "tempSiblingToken: %s \n", tempSiblingToken);
-            }
-      
-            
-            if (strcmp(finalChildToken, finalSiblingToken)<=0){
-               
-               fprintf(stderr, "The children are not " 
-               "in sorted order\n");
-               return FALSE;
-            }
          
          }
          
