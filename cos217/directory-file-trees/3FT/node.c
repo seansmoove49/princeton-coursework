@@ -4,14 +4,27 @@
 /*--------------------------------------------------------------------*/
 
 #include <stddef.h>
-#include "a4def.h"
 #include "node.h"
+#include "dynarray.h"
+#include "checkerFT.h"
 
 /*
    a Node_T is an object that contains a path payload and references to
    the node's parent (if it exists) and children (if they exist).
 */
-typedef struct node* Node_T;
+struct node {
+   /* the full path of this directory */
+   char* path;
+
+   /* the parent directory of this directory
+      NULL for the root of the directory tree */
+   Node_T parent;
+
+   /* the subdirectories of this directory
+      stored in sorted order by pathname */
+   DynArray_T children;
+};
+
 
 
 /*
@@ -27,15 +40,19 @@ typedef struct node* Node_T;
    do not point to any children.
 */
 
-Node_T Node_create(const char* dir, Node_T parent);
+Node_T Node_create(const char* dir, Node_T parent) {
+	return NULL;
+  }
 
 /*
-  Destroys the entire hierarchy of nodes rooted at n,
-  including n itself.
+	Destroys the entire hierarchy of nodes rooted at n,
+	including n itself.
 
-  Returns the number of nodes destroyed.
+	Returns the number of nodes destroyed.
 */
-size_t Node_destroy(Node_T n);
+size_t Node_destroy(Node_T n) {
+  	return 0;
+}
 
 
 /*
@@ -43,27 +60,37 @@ size_t Node_destroy(Node_T n);
   Returns <0, 0, or >0 if node1 is less than,
   equal to, or greater than node2, respectively.
 */
-int Node_compare(Node_T node1, Node_T node2);
+int Node_compare(Node_T node1, Node_T node2) {
+	return 0;
+}
 
 /*
    Returns n's path.
 */
-const char* Node_getPath(Node_T n);
+const char* Node_getPath(Node_T n) {
+	return NULL;
+}
 
 /*
   Returns the number of child directories n has.
 */
-size_t Node_getNumChildren(Node_T n);
+size_t Node_getNumChildren(Node_T n) {
+	return 0;
+}
 
 /*
   Returns the type of the node. 
 */
-size_t Node_getType(Node_T n);
+size_t Node_getType(Node_T n) {
+	return 0;
+}
 
 /*
   Returns the file contents if the node is a file. 
 */
-size_t Node_getFileContents(Node_T n);
+size_t Node_getFileContents(Node_T n) {
+	return 0;
+}
 
 /*
    Returns 1 if n has a child directory with path,
@@ -74,18 +101,24 @@ size_t Node_getFileContents(Node_T n);
    child's identifier in *childID. If n does not have such a child,
    store the identifier that such a child would have in *childID.
 */
-int Node_hasChild(Node_T n, const char* path, size_t* childID);
+int Node_hasChild(Node_T n, const char* path, size_t* childID) {
+	return 0;
+}
 
 /*
    Returns the child node of n with identifier childID, if one exists,
    otherwise returns NULL.
 */
-Node_T Node_getChild(Node_T n, size_t childID);
+Node_T Node_getChild(Node_T n, size_t childID) {
+	return NULL;
+}
 
 /*
    Returns the parent node of n, if it exists, otherwise returns NULL
 */
-Node_T Node_getParent(Node_T n);
+Node_T Node_getParent(Node_T n) {
+	return NULL;
+}
 
 /*
   Makes child a child of parent, if possible, and returns SUCCESS.
@@ -97,7 +130,9 @@ Node_T Node_getParent(Node_T n);
   * parent is unable to allocate memory to store new child link,
     in which case returns MEMORY_ERROR
  */
-int Node_linkChild(Node_T parent, Node_T child);
+int Node_linkChild(Node_T parent, Node_T child) {
+	return 0;
+}
 
 /*
   Unlinks node parent from its child node child. child is unchanged.
@@ -105,7 +140,9 @@ int Node_linkChild(Node_T parent, Node_T child);
   Returns PARENT_CHILD_ERROR if child is not a child of parent,
   and SUCCESS otherwise.
  */
-int Node_unlinkChild(Node_T parent, Node_T child);
+int Node_unlinkChild(Node_T parent, Node_T child) {
+	return 0;
+}
 
 /*
   Creates a new node such that the new node's path is dir appended to
@@ -120,7 +157,9 @@ int Node_unlinkChild(Node_T parent, Node_T child);
   MEMORY_ERROR if the new node cannot be created,
   ALREADY_IN_TREE if parent already has a child with that path
 */
-int Node_addChild(Node_T parent, const char* dir);
+int Node_addChild(Node_T parent, const char* dir) {
+	return 0;
+}
 
 /*
   Returns a string representation for n, 
@@ -129,6 +168,6 @@ int Node_addChild(Node_T parent, const char* dir);
   Allocates memory for the returned string,
   which is then owned by client!
 */
-char* Node_toString(Node_T n);
-
-#endif
+char* Node_toString(Node_T n) {
+	return NULL;
+}
