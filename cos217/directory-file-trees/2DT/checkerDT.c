@@ -26,28 +26,8 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    /* Sample check: a node with a path field that is
    a NULL pointer is not a valid node */
    if(Node_getPath(n) == NULL) {
-      fprintf(stderr, "Node path field that is a NULL pointer\n");
+      fprintf(stderr, "Node has path field that is a NULL pointer\n");
       return FALSE;
-   }
-   
-
-   /* Sample check: check if the root node 
-   has a parent field not equal to NULL (not a valid node)*/
-   if(strlen(Node_getPath(n)) == 1){
-      if (Node_getParent(n)!=NULL){
-         fprintf(stderr, "The root node has a parent" 
-         "field not equal to NULL\n");
-         return FALSE;
-      } 
-   }
-   /* Sample check: check if child node 
-   has a parent field equal to NULL (not a valid node)*/
-   if(strlen(Node_getPath(n)) > 1){
-      if (Node_getParent(n)==NULL){
-         fprintf(stderr, "The child node has a parent" 
-         "field equal to NULL\n");
-         return FALSE;
-      } 
    }
 
    parent = Node_getParent(n);
@@ -69,6 +49,24 @@ boolean CheckerDT_Node_isValid(Node_T n) {
          fprintf(stderr, "C's path has grandchild of P's path\n");
          return FALSE;
       }
+   }
+   /* Sample check: check if the root node 
+   has a parent field not equal to NULL (not a valid node)*/
+   if(strlen(Node_getPath(n)) == 1){
+      if (parent!=NULL){
+         fprintf(stderr, "The root node has a parent " 
+         "field not equal to NULL\n");
+         return FALSE;
+      } 
+   }
+   /* Sample check: check if child node 
+   has a parent field equal to NULL (not a valid node)*/
+   if(strlen(Node_getPath(n)) > 1){
+      if (parent==NULL){
+         fprintf(stderr, "The child node has a parent " 
+         "field equal to NULL\n");
+         return FALSE;
+      } 
    }
 
    return TRUE;
