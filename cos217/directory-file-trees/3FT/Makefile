@@ -1,6 +1,6 @@
 all: sampleft
 
-clean:
+clean: 
 	rm -f sampleft
 
 clobber: clean
