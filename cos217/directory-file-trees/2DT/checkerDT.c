@@ -56,7 +56,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
          return FALSE;
       }
    }
-   fprintf("%d \n", strlen(Node_getPath(n)));
+   fprintf(stderr,"%d \n", strlen(Node_getPath(n)));
    /* Sample check: check if the root node 
    has a parent field not equal to NULL (not a valid node)*/
    if(strlen(Node_getPath(n)) == 1){
