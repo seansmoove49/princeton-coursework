@@ -166,7 +166,7 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
       }
       if (root == NULL){
          if (count != 0) {
-            fprintf(stderr, "Initialized with a root node, but count is 0\n");
+            fprintf(stderr, "Initialized withiyr a root node, but count is not 0\n");
             return FALSE;
          }
       }
