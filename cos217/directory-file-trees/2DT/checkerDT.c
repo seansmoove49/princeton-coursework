@@ -38,6 +38,8 @@ boolean CheckerDT_Node_isValid(Node_T n) {
       ppath = Node_getPath(parent);
       i = strlen(ppath);
       j = strlen(npath);
+      fprintf(stderr,"i:%d \n", i);
+      fprintf(stderr,"j:%d \n", j);
       if(strncmp(npath, ppath, i)) {
          fprintf(stderr, "P's path is not a prefix of C's path\n");
          return FALSE;
@@ -56,7 +58,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
          return FALSE;
       }
    }
-   fprintf(stderr,"%d \n", strlen(Node_getPath(n)));
+   
    /* Sample check: check if the root node 
    has a parent field not equal to NULL (not a valid node)*/
    if(strlen(Node_getPath(n)) == 1){
