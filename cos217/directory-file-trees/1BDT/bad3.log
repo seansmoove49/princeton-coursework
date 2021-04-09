@@ -1,0 +1,74 @@
++break main
+Breakpoint 1 at 0x402738: file bdt_client.c, line 22.
++break bdt_client.c:28
+Breakpoint 2 at 0x4027d4: file bdt_client.c, line 28.
++break bdt_client.c:39
+Breakpoint 3 at 0x4028a0: file bdt_client.c, line 39.
++break bdt_client.c:51
+Breakpoint 4 at 0x402a30: file bdt_client.c, line 51.
++break bdt_client.c:61
+Breakpoint 5 at 0x402b58: file bdt_client.c, line 61.
++run
+Starting program: /u/tgdinh/Assignment4/1BDT/bdtBad3 
+
+Breakpoint 1, main () at bdt_client.c:22
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:22:814:beg:0x402738
+Missing separate debuginfos, use: debuginfo-install glibc-2.17-222.sd7.aarch64
++continue
+Continuing.
+
+Breakpoint 2, main () at bdt_client.c:29
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:29:1143:beg:0x4027d4
++continue
+Continuing.
+
+Breakpoint 3, main () at bdt_client.c:40
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:40:1601:beg:0x4028a0
++continue
+Continuing.
+
+Breakpoint 4, main () at bdt_client.c:53
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:53:2116:beg:0x402a30
++continue
+Continuing.
+
+Breakpoint 5, main () at bdt_client.c:62
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:62:2475:beg:0x402b58
++continue
+Continuing.
+[Inferior 1 (process 72623) exited normally]
++break bdt_client.c:91
+Breakpoint 1 at 0x402f6c: file bdt_client.c, line 91.
++run
+Starting program: /u/tgdinh/Assignment4/1BDT/bdtBad3 
+
+Breakpoint 1, main () at bdt_client.c:93
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:93:3817:beg:0x402f6c
+Missing separate debuginfos, use: debuginfo-install glibc-2.17-222.sd7.aarch64
++next
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:94:3861:beg:0x402fa0
++print temp
+$1 = 0x430220 "0\001C"
++next
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:95:3904:beg:0x402fd4
++print temp
+$2 = 0x430140 "a\na/b\na/b/c\na/b/d\na/y\n"
++next
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:96:3937:beg:0x402ff0
++next
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:97:3951:beg:0x402ff8
++print temp
+$3 = 0x430140 "\020\002C"
++next
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:98:3991:beg:0x40302c
++next
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:99:4035:beg:0x403060
++next
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:100:4078:beg:0x403094
++next
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:101:4111:beg:0x4030b0
++next
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:103:4126:beg:0x4030b8
++continue
+Continuing.
+[Inferior 1 (process 72772) exited normally]
