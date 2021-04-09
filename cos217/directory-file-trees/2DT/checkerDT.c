@@ -103,7 +103,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    parameter list to facilitate constructing your checks.
    If you do, you should update this function comment.
 */
-static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
+static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes, int *isSorted) {
    size_t c;
    char *strChild, *strSibling;
    char *tempChildToken, *tempSiblingToken; 
@@ -111,7 +111,8 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
    token = "/";
 
    if(n != NULL) {
-
+      
+      *numNodes = *numNodes + 1;
       /* Sample check on each non-root node: node must be valid */
       /* If not, pass that failure back up immediately */
       if(!CheckerDT_Node_isValid(n))
@@ -126,7 +127,7 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
                return FALSE;
             }
       }
-      *numNodes = *numNodes + 1;
+
       
 
 
@@ -163,27 +164,19 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
             while (tempSiblingToken!=NULL){
                finalSiblingToken = tempSiblingToken;
                tempSiblingToken = strtok(NULL, "/");
-               fprintf(stderr, "finalSiblingToken: %s \n", finalSiblingToken);
-               fprintf(stderr, "tempSiblingToken: %s \n", tempSiblingToken);
             }
             if (strcmp(finalChildToken, finalSiblingToken)>=0){
-               
-               fprintf(stderr, "The children are not " 
-               "in sorted order\n");
+               *isSorted = 0;
             }
             free(strSibling);
             free(strChild);
-
-
-            
-            
          
          }
          
 
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
-         if(!CheckerDT_treeCheck(child, numNodes))
+         if(!CheckerDT_treeCheck(child, numNodes, isSorted))
             return FALSE;
          
       }
@@ -194,8 +187,10 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
 /* see checkerDT.h for specification */
 boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
    size_t numNodes;
-   numNodes = 0;
+   int isSorted;
    boolean treeCheck;
+   numNodes = 0;
+   isSorted = 1;
    /* Sample check on a top-level data structure invariant:
       if the DT is not initialized, its count should be 0
       and its root should be NULL. */
@@ -246,7 +241,7 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
    
 
    /* Now checks invariants recursively at each node from the root. */
-   treeCheck = CheckerDT_treeCheck(root, &numNodes);
+   treeCheck = CheckerDT_treeCheck(root, &numNodes, &isSorted);
    fprintf(stderr, "count: %d \n", count);
    fprintf(stderr, "numNodes: %d \n", numNodes);
    if (count != numNodes){
