@@ -120,24 +120,28 @@ the error manifests itself or is "noticed" by the client.
 
       Executable         Function with the underlying error
 ===============================================================
-         ./bdtBad1        
+         ./bdtBad1        BDT_InsertPath()
 ---------------------------------------------------------------
-         ./bdtBad2        
+         ./bdtBad2        BDT_InsertPath()
 ---------------------------------------------------------------
-         ./bdtBad3        
+         ./bdtBad3        BDT_rmPath()
 ===============================================================
 
 For bdtBad4, you do not have to find the bug. Instead, indicate what
 is different about trying to debug this executable in gdb versus the
 other three:
 
-
+The first three bad executables failed on specific lines in the gdb.
+This executable has an error that doesn't manifest until we print the
+BDT. Debugging with gdb allows us to find which specific block of code
+contains the bug, but we cannot identify the specific lines where it 
+occurs. 
 
 For bdtBad5, you do not have to find the bug. Instead, indicate one
 hypothesis for how the program could crash within the DynArray module,
 which we promise is itself correct:
 
-
+note: the bug is in BDT_toString()
 
 ------------------------------------------------------------------------
 What are your critiques of the given DT implementations, as
