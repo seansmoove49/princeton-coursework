@@ -106,7 +106,7 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
    size_t c;
    char *tempChildToken, *tempSiblingToken; 
    char *finalChildToken, *finalSiblingToken, *token; 
-   token = "\\";
+   token = "/";
 
    if(n != NULL) {
 
