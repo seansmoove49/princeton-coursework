@@ -1,0 +1,22 @@
++break main
+Breakpoint 1 at 0x40272c: file bdt_client.c, line 22.
++break bdt_client.c:29
+Breakpoint 2 at 0x4027c8: file bdt_client.c, line 29.
++break bdt_client.c:39
+Breakpoint 3 at 0x402894: file bdt_client.c, line 39.
++break bdt_client.c:52
+Breakpoint 4 at 0x402a24: file bdt_client.c, line 52.
++break bdt_client.c:61
+Breakpoint 5 at 0x402b4c: file bdt_client.c, line 61.
++break bdt_client.c:76
+Breakpoint 6 at 0x402d68: file bdt_client.c, line 76.
++run
+Starting program: /u/tgdinh/Assignment4/1BDT/bdtBad1 
+
+Breakpoint 1, main () at bdt_client.c:22
+/u/tgdinh/Assignment4/1BDT/bdt_client.c:22:814:beg:0x40272c
+Missing separate debuginfos, use: debuginfo-install glibc-2.17-222.sd7.aarch64
++next
+
+Program received signal SIGABRT, Aborted.
+0x0000ffffbe5f50e8 in raise () from /lib64/libc.so.6
