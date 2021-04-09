@@ -146,10 +146,10 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
                fprintf(stderr, "There is not sufficient memory!\n");
                exit(EXIT_FAILURE);
             }
-            fprintf(stderr, "child: %s \n", strChild);
-            fprintf(stderr, "sibling: %s \n", strSibling);
+            
             
             strcpy(strChild, Node_getPath(child));
+            fprintf(stderr, "child: %s \n", strChild);
             tempChildToken = strtok(strChild, "/");
             fprintf(stderr, "tempChildToken: %s \n", tempChildToken);
             while (tempChildToken!=NULL){
@@ -159,7 +159,9 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
                fprintf(stderr, "tempChildToken: %s \n", tempChildToken);
 
             }
+            
             strcpy(strSibling, Node_getPath(sibling));
+            fprintf(stderr, "sibling: %s \n", strSibling);
             tempSiblingToken = strtok(strSibling, "/");
             fprintf(stderr, "\ntempSiblingToken: %s \n", tempSiblingToken);
             while (tempSiblingToken!=NULL){
