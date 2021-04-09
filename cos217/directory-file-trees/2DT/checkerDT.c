@@ -70,7 +70,6 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    
    /* Sample check: check if the root node 
    has a parent field not equal to NULL (not a valid node)*/
-   /* Maybe possible for a child node to have length of 1*/
    if(strchr(Node_getPath(n), '/')==NULL){
       if (parent!=NULL){
          fprintf(stderr, "child: %s \n", Node_toString(n));
@@ -82,11 +81,6 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    }
    /* Sample check: check if child node 
    has a parent field equal to NULL (not a valid node)*/
-   /* Maybe possible for a root node to have a path length greater than 1*/
-   /* Confused on the order of tests because originally test 1a
-   failed because of Not initialized, but count is not 0
-   but now it fails because of the child node has a parent field equal to NULL */
-   /* search to see if there is a slash in it */
    if(strchr(Node_getPath(n), '/')!=NULL){
       if (parent==NULL){
          fprintf(stderr, "child: %s \n", Node_toString(n));
@@ -163,16 +157,29 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
             fprintf(stderr, "Initialized with a root node, but count is 0\n");
             return FALSE;
          }
+         /* Sample check: check if the root node 
+         has a parent field not equal to NULL (not a valid node)*/
+         if (Node_getParent(root)!=NULL)
+         {
+            fprintf(stderr, "The root node has a parent " 
+            "field not equal to NULL\n");
+            return FALSE;
+         } 
+         
       }
       if (root == NULL){
          if (count != 0) {
-            fprintf(stderr, "Initialized withiyr a root node, but count is not 0\n");
+            fprintf(stderr, "Initialized without a root node, but count is not 0\n");
             return FALSE;
          }
       }
+      
+      
+
    }
+
    
 
    /* Now checks invariants recursively at each node from the root. */
-   return CheckerDT_treeCheck(root);
+   /*return CheckerDT_treeCheck(root); */
 }
