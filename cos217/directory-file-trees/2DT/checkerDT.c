@@ -111,7 +111,7 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes, int *isSorted) {
    token = "/";
 
    if(n != NULL) {
-      
+
       *numNodes = *numNodes + 1;
       /* Sample check on each non-root node: node must be valid */
       /* If not, pass that failure back up immediately */
@@ -244,6 +244,10 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
    treeCheck = CheckerDT_treeCheck(root, &numNodes, &isSorted);
    fprintf(stderr, "count: %d \n", count);
    fprintf(stderr, "numNodes: %d \n", numNodes);
+   if (isSorted == 0){
+      fprintf(stderr, "The children are not stored in sorted order\n");
+      return FALSE;
+   }
    if (count != numNodes){
       fprintf(stderr, "The count does not match the number of nodes\n");
       return FALSE;
