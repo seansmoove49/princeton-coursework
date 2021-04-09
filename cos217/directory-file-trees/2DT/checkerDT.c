@@ -133,6 +133,8 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) {
          Node_T child = Node_getChild(n, c);
          if (c+1 < Node_getNumChildren(n)){
             Node_T sibling = Node_getChild(n, c+1);
+            fprintf(stderr, "child: %s \n", Node_getPath(child));
+            fprintf(stderr, "sibling: %s \n", Node_getPath(sibling));
             tempChildToken = strtok(Node_getPath(child), token);
             tempSiblingToken = strtok(Node_getPath(sibling), token);
             while (tempChildToken!=NULL)
