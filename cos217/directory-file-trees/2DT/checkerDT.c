@@ -138,7 +138,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    Returns FALSE if a broken invariant is found and
    returns TRUE otherwise. 
 */
-static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes) 
+static boolean CheckerDT_treeCheck(Node_T n, size_t *pnumNodes) 
 {
    size_t c;
    
@@ -149,7 +149,7 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes)
       /* If not, pass that failure back up immediately */
       if(!CheckerDT_Node_isValid(n))
          return FALSE;
-      *numNodes = *numNodes + 1;
+      *pnumNodes = *pnumNodes + 1;
       
       /* Sample check: check if child node 
       has a parent field equal to NULL (not a valid node)*/
@@ -169,7 +169,7 @@ static boolean CheckerDT_treeCheck(Node_T n, size_t *numNodes)
          
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
-         if(!CheckerDT_treeCheck(child, numNodes))
+         if(!CheckerDT_treeCheck(child, pnumNodes))
             return FALSE;
          
       }
@@ -233,6 +233,8 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
 
    /* Now checks invariants recursively at each node from the root. */
    treeCheck = CheckerDT_treeCheck(root, &numNodes);
+   fprintf(stderr, "numNodes: %d", numNodes);
+   fprintf(stderr, "counter: %d", counter);
    if (numNodes!=count){
       fprintf(stderr, "The count does not match the number of nodes\n");
       return FALSE;
