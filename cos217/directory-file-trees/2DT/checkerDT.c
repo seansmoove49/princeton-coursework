@@ -17,7 +17,11 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    const char* npath;
    const char* ppath;
    const char* rest;
-   size_t i, j;
+   size_t i, j, c;
+   char *strChild, *strSibling;
+   char *tempChildToken, *tempSiblingToken; 
+   char *finalChildToken, *finalSiblingToken, *delimiter; 
+   delimiter = "/";
 
    /* Sample check: a NULL pointer is not a valid node */
    if(n == NULL) {
@@ -63,44 +67,8 @@ boolean CheckerDT_Node_isValid(Node_T n) {
          return FALSE;
       }
    }
-   return TRUE;
-}
 
-/*
-   Performs a pre-order traversal of the tree rooted at n.
-   Returns FALSE if a broken invariant is found and
-   returns TRUE otherwise. It also sets isSorted to
-   1 if it finds that n and its neighboring sibling node
-   is not in sorted order
-*/
-static boolean CheckerDT_treeCheck(Node_T n, int *isSorted) 
-{
-   size_t c;
-   char *strChild, *strSibling;
-   char *tempChildToken, *tempSiblingToken; 
-   char *finalChildToken, *finalSiblingToken, *delimiter; 
-   delimiter = "/";
-
-   if(n != NULL) 
-   {
-      /* Sample check on each non-root node: node must be valid */
-      /* If not, pass that failure back up immediately */
-      if(!CheckerDT_Node_isValid(n))
-         return FALSE;
-      
-      /* Sample check: check if child node 
-      has a parent field equal to NULL (not a valid node)*/
-      if(strchr(Node_getPath(n), '/')!=NULL)
-      {
-            if (Node_getParent(n)==NULL)
-            {
-               fprintf(stderr, "The child node has a parent " 
-               "field equal to NULL\n");
-               return FALSE;
-            }
-      }
-
-      for(c = 0; c < Node_getNumChildren(n); c++)
+   for(c = 0; c < Node_getNumChildren(n); c++)
       {
          Node_T child = Node_getChild(n, c);
          
@@ -160,8 +128,46 @@ static boolean CheckerDT_treeCheck(Node_T n, int *isSorted)
             free(strSibling);
             free(strChild);
          }
-         
+      }
 
+   return TRUE;
+}
+
+/*
+   Performs a pre-order traversal of the tree rooted at n.
+   Returns FALSE if a broken invariant is found and
+   returns TRUE otherwise. It also sets isSorted to
+   1 if it finds that n and its neighboring sibling node
+   is not in sorted order
+*/
+static boolean CheckerDT_treeCheck(Node_T n, int *isSorted) 
+{
+   size_t c;
+   
+
+   if(n != NULL) 
+   {
+      /* Sample check on each non-root node: node must be valid */
+      /* If not, pass that failure back up immediately */
+      if(!CheckerDT_Node_isValid(n))
+         return FALSE;
+      
+      /* Sample check: check if child node 
+      has a parent field equal to NULL (not a valid node)*/
+      if(strchr(Node_getPath(n), '/')!=NULL)
+      {
+            if (Node_getParent(n)==NULL)
+            {
+               fprintf(stderr, "The child node has a parent " 
+               "field equal to NULL\n");
+               return FALSE;
+            }
+      }
+
+      for(c = 0; c < Node_getNumChildren(n); c++)
+      {
+         Node_T child = Node_getChild(n, c);
+         
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
          if(!CheckerDT_treeCheck(child, isSorted))
