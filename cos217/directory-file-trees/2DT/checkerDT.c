@@ -90,7 +90,7 @@ static boolean CheckerDT_treeCheck(Node_T n, int *isSorted)
       
       /* Sample check: check if child node 
       has a parent field equal to NULL (not a valid node)*/
-      if(strchr(Node_getPath(n), '/')!=NULL)
+      if(strchr(Node_getPath(n), delimiter)!=NULL)
       {
             if (Node_getParent(n)==NULL)
             {
@@ -123,6 +123,8 @@ static boolean CheckerDT_treeCheck(Node_T n, int *isSorted)
                fprintf(stderr, "There is not sufficient memory!\n");
                exit(EXIT_FAILURE);
             }
+            
+            
             strcpy(strChild, Node_getPath(child));
             fprintf(stderr, "child: %s \n", strChild);
             tempChildToken = strtok(strChild, delimiter);
@@ -144,9 +146,6 @@ static boolean CheckerDT_treeCheck(Node_T n, int *isSorted)
             if (strcmp(finalChildToken, finalSiblingToken)>=0)
             {
                *isSorted = 0;
-               free(strSibling);
-               free(strChild);
-               return FALSE;
             }
             free(strSibling);
             free(strChild);
