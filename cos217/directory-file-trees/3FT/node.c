@@ -82,6 +82,7 @@ Node_T Node_createDir(const char* dir, const Node_T parent) {
 
 	assert(parent == NULL || CheckerFT_Node_isValid(parent));
 	assert(dir != NULL);
+	assert(!Node_isFile(parent)); /* this will be moved into ft.c */
 
 	/* original function keeps repeating the same assert even though
 	   this function never modifies the parent - make parent const
@@ -118,13 +119,14 @@ Node_T Node_createDir(const char* dir, const Node_T parent) {
 	file contents can be null
 */
 
-Node_T Node_createFile(const char* dir, Node_T parent, void *contents, 
-							  size_t length) {
+Node_T Node_createFile(const char* dir, const Node_T parent, 
+							  const void *contents, size_t length) {
 	Node_T new;
 	void *contentCpy = NULL;
 
 	assert(parent == NULL || CheckerFT_Node_isValid(parent));
 	assert(dir != NULL);
+	assert(!Node_isFile(parent)); /* will be moved */
 
 	new = malloc(sizeof(struct node));
 	if (new == NULL) 
@@ -137,25 +139,11 @@ Node_T Node_createFile(const char* dir, Node_T parent, void *contents,
 		return NULL;
 	}
 
-	/* file contents - memory given to the client */
-	if (contents != NULL) {
-		contentCpy = malloc(length); /* not null terminated */
-		if (contents == NULL)
-			return NULL;
-
-		memcpy(contentCpy, contents, length);
-	}
-
-	new->contents = contentCpy;
+   Node_assignContents(new, contents, length);
 	new->file = TRUE;
-	
+
 	new->parent = parent;
-	new->children = DynArray_new(0);
-	if (new->children == NULL) {
-		free(new->path);
-		free(new);
-		return NULL;
-	}
+	new->children = NULL;
 
 	return NULL;
 }
@@ -167,7 +155,26 @@ Node_T Node_createFile(const char* dir, Node_T parent, void *contents,
 	Returns the number of nodes destroyed.
 */
 size_t Node_destroy(Node_T n) {
-  	return 0;
+	size_t i;
+	size_t count = 0;
+	size_t dynArrLength;
+	Node_T curr;
+
+	assert(n != NULL);
+
+	dynArrLength = DynArray_getLength(n->children);
+
+	for (i = 0; i < dynArrLength; i++) {
+		curr = DynArray_get(n->children, i);
+		count += Node_destroy(curr);
+	}
+	DynArray_free(n->children);
+
+	free(n->path);
+	free(n->contents);
+	count++;
+
+  	return count;
 }
 
 
@@ -176,36 +183,46 @@ size_t Node_destroy(Node_T n) {
   Returns <0, 0, or >0 if node1 is less than,
   equal to, or greater than node2, respectively.
 */
-int Node_compare(Node_T node1, Node_T node2) {
-	return 0;
+int Node_compare(const Node_T node1, const Node_T node2) {
+	assert(node1 != NULL);
+	assert(node2 != NULL);
+
+	return strcmp(node1->path, node2->path);
 }
 
 /*
    Returns n's path.
 */
-const char* Node_getPath(Node_T n) {
-	return NULL;
+const char* Node_getPath(const Node_T n) {
+   assert(n != NULL);
+   return n->path;
 }
 
 /*
   Returns the number of child directories n has.
 */
-size_t Node_getNumChildren(Node_T n) {
-	return 0;
+size_t Node_getNumChildren(const Node_T n) {
+	assert(n != NULL);
+	assert(!Node_isFile(n));
+	return DynArray_getLength(n->children);
 }
 
 /*
-  Returns the type of the node. 
+  Returns true if the node is a file, false if a directory. 
 */
-size_t Node_getType(Node_T n) {
-	return 0;
+boolean Node_isFile(const Node_T n) {
+	assert(n != NULL);
+	return n->file;
 }
 
 /*
   Returns the file contents if the node is a file. 
 */
-size_t Node_getFileContents(Node_T n) {
-	return 0;
+void* Node_getFileContents(const Node_T n) {
+	assert(n != NULL);
+	assert(Node_isFile(n));
+
+	return n->contents;
 }
 
 /*
@@ -218,7 +235,26 @@ size_t Node_getFileContents(Node_T n) {
    store the identifier that such a child would have in *childID.
 */
 int Node_hasChild(Node_T n, const char* path, size_t* childID) {
-	return 0;
+	size_t index;
+	int result;
+	Node_T checker;
+
+	assert(n != NULL);
+	assert(path != NULL);
+	assert(!Node_isFile(n));
+
+	checker = Node_create(path, NULL);
+	if (checker == NULL) {
+		return -1;
+	}
+	result = DynArray_bsearch(n->children, checker, &index,
+                    (int (*)(const void*, const void*)) Node_compare);
+   (void) Node_destroy(checker);
+
+	if (childID != NULL)
+		*childID = index;
+
+	return result;
 }
 
 /*
@@ -226,19 +262,28 @@ int Node_hasChild(Node_T n, const char* path, size_t* childID) {
    otherwise returns NULL.
 */
 Node_T Node_getChild(Node_T n, size_t childID) {
-	return NULL;
+	assert(n != NULL);
+	assert(!Node_isFile(n));
+
+	if (DynArray_getLength(n->children) > childID) 
+		return DynArray_get(n->children, childID);
+	else 
+		return NULL;
 }
 
 /*
    Returns the parent node of n, if it exists, otherwise returns NULL
 */
 Node_T Node_getParent(Node_T n) {
-	return NULL;
+	assert(n != NULL);
+	return n->parent;
 }
 
 /*
   Makes child a child of parent, if possible, and returns SUCCESS.
   This is not possible in the following cases:
+  * parent is a file, 
+    in which case return NOT_A_DIRECTORY
   * child's path is not parent's path + / + directory,
     in which case returns PARENT_CHILD_ERROR
   * parent already has a child with child's path,
@@ -246,8 +291,66 @@ Node_T Node_getParent(Node_T n) {
   * parent is unable to allocate memory to store new child link,
     in which case returns MEMORY_ERROR
  */
-int Node_linkChild(Node_T parent, Node_T child) {
-	return 0;
+int Node_linkChild(Node_T parent, const Node_T child) {
+	size_t i;
+	char *rest;
+
+	assert(parent != NULL);
+	assert(child != NULL);
+	assert(CheckerFT_Node_isValid(parent));
+	assert(CheckerFT_Node_isValid(child));
+
+   /* we need to assert that child's parent is already parent 
+      this could be a parent child error */
+
+	if (Node_isFile(parent)) 
+		return NOT_A_DIRECTORY;
+
+	if (Node_hasChild(parent, child->path, NULL))
+		return ALREADY_IN_TREE;
+
+   if (Node_hasParentChildErr(parent, child))
+      return PARENT_CHILD_ERROR;
+
+   if (DynArray_bsearch(parent->children, child, &i, 
+       (int (*)(const void*, const void*)) Node_compare) == 1) 
+      return ALREADY_IN_TREE;
+
+   if (DynArray_addAt(parent->children, i, child) == TRUE) {
+      assert(CheckerFT_Node_isValid(parent));
+      return SUCCESS;
+   } else {
+      assert(CheckerFT_Node_isValid(parent));
+      return MEMORY_ERROR;
+   }
+}
+
+static int Node_hasParentChildErr(const Node_T parent, 
+                                  const Node_T child) {
+	size_t i;
+	char *rest;
+
+	assert(parent != NULL);
+	assert(child != NULL);
+	assert(CheckerFT_Node_isValid(parent));
+	assert(CheckerFT_Node_isValid(child));
+
+	i = strlen(parent->path);
+
+	if (strncmp(child->path, parent->path, i))
+		return 1;
+
+	rest = child->path + i;
+
+	if (strlen(child->path) >= i && rest[0] != '/')
+		return 1;
+
+   rest++;
+
+   if (strstr(rest, "/") != NULL)
+      return 1;
+
+   return 0;
 }
 
 /*
@@ -256,26 +359,27 @@ int Node_linkChild(Node_T parent, Node_T child) {
   Returns PARENT_CHILD_ERROR if child is not a child of parent,
   and SUCCESS otherwise.
  */
-int Node_unlinkChild(Node_T parent, Node_T child) {
-	return 0;
+int Node_unlinkChild(Node_T parent, const Node_T child) {
+   size_t i;
+
+   assert(parent != NULL);
+	assert(child != NULL);
+	assert(CheckerFT_Node_isValid(parent));
+	assert(CheckerFT_Node_isValid(child));
+
+   if (DynArray_bsearch(parent->children, child, &i, 
+       (int (*)(const void*, const void*)) Node_compare) == 0) 
+      return PARENT_CHILD_ERROR;
+
+   (void) DynArray_removeAt(parent->children, i);
+
+   assert(CheckerFT_Node_isValid(parent));
+	return SUCCESS;
 }
 
 /*
-  Creates a new node such that the new node's path is dir appended to
-  n's path, separated by a slash, and that the new node has no
-  children of its own. The new node's parent is n, and the new node is
-  added as a child of n.
-
-  (Reiterating for clarity: unlike with Node_create, parent *is*
-  changed so that the link is bidirectional.)
-
-  Returns SUCCESS upon completion, or:
-  MEMORY_ERROR if the new node cannot be created,
-  ALREADY_IN_TREE if parent already has a child with that path
+   removed the Node_addChild() module
 */
-int Node_addChild(Node_T parent, const char* dir) {
-	return 0;
-}
 
 /*
   Returns a string representation for n, 
@@ -285,5 +389,36 @@ int Node_addChild(Node_T parent, const char* dir) {
   which is then owned by client!
 */
 char* Node_toString(Node_T n) {
+   char *copyPath;
+   assert(n != NULL);
+
+   copyPath = malloc(strlen(n->path) + 1);
+   if (copyPath == NULL)
+      return NULL;
+   else
+      return strcpy(copyPath, n->path);
+
 	return NULL;
+}
+
+/* 
+   assign contents function - need to do for the file
+*/
+
+void Node_assignContents(Node_T n, void* contents, size_t length) {
+   void *contentCpy;
+
+   assert(n != NULL);
+   assert(CheckerFT_Node_isValid(n));
+
+   /* file contents - memory given to the client */
+	if (contents != NULL) {
+		contentCpy = malloc(length); /* not null terminated */
+		if (contents == NULL)
+			return NULL;
+
+		memcpy(contentCpy, contents, length);
+	}
+
+   n->contents = contentCpy;
 }

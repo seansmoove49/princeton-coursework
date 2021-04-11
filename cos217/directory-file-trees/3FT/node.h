@@ -65,7 +65,7 @@ size_t Node_getType(Node_T n);
 /*
   Returns the file contents if the node is a file. 
 */
-size_t Node_getFileContents(Node_T n);
+void * Node_getFileContents(Node_T n);
 
 /*
    Returns 1 if n has a child directory with path,
@@ -122,7 +122,7 @@ int Node_unlinkChild(Node_T parent, Node_T child);
   MEMORY_ERROR if the new node cannot be created,
   ALREADY_IN_TREE if parent already has a child with that path
 */
-int Node_addChild(Node_T parent, const char* dir);
+/*int Node_addChild(Node_T parent, const char* dir);*/
 
 /*
   Returns a string representation for n, 
@@ -132,5 +132,7 @@ int Node_addChild(Node_T parent, const char* dir);
   which is then owned by client!
 */
 char* Node_toString(Node_T n);
+
+void Node_assignContents(Node_T n, void* contents, size_t length);
 
 #endif
