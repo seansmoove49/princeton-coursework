@@ -120,6 +120,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
             or equal to finalSiblingT */
             if (strcmp(finalChildToken, finalSiblingToken)>=0)
             {
+               fprintf(stderr, "The children are not stored in sorted order\n");
                free(strSibling);
                free(strChild);
                return FALSE;
