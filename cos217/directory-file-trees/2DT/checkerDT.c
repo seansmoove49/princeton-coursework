@@ -90,7 +90,7 @@ static boolean CheckerDT_treeCheck(Node_T n, int *isSorted)
       
       /* Sample check: check if child node 
       has a parent field equal to NULL (not a valid node)*/
-      if(strchr(Node_getPath(n), delimiter)!=NULL)
+      if(strchr(Node_getPath(n), '/')!=NULL)
       {
             if (Node_getParent(n)==NULL)
             {
