@@ -17,7 +17,12 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    const char* npath;
    const char* ppath;
    const char* rest;
-   size_t i, j;
+   size_t i, j, c;
+   
+   char *strChild, *strSibling;
+   char *tempChildToken, *tempSiblingToken; 
+   char *finalChildToken, *finalSiblingToken, *delimiter; 
+   delimiter = "/";
 
    /* Sample check: a NULL pointer is not a valid node */
    if(n == NULL) {
@@ -63,50 +68,13 @@ boolean CheckerDT_Node_isValid(Node_T n) {
          return FALSE;
       }
    }
-   return TRUE;
-}
 
-/*
-   Performs a pre-order traversal of the tree rooted at n.
-   Returns FALSE if a broken invariant is found and
-   returns TRUE otherwise. It also sets isSorted to
-   1 if it finds that n and its neighboring sibling node
-   is not in sorted order
-*/
-static boolean CheckerDT_treeCheck(Node_T n, int *isSorted) 
-{
-   size_t c;
-   char *strChild, *strSibling;
-   char *tempChildToken, *tempSiblingToken; 
-   char *finalChildToken, *finalSiblingToken, *delimiter; 
-   delimiter = "/";
-
-   if(n != NULL) 
-   {
-      /* Sample check on each non-root node: node must be valid */
-      /* If not, pass that failure back up immediately */
-      if(!CheckerDT_Node_isValid(n))
-         return FALSE;
-      
-      /* Sample check: check if child node 
-      has a parent field equal to NULL (not a valid node)*/
-      if(strchr(Node_getPath(n), '/')!=NULL)
-      {
-            if (Node_getParent(n)==NULL)
-            {
-               fprintf(stderr, "The child node has a parent " 
-               "field equal to NULL\n");
-               return FALSE;
-            }
-      }
-
-      for(c = 0; c < Node_getNumChildren(n); c++)
+   /* Sample check: check if child node 
+      has a neighboring sibling node whose path is less 
+      than the child node's path (not in sorted order)*/
+   for(c = 0; c < Node_getNumChildren(n); c++)
       {
          Node_T child = Node_getChild(n, c);
-         
-         /* Sample check: check if child node 
-         has a neighboring sibling node whose path is less 
-         than the child node's path (not in sorted order)*/
          if (c+1 < Node_getNumChildren(n))
          {
             
@@ -124,8 +92,12 @@ static boolean CheckerDT_treeCheck(Node_T n, int *isSorted)
                exit(EXIT_FAILURE);
             }
             strcpy(strChild, Node_getPath(child));
+            fprintf(stderr, "%d", c);
             fprintf(stderr, "child: %s \n", strChild);
             tempChildToken = strtok(strChild, delimiter);
+
+            /* gets and stores the final token for the child path 
+            in finalChildToken */
             while (tempChildToken!=NULL)
             {
                finalChildToken = tempChildToken;
@@ -136,14 +108,19 @@ static boolean CheckerDT_treeCheck(Node_T n, int *isSorted)
             strcpy(strSibling, Node_getPath(sibling));
             fprintf(stderr, "sibling: %s \n", strSibling);
             tempSiblingToken = strtok(strSibling, delimiter);
+            
+            /* gets and stores the final token for the sibling path 
+            in finalSiblingToken */
             while (tempSiblingToken!=NULL)
             {
                finalSiblingToken = tempSiblingToken;
                tempSiblingToken = strtok(NULL, delimiter);
             }
+            /* checks if the finalChildToken is greater than 
+            or equal to finalSiblingT */
             if (strcmp(finalChildToken, finalSiblingToken)>=0)
             {
-               *isSorted = 0;
+               fprintf(stderr, "The children are not stored in sorted order\n");
                free(strSibling);
                free(strChild);
                return FALSE;
@@ -151,11 +128,48 @@ static boolean CheckerDT_treeCheck(Node_T n, int *isSorted)
             free(strSibling);
             free(strChild);
          }
-         
+      }
 
+   return TRUE;
+}
+
+/*
+   Performs a pre-order traversal of the tree rooted at n.
+   Returns FALSE if a broken invariant is found and
+   returns TRUE otherwise. 
+*/
+static boolean CheckerDT_treeCheck(Node_T n, size_t *pnumNodes) 
+{
+   size_t c;
+   
+
+   if(n != NULL) 
+   {
+      /* Sample check on each non-root node: node must be valid */
+      /* If not, pass that failure back up immediately */
+      if(!CheckerDT_Node_isValid(n))
+         return FALSE;
+      *pnumNodes = *pnumNodes + 1;
+      
+      /* Sample check: check if child node 
+      has a parent field equal to NULL (not a valid node)*/
+      if(strchr(Node_getPath(n), '/')!=NULL)
+      {
+            if (Node_getParent(n)==NULL)
+            {
+               fprintf(stderr, "The child node has a parent " 
+               "field equal to NULL\n");
+               return FALSE;
+            }
+      }
+
+      for(c = 0; c < Node_getNumChildren(n); c++)
+      {
+         Node_T child = Node_getChild(n, c);
+         
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
-         if(!CheckerDT_treeCheck(child, isSorted))
+         if(!CheckerDT_treeCheck(child, pnumNodes))
             return FALSE;
          
       }
@@ -165,9 +179,11 @@ static boolean CheckerDT_treeCheck(Node_T n, int *isSorted)
 
 /* see checkerDT.h for specification */
 boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
-   int isSorted;
    boolean treeCheck;
-   isSorted = 1;
+   size_t numNodes;
+
+   numNodes = 0;
+
    /* Sample check on a top-level data structure invariant:
       if the DT is not initialized, its count should be 0
       and its root should be NULL. */
@@ -216,11 +232,12 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
       
 
    /* Now checks invariants recursively at each node from the root. */
-   treeCheck = CheckerDT_treeCheck(root, &isSorted);
-   if (isSorted == 0){
-      fprintf(stderr, "The children are not stored in sorted order\n");
+   treeCheck = CheckerDT_treeCheck(root, &numNodes);
+   if (numNodes!=count){
+      fprintf(stderr, "The count does not match the number of nodes\n");
       return FALSE;
    }
+
    return treeCheck;
 }
 
