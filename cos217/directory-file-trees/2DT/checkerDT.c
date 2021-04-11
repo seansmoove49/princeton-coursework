@@ -1,6 +1,6 @@
 /*--------------------------------------------------------------------*/
 /* checkerDT.c                                                        */
-/* Author: Sean Wang and Giao Vu Dinh                                 */
+/* Author:                                                            */
 /*--------------------------------------------------------------------*/
 
 #include <assert.h>
@@ -69,9 +69,11 @@ boolean CheckerDT_Node_isValid(Node_T n) {
 /*
    Performs a pre-order traversal of the tree rooted at n.
    Returns FALSE if a broken invariant is found and
-   returns TRUE otherwise. It also sets isSorted to
-   1 if it finds that n and its neighboring sibling node
-   is not in sorted order
+   returns TRUE otherwise.
+
+   You may want to change this function's return type or
+   parameter list to facilitate constructing your checks.
+   If you do, you should update this function comment.
 */
 static boolean CheckerDT_treeCheck(Node_T n, int *isSorted) 
 {
@@ -103,10 +105,6 @@ static boolean CheckerDT_treeCheck(Node_T n, int *isSorted)
       for(c = 0; c < Node_getNumChildren(n); c++)
       {
          Node_T child = Node_getChild(n, c);
-         
-         /* Sample check: check if child node 
-         has a neighboring sibling node whose path is less 
-         than the child node's path (not in sorted order)*/
          if (c+1 < Node_getNumChildren(n))
          {
             
@@ -186,24 +184,22 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
    {
       if (root != NULL){
          /* Sample check on a top-level data structure invariant:
-         if the DT is  initialized and the root is not NULL, its count 
-         should be greater than 0 */
+         if the DT is  initialized and the root is not NULL, its count should be greater than 0 */
          if (count == 0) {
             fprintf(stderr, "Initialized with a root node, but count is 0\n");
             return FALSE;
          }
-         /* Sample check on a top-level data structure invariant:
-         if the DT is  initialized and the root is not NULL, 
-         the root node should have a parent field  equal to NULL */
+         /* Sample check: check if the root node 
+         has a parent field not equal to NULL (not a valid node)*/
          if (Node_getParent(root)!=NULL)
          {
             fprintf(stderr, "The root node has a parent " 
             "field not equal to NULL\n");
             return FALSE;
-         }   
+         } 
+         
       }
-      /* Sample check on a top-level data structure invariant:
-      if the DT is  initialized and the root is NULL, its count 
+      /* Sample check: if the root node is NULL, the count
       should be 0 */
       if (root == NULL){
          if (count != 0) {
