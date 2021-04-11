@@ -233,8 +233,6 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
 
    /* Now checks invariants recursively at each node from the root. */
    treeCheck = CheckerDT_treeCheck(root, &numNodes);
-   fprintf(stderr, "numNodes: %d", numNodes);
-   fprintf(stderr, "count: %d", count);
    if (numNodes!=count){
       fprintf(stderr, "The count does not match the number of nodes\n");
       return FALSE;
