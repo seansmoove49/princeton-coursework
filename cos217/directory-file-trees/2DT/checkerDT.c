@@ -212,6 +212,7 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
             return FALSE;
          }
       }
+   }
       
 
    /* Now checks invariants recursively at each node from the root. */
@@ -222,3 +223,4 @@ boolean CheckerDT_isValid(boolean isInit, Node_T root, size_t count) {
    }
    return treeCheck;
 }
+
