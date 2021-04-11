@@ -126,6 +126,9 @@ static boolean CheckerDT_treeCheck(Node_T n, int *isSorted)
             strcpy(strChild, Node_getPath(child));
             fprintf(stderr, "child: %s \n", strChild);
             tempChildToken = strtok(strChild, delimiter);
+
+            /* gets and stores the final token for the child path 
+            in finalChildToken */
             while (tempChildToken!=NULL)
             {
                finalChildToken = tempChildToken;
@@ -136,11 +139,16 @@ static boolean CheckerDT_treeCheck(Node_T n, int *isSorted)
             strcpy(strSibling, Node_getPath(sibling));
             fprintf(stderr, "sibling: %s \n", strSibling);
             tempSiblingToken = strtok(strSibling, delimiter);
+            
+            /* gets and stores the final token for the sibling path 
+            in finalSiblingToken */
             while (tempSiblingToken!=NULL)
             {
                finalSiblingToken = tempSiblingToken;
                tempSiblingToken = strtok(NULL, delimiter);
             }
+            /* checks if the finalChildToken is greater than 
+            or equal to finalSiblingT */
             if (strcmp(finalChildToken, finalSiblingToken)>=0)
             {
                *isSorted = 0;
