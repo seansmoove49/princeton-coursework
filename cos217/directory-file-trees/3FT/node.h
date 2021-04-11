@@ -60,7 +60,7 @@ size_t Node_getNumChildren(Node_T n);
 /*
   Returns the type of the node. 
 */
-size_t Node_getType(Node_T n);
+boolean Node_isFile(Node_T n);
 
 /*
   Returns the file contents if the node is a file. 

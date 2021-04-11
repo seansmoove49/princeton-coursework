@@ -407,6 +407,7 @@ char* Node_toString(Node_T n) {
 
 void Node_assignContents(Node_T n, void* contents, size_t length) {
    void *contentCpy;
+   void *oldContents;
 
    assert(n != NULL);
    assert(CheckerFT_Node_isValid(n));
@@ -419,6 +420,10 @@ void Node_assignContents(Node_T n, void* contents, size_t length) {
 
 		memcpy(contentCpy, contents, length);
 	}
+
+   oldContents = n->contents;
+   free(oldContents);
+   oldContents = NULL;
 
    n->contents = contentCpy;
 }
