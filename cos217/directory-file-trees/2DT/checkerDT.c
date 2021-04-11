@@ -124,7 +124,7 @@ static boolean CheckerDT_treeCheck(Node_T n, int *isSorted)
                exit(EXIT_FAILURE);
             }
             strcpy(strChild, Node_getPath(child));
-            fprintf("%d", c);
+            fprintf("%d", &c);
             fprintf(stderr, "child: %s \n", strChild);
             tempChildToken = strtok(strChild, delimiter);
 
