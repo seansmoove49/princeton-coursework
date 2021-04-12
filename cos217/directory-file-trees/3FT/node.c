@@ -67,6 +67,22 @@ static char* Node_buildPath(Node_T n, const char* dir) {
    return path;
 }
 
+Node_T Node_create(const char* dir, const Node_T parent, 
+								   boolean isFile, void* contents, size_t length) {
+	Node_T new;
+	int result;
+
+	assert(parent == NULL || CheckerFT_Node_isValid(parent));
+	assert(dir != NULL);
+
+	if (isFile)
+		new = Node_createFile(dir, parent, contents, length);
+	else
+		new = Node_createDir(dir, parent);
+
+	return new;
+}
+
 
 /*
 	The new structure is initialized to have its path as the parent's
@@ -77,7 +93,7 @@ static char* Node_buildPath(Node_T n, const char* dir) {
    do not point to any children.
 */
 
-Node_T Node_createDir(const char* dir, const Node_T parent) {
+static Node_T Node_createDir(const char* dir, const Node_T parent) {
 	Node_T new;
 
 	assert(parent == NULL || CheckerFT_Node_isValid(parent));
@@ -119,7 +135,7 @@ Node_T Node_createDir(const char* dir, const Node_T parent) {
 	file contents can be null
 */
 
-Node_T Node_createFile(const char* dir, const Node_T parent, 
+static Node_T Node_createFile(const char* dir, const Node_T parent, 
 							  const void *contents, size_t length) {
 	Node_T new;
 	void *contentCpy = NULL;
@@ -171,6 +187,8 @@ size_t Node_destroy(Node_T n) {
 	DynArray_free(n->children);
 
 	free(n->path);
+	free(n);
+	n = NULL;
 	count++;
 
   	return count;
@@ -242,7 +260,7 @@ int Node_hasChild(Node_T n, const char* path, size_t* childID) {
 	assert(path != NULL);
 	assert(!Node_isFile(n));
 
-	checker = Node_create(path, NULL);
+	checker = Node_create(path, NULL, FALSE, NULL, NULL);
 	if (checker == NULL) {
 		return -1;
 	}
