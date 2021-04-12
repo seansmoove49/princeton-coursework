@@ -101,7 +101,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
 
       /* last node is a file */
       if (isFile && dirToken == NULL) {
-         new = Node_create(tempToken, curr, TRUE, length, contents);
+         new = Node_create(tempToken, curr, TRUE, contents, length);
       } else {
          /* creating a directory node */
       new = Node_create(tempToken, curr, FALSE, NULL, 0);
