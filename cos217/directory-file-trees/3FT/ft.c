@@ -443,7 +443,6 @@ void *FT_replaceFileContents(char *path, void *newContents,
 
 int FT_stat(char *path, boolean *type, size_t *length) {
    Node_T curr;
-   int result;
 
    assert(CheckerDT_isValid(isInitialized,root,count));
    assert(path != NULL);
@@ -453,17 +452,16 @@ int FT_stat(char *path, boolean *type, size_t *length) {
 
    curr = DT_traversePath(path);
    if(curr == NULL)
-      result =  NO_SUCH_PATH;
+      return NO_SUCH_PATH;
    else if (Node_isFile(curr)==FALSE){
       *type = FALSE;
    }
    else if (Node_isFile(curr)==TRUE){
       *type = TRUE;
-      *length = 
+      *length = Node_getLength(curr);
    }
-
-
    
+   return SUCCESS;
 }
 
 
@@ -484,7 +482,14 @@ int FT_init(void) {
 /*--------------------------------------------------------------------*/
 
 int FT_destroy(void) {
-   return 0;
+   assert(CheckerDT_isValid(isInitialized,root,count));
+   if(!isInitialized)
+      return INITIALIZATION_ERROR;
+   FT_removePathFrom(root);
+   root = NULL;
+   isInitialized = 0;
+   assert(CheckerDT_isValid(isInitialized,root,count));
+   return SUCCESS;
 }
 
 /*--------------------------------------------------------------------*/

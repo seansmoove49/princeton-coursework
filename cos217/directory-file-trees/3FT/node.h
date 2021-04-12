@@ -54,6 +54,11 @@ int Node_compare(Node_T node1, Node_T node2);
 const char* Node_getPath(Node_T n);
 
 /*
+   Returns n's length.
+*/
+const char* Node_getLength(Node_T n);
+
+/*
   Returns the number of child directories n has.
 */
 size_t Node_getNumChildren(Node_T n);

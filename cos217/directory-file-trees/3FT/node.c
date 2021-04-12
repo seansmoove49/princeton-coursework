@@ -31,6 +31,9 @@ struct node {
 
 	/* the contents of the file if this node represents a file */
 	void* contents;
+
+	/* the length of the file if this node represents a file */
+	size_t length;
 };
 
 /*
@@ -149,7 +152,8 @@ static Node_T Node_createFile(const char* dir, const Node_T parent,
 		return NULL;
 
 	new->path = Node_buildPath(parent, dir);
-
+	
+	new->length = length;
 	if (new->path == NULL) {
 		free(new);
 		return NULL;
@@ -213,6 +217,14 @@ int Node_compare(const Node_T node1, const Node_T node2) {
 const char* Node_getPath(const Node_T n) {
    assert(n != NULL);
    return n->path;
+}
+
+/*
+   Returns n's length.
+*/
+size_t Node_getLength(const Node_T n) {
+	assert(n != NULL);
+	return n->length;
 }
 
 /*
