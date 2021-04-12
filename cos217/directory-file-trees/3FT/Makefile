@@ -7,7 +7,7 @@ clobber: clean
 	rm -f ft_client.o dynarray.o *~
 
 sampleft: dynarray.o node.o ft.o ft_client.o checkerFT.o
-	gcc217 dynarray.o ft.o ft_client.o node.o checkerFT.o -o sampleft
+	gcc217 -g dynarray.o ft.o ft_client.o node.o checkerFT.o -o sampleft
 
 checkerFT.o: checkerFT.c dynarray.h checkerFT.h node.h a4def.h
 	gcc217 -c checkerFT.c
