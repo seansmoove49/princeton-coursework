@@ -165,8 +165,6 @@ Node_T Node_create(const char* dir, const Node_T parent,
 	assert(dir != NULL);
 
 	if (isFile) {
-		if (parent == NULL)
-			return CONFLICTING_PATH;
 		new = Node_createFile(dir, parent, contents, length);
 	}
 	else
