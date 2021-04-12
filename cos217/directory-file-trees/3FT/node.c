@@ -263,11 +263,6 @@ boolean Node_isFile(const Node_T n) {
 */
 void* Node_getFileContents(const Node_T n) {
 	assert(n != NULL);
-<<<<<<< HEAD
-	/* assert(Node_isFile(n)); */
-=======
->>>>>>> c725f8b40fcfeb490fabb35d1f01636d38c6fb32
-
 	return n->contents;
 }
 
