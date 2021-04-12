@@ -75,7 +75,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
 
    assert(path != NULL);
 
-   if (Node_isFile(parent))
+   if (parent != NULL && Node_isFile(parent))
       return NOT_A_DIRECTORY;
 
    if (curr == NULL) {
@@ -99,6 +99,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
       tempToken = dirToken;
       /* creating a directory node */
       new = Node_create(dirToken, curr, FALSE, NULL, 0);
+      newCount++;
 
       if (firstNew == NULL)
          firstNew = new;
@@ -312,7 +313,7 @@ int FT_insertFile(char *path, void *contents, size_t length) {
       return CONFLICTING_PATH;
 
    curr = FT_traversePathFrom(path, root);
-   result = FT_insertRestOfPath(path, curr, FALSE, contents, length);
+   result = FT_insertRestOfPath(path, curr, TRUE, contents, length);
    assert(CheckerFT_isValid(isInitialized, root, count));
 
    return result;

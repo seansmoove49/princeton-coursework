@@ -42,7 +42,7 @@ boolean CheckerFT_Node_isValid(Node_T n) {
       fprintf(stderr, "File node has children\n");
       return FALSE;
    }
-
+   
    /* Sample check: a directory node cannot have contents */
    if (!Node_isFile(n) && Node_getFileContents(n) != NULL) {
       fprintf(stderr, "Directory node has contents\n");

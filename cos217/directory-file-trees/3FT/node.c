@@ -109,7 +109,7 @@ static Node_T Node_createDir(const char* dir, const Node_T parent) {
 
 	new->file = FALSE;
 	new->contents = NULL;
-
+	new->length = 0;
 	new->parent = parent;
 	new->children = DynArray_new(0);
 	
@@ -142,20 +142,18 @@ static Node_T Node_createFile(const char* dir, const Node_T parent,
 		return NULL;
 
 	new->path = Node_buildPath(parent, dir);
-	
-	new->length = length;
+
 	if (new->path == NULL) {
 		free(new);
 		return NULL;
 	}
-
-   (void) Node_assignContents(new, contents, length);
 	new->file = TRUE;
+   (void) Node_assignContents(new, contents, length);
 
 	new->parent = parent;
 	new->children = NULL;
 
-	return NULL;
+	return new;
 }
 
 /* the public one - returns NULL if didn't work */
@@ -265,7 +263,10 @@ boolean Node_isFile(const Node_T n) {
 */
 void* Node_getFileContents(const Node_T n) {
 	assert(n != NULL);
+<<<<<<< HEAD
 	/* assert(Node_isFile(n)); */
+=======
+>>>>>>> c725f8b40fcfeb490fabb35d1f01636d38c6fb32
 
 	return n->contents;
 }
@@ -459,6 +460,7 @@ void* Node_assignContents(Node_T n, void* contents, size_t length) {
 
    oldContents = n->contents;
    n->contents = contents;
+	n->length = length;
 
    return oldContents;
 }
