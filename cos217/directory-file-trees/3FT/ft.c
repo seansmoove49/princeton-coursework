@@ -74,10 +74,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
    size_t newCount = 0;
 
    assert(path != NULL);
-
-   if (parent != NULL && Node_isFile(parent))
-      return NOT_A_DIRECTORY;
-
+   
    if (curr == NULL) {
       if (root != NULL) {
          return CONFLICTING_PATH;
@@ -88,6 +85,9 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
 
       restPath += (strlen(Node_getPath(curr)) + 1);
    }
+
+   if (parent != NULL && Node_isFile(parent))
+      return NOT_A_DIRECTORY;
 
    copyPath = malloc(strlen(restPath) + 1);
    if (copyPath == NULL)
