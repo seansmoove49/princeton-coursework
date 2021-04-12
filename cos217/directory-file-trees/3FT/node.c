@@ -193,13 +193,15 @@ size_t Node_destroy(Node_T n) {
 
 	assert(n != NULL);
 
-	dynArrLength = DynArray_getLength(n->children);
+	if (!Node_isFile(n)) {
+		dynArrLength = DynArray_getLength(n->children);
 
-	for (i = 0; i < dynArrLength; i++) {
-		curr = DynArray_get(n->children, i);
-		count += Node_destroy(curr);
+		for (i = 0; i < dynArrLength; i++) {
+			curr = DynArray_get(n->children, i);
+			count += Node_destroy(curr);
+		}
+		DynArray_free(n->children);
 	}
-	DynArray_free(n->children);
 
 	free(n->path);
 	free(n);
