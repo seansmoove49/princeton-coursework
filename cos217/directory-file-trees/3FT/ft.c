@@ -323,7 +323,6 @@ boolean FT_containsFile(char *path) {
 
 int FT_rmFile(char *path) {
    Node_T curr, parent;
-   int result;
 
    assert(CheckerFT_isValid(isInitialized,root,count));
    assert(path != NULL);
@@ -333,23 +332,21 @@ int FT_rmFile(char *path) {
 
    curr = FT_traversePathFrom(path, root);
    if(curr == NULL)
-      result =  NO_SUCH_PATH;
+      return NO_SUCH_PATH;
    else if (Node_isFile(curr)==FALSE){
-      result  = NOT_A_FILE;
+      return NOT_A_FILE;
    }
    else if (strcmp(Node_getPath(curr), path)) {
-         return NO_SUCH_PATH;
+      return NO_SUCH_PATH;
    }
-
-   else{
-      parent = Node_getParent(curr);
-      Node_unlinkChild(parent, curr);
-      count -= Node_destroy(curr);
-   }
-      
+   
+   parent = Node_getParent(curr);
+   Node_unlinkChild(parent, curr);
+   count -= Node_destroy(curr);
+   
 
    assert(CheckerFT_isValid(isInitialized,root,count));
-   return result;
+   return SUCCESS;
 }
 
 /*--------------------------------------------------------------------*/
