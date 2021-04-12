@@ -4,7 +4,7 @@ clean:
 	rm -f sampleft
 
 clobber: clean
-	rm -f ft_client.o dynarray.o *~
+	rm -f ft_client.o dynarray.o node.o ft.o checkerFT.o *~
 
 sampleft: dynarray.o node.o ft.o ft_client.o checkerFT.o
 	gcc217 -g dynarray.o ft.o ft_client.o node.o checkerFT.o -o sampleft
