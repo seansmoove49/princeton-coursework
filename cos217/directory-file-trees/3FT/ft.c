@@ -419,12 +419,7 @@ void *FT_replaceFileContents(char *path, void *newContents,
    else if (strcmp(path, Node_getPath(curr)))
       return NULL;
 
-   oldContents = malloc(newLength);
-   if (oldContents == NULL)
-      return NULL; 
-   memcpy(oldContents, Node_getFileContents(curr));
-
-   Node_assignContents(curr, newContents, newLength);
+   oldContents = Node_assignContents(curr, newContents, newLength);
    assert(CheckerFT_isValid(isInitialized, root, count));
 
    return oldContents;                         
