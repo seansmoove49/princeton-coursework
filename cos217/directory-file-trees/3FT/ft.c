@@ -427,6 +427,8 @@ int FT_stat(char *path, boolean *type, size_t *length) {
    curr = FT_traversePathFrom(path, root);
    if(curr == NULL)
       return NO_SUCH_PATH;
+   else if (strcmp(path, Node_getPath(curr)))
+      return NO_SUCH_PATH;
    else if (Node_isFile(curr)==FALSE){
       *type = FALSE;
    }
