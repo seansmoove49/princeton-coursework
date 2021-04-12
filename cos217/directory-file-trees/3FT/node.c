@@ -5,6 +5,7 @@
 
 #include <stddef.h>
 #include <string.h>
+#include <assert.h>
 
 #include "node.h"
 #include "dynarray.h"
@@ -124,9 +125,8 @@ static Node_T Node_createDir(const char* dir, const Node_T parent) {
 */
 
 static Node_T Node_createFile(const char* dir, const Node_T parent, 
-							  const void *contents, size_t length) {
+							  void *contents, size_t length) {
 	Node_T new;
-	void *contentCpy = NULL;
 
 	assert(parent == NULL || CheckerFT_Node_isValid(parent));
 	assert(dir != NULL);
@@ -153,10 +153,11 @@ static Node_T Node_createFile(const char* dir, const Node_T parent,
 	return NULL;
 }
 
+/* the public one - returns NULL if didn't work */
+
 Node_T Node_create(const char* dir, const Node_T parent, 
-								   boolean isFile, void* contents, size_t length) {
+						 boolean isFile, void* contents, size_t length) {
 	Node_T new;
-	int result;
 
 	assert(parent == NULL || CheckerFT_Node_isValid(parent));
 	assert(dir != NULL);
@@ -277,7 +278,7 @@ int Node_hasChild(Node_T n, const char* path, size_t* childID) {
 	assert(path != NULL);
 	assert(!Node_isFile(n));
 
-	checker = Node_create(path, NULL, FALSE, NULL, NULL);
+	checker = Node_create(path, NULL, FALSE, NULL, 0);
 	if (checker == NULL) {
 		return -1;
 	}
@@ -360,7 +361,6 @@ static int Node_hasParentChildErr(const Node_T parent,
  */
 int Node_linkChild(Node_T parent, const Node_T child) {
 	size_t i;
-	char *rest;
 
 	assert(parent != NULL);
 	assert(child != NULL);

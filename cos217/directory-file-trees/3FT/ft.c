@@ -98,7 +98,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
    while (dirToken != NULL) {
       tempToken = dirToken;
       /* creating a directory node */
-      new = Node_create(dirToken, curr, FALSE, NULL, NULL);
+      new = Node_create(dirToken, curr, FALSE, NULL, 0);
 
       if (firstNew == NULL)
          firstNew = new;
@@ -129,7 +129,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
       curr = Node_getParent(new);
       Node_destroy(new);
 
-      new = Node_create(dirToken, curr, TRUE, contents, length);
+      new = Node_create(tempToken, curr, TRUE, contents, length);
 
       if (firstNew == NULL)
          firstNew = new;
@@ -447,7 +447,7 @@ int FT_stat(char *path, boolean *type, size_t *length) {
    if(!isInitialized)
       return INITIALIZATION_ERROR;
 
-   curr = DT_traversePath(path);
+   curr = FT_traversePath(path);
    if(curr == NULL)
       return NO_SUCH_PATH;
    else if (Node_isFile(curr)==FALSE){
@@ -505,7 +505,7 @@ static size_t FT_preOrderTraversal(Node_T n, DynArray_T d, size_t i) {
       (void) DynArray_set(d, i, Node_getPath(n));
       i++;
       for(c = 0; c < Node_getNumChildren(n); c++)
-         i = DT_preOrderTraversal(Node_getChild(n, c), d, i);
+         i = FT_preOrderTraversal(Node_getChild(n, c), d, i);
    }
    return i;
 }

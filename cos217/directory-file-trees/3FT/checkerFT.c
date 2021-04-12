@@ -11,7 +11,7 @@
 #include "checkerFT.h"
 
 
-/* see checkerDT.h for specification */
+/* see checkerFT.h for specification */
 boolean CheckerFT_Node_isValid(Node_T n) {
    Node_T parent;
    const char* npath;
@@ -38,7 +38,7 @@ boolean CheckerFT_Node_isValid(Node_T n) {
    }
 
    /* Sample check: a file node cannot have children */
-   if (Node_isFile(n) && Node_getNumChildren != 0) {
+   if (Node_isFile(n) && Node_getNumChildren(n) != 0) {
       fprintf(stderr, "File node has children\n");
       return FALSE;
    }
@@ -104,7 +104,7 @@ boolean CheckerFT_Node_isValid(Node_T n) {
                exit(EXIT_FAILURE);
             }
             strcpy(strChild, Node_getPath(child));
-            fprintf(stderr, "%d", c);
+            fprintf(stderr, "%zu", c);
             fprintf(stderr, "child: %s \n", strChild);
             tempChildToken = strtok(strChild, delimiter);
 
@@ -159,7 +159,7 @@ static boolean CheckerFT_treeCheck(Node_T n, size_t *pnumNodes)
    {
       /* Sample check on each non-root node: node must be valid */
       /* If not, pass that failure back up immediately */
-      if(!CheckerDT_Node_isValid(n))
+      if(!CheckerFT_Node_isValid(n))
          return FALSE;
       *pnumNodes = *pnumNodes + 1;
       
@@ -181,7 +181,7 @@ static boolean CheckerFT_treeCheck(Node_T n, size_t *pnumNodes)
          
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
-         if(!CheckerDT_treeCheck(child, pnumNodes))
+         if(!CheckerFT_treeCheck(child, pnumNodes))
             return FALSE;
          
       }
@@ -189,7 +189,7 @@ static boolean CheckerFT_treeCheck(Node_T n, size_t *pnumNodes)
    return TRUE;
 }
 
-/* see checkerDT.h for specification */
+/* see checkerFT.h for specification */
 boolean CheckerFT_isValid(boolean isInit, Node_T root, size_t count) {
    boolean treeCheck;
    size_t numNodes;
