@@ -293,7 +293,7 @@ void *FT_getFileContents(char *path) {
    assert(path != NULL);
 
    if (!isInitialized)
-      return FALSE;
+      return NULL;
 
    curr = FT_traversePathFrom(path, root);
 
