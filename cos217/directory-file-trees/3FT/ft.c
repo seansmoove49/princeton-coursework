@@ -239,6 +239,10 @@ int FT_insertFile(char *path, void *contents, size_t length) {
    if (!isInitialized)
       return INITIALIZATION_ERROR;
 
+   /* a file can't be the root */
+   if (!strstr(path, "/"))
+      return CONFLICTING_PATH;
+
    curr = FT_traversePathFrom(path, root);
    result = FT_insertRestOfPath(path, curr, FALSE, contents, length);
    assert(CheckerFT_isValid(isInitialized, root, count));
