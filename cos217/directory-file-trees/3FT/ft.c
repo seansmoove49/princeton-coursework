@@ -97,8 +97,15 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
 
    while (dirToken != NULL) {
       tempToken = dirToken;
-      /* creating a directory node */
-      new = Node_create(dirToken, curr, FALSE, NULL, 0);
+      dirToken = strtok(NULL, "/");
+
+      /* last node is a file */
+      if (isFile && dirToken == NULL) {
+         new = Node_create(tempToken, curr, TRUE, length, contents);
+      } else {
+         /* creating a directory node */
+      new = Node_create(tempToken, curr, FALSE, NULL, 0);
+      }
       newCount++;
 
       if (firstNew == NULL)
@@ -120,38 +127,6 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
       }
 
       curr = new;
-      dirToken = strtok(NULL, "/");
-   }
-
-   /* replace the last node with a file if needed 
-      this is entirely duplicate code. will be rewritten later, need
-      it working first */
-   if (isFile) {
-      curr = Node_getParent(new);
-      Node_destroy(new);
-
-      new = Node_create(tempToken, curr, TRUE, contents, length);
-
-      if (firstNew == NULL)
-         firstNew = new;
-      else {
-         /* ft link parent to child code with curr and new as params */
-         if (Node_linkChild(curr, new) != SUCCESS) {
-            (void) Node_destroy(new);
-            (void) Node_destroy(firstNew);
-            free(copyPath);
-            return PARENT_CHILD_ERROR;
-         }
-      }
-
-      if (new == NULL) {
-         (void) Node_destroy(firstNew);
-         free(copyPath);
-         return MEMORY_ERROR;
-      }
-
-      curr = new;
-
    }
 
    free(copyPath);
