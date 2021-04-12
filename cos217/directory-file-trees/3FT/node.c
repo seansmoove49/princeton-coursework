@@ -217,10 +217,13 @@ const char* Node_getPath(const Node_T n) {
 
 /*
   Returns the number of child directories n has.
+  If n is a file, return 0. 
 */
 size_t Node_getNumChildren(const Node_T n) {
 	assert(n != NULL);
-	assert(!Node_isFile(n));
+
+	if (Node_isFile(n))
+		return 0;
 	return DynArray_getLength(n->children);
 }
 

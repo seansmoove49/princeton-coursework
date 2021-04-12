@@ -37,6 +37,18 @@ boolean CheckerFT_Node_isValid(Node_T n) {
       return FALSE;
    }
 
+   /* Sample check: a file node cannot have children */
+   if (Node_isFile(n) && Node_getNumChildren != 0) {
+      fprintf(stderr, "File node has children\n");
+      return FALSE;
+   }
+
+   /* Sample check: a directory node cannot have contents */
+   if (!Node_isFile(n) && Node_getFileContents(n) != NULL) {
+      fprintf(stderr, "Directory node has contents\n");
+      return FALSE;
+   }
+
    parent = Node_getParent(n);
    if(parent != NULL) {
       npath = Node_getPath(n);
@@ -217,7 +229,14 @@ boolean CheckerFT_isValid(boolean isInit, Node_T root, size_t count) {
             fprintf(stderr, "The root node has a parent " 
             "field not equal to NULL\n");
             return FALSE;
-         }   
+         }  
+
+         /* Sample check on a top-level data structure invariant:
+            the root node cannot be a file. */
+         if (Node_isFile(root)) {
+            fprintf(stderr, "The root cannot be a file\n");
+            return FALSE;
+         }
       }
       /* Sample check on a top-level data structure invariant:
       if the DT is  initialized and the root is NULL, its count 
