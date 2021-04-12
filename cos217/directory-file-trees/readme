@@ -21,7 +21,13 @@ complete the assignment? COPY THE LIST of authorized sources of
 information given in the "Policies" web page to this section of the
 readme file, and edit it as appropriate.
 
-
+The course's lectures.
+The course's precepts.
+The course's website.
+Documents that are referenced directly by the course's website. 
+Such documents include the course's lecture slides and precept handouts.
+The course's current staff members outside of class time through office 
+hours.
 
 ------------------------------------------------------------------------
 Student 2: What authorized sources of information did you use to
@@ -29,7 +35,13 @@ complete the assignment? COPY THE LIST of authorized sources of
 information given in the "Policies" web page to this section of the
 readme file, and edit it as appropriate.
 
-
+The course's lectures.
+The course's precepts.
+The course's website.
+Documents that are referenced directly by the course's website. 
+Such documents include the course's lecture slides and precept handouts.
+The course's current staff members outside of class time through office 
+hours.
 
 ------------------------------------------------------------------------
 Student 1: What unauthorized sources of information did you use to
@@ -43,7 +55,7 @@ nature of the interaction, may additionally require the interaction
 being reported to the Committee on Discipline. Write "None" if you used
 no unauthorized sources of information.
 
-
+None
 
 ------------------------------------------------------------------------
 Student 2: What unauthorized sources of information did you use to
@@ -131,7 +143,8 @@ For bdtBad4, you do not have to find the bug. Instead, indicate what
 is different about trying to debug this executable in gdb versus the
 other three:
 
-The first three bad executables failed on specific lines in the gdb.
+The first three bad executables failed on specific function calls in 
+the gdb. We could identify which specific functions had the error. 
 This executable has an error that doesn't manifest until we print the
 BDT. Debugging with gdb allows us to find which specific block of code
 contains the bug and which function likely has issues (rmPath), but we 
@@ -141,7 +154,21 @@ For bdtBad5, you do not have to find the bug. Instead, indicate one
 hypothesis for how the program could crash within the DynArray module,
 which we promise is itself correct:
 
-note: the bug is in BDT_toString()
+The bug is located in BDT_toString(). Assuming that the implementation
+is similar to that of dtGood, the BDT_toString function relies on three
+DynArray functions: free, map, and new. We know these three functions
+to be implemented correctly, and free and new do not rely on any 
+information from BDT while map does. Therefore, we can infer that the 
+bug occurs sometime during the calling of map().
+
+When the client code calls map(), one of the parameters passed is a 
+callback function. The assert failing here is within this callback. 
+Since the client is controlling what happens in dynarray_map(), if they
+do not pass dynarray correct parameters, then the function will fail. 
+In particular, if the client does not write a callback function that 
+aligns with how they have set up the nodes in the rest of their 
+implementation, then when map() runs the callback function in these 
+nodes, it will fail an assert. 
 
 ------------------------------------------------------------------------
 What are your critiques of the given DT implementations, as
