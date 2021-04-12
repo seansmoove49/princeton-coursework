@@ -5,6 +5,7 @@
 
 #include <stddef.h>
 #include <string.h>
+#include <stdio.h>
 #include <assert.h>
 
 #include "node.h"
@@ -95,6 +96,7 @@ static Node_T Node_createDir(const char* dir, const Node_T parent) {
 		to fix this */
 
 	new = malloc(sizeof(struct node));
+	
 	if (new == NULL) 
 		return NULL;
 	
@@ -110,13 +112,14 @@ static Node_T Node_createDir(const char* dir, const Node_T parent) {
 	new->length = 0;
 	new->parent = parent;
 	new->children = DynArray_new(0);
+	
 	if (new->children == NULL) {
 		free(new->path);
 		free(new);
 		return NULL;
 	}
-
 	assert(CheckerFT_Node_isValid(new));
+	
 	return new;
 }
 
@@ -161,12 +164,16 @@ Node_T Node_create(const char* dir, const Node_T parent,
 
 	assert(parent == NULL || CheckerFT_Node_isValid(parent));
 	assert(dir != NULL);
-
+	
 	if (isFile) {
+		
+		
 		new = Node_createFile(dir, parent, contents, length);
 	}
-	else
+	else {
 		new = Node_createDir(dir, parent);
+	}
+		
 
 	return new;
 }
@@ -256,6 +263,10 @@ boolean Node_isFile(const Node_T n) {
 */
 void* Node_getFileContents(const Node_T n) {
 	assert(n != NULL);
+<<<<<<< HEAD
+	/* assert(Node_isFile(n)); */
+=======
+>>>>>>> c725f8b40fcfeb490fabb35d1f01636d38c6fb32
 
 	return n->contents;
 }
