@@ -195,7 +195,7 @@ int FT_insertDir(char *path) {
       return INITIALIZATION_ERROR;
 
    curr = FT_traversePathFrom(path, root);
-   result = FT_insertRestOfPath(path, curr, FALSE, NULL, NULL);
+   result = FT_insertRestOfPath(path, curr, FALSE, NULL, 0);
    assert(CheckerFT_isValid(isInitialized, root, count));
 
    return result;
@@ -447,7 +447,7 @@ int FT_stat(char *path, boolean *type, size_t *length) {
    if(!isInitialized)
       return INITIALIZATION_ERROR;
 
-   curr = FT_traversePath(path);
+   curr = FT_traversePathFrom(path, root);
    if(curr == NULL)
       return NO_SUCH_PATH;
    else if (Node_isFile(curr)==FALSE){
