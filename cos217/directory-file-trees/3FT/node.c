@@ -87,7 +87,8 @@ static Node_T Node_createDir(const char* dir, const Node_T parent) {
 
 	assert(parent == NULL || CheckerFT_Node_isValid(parent));
 	assert(dir != NULL);
-	assert(!Node_isFile(parent)); /* this will be moved into ft.c */
+	if (parent != NULL)
+		assert(!Node_isFile(parent)); /* this will be moved into ft.c */
 
 	/* original function keeps repeating the same assert even though
 	   this function never modifies the parent - make parent const
@@ -128,7 +129,11 @@ static Node_T Node_createFile(const char* dir, const Node_T parent,
 							  void *contents, size_t length) {
 	Node_T new;
 
-	assert(parent == NULL || CheckerFT_Node_isValid(parent));
+	/* file can't be the root */
+	if (parent == NULL)
+		return CONFLICTING_PATH;
+
+	assert(CheckerFT_Node_isValid(parent));
 	assert(dir != NULL);
 	assert(!Node_isFile(parent)); /* will be moved */
 
