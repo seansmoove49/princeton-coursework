@@ -107,7 +107,7 @@ static Node_T Node_createDir(const char* dir, const Node_T parent) {
 
 	new->file = FALSE;
 	new->contents = NULL;
-
+	new->length = 0;
 	new->parent = parent;
 	new->children = DynArray_new(0);
 	if (new->children == NULL) {
@@ -258,7 +258,6 @@ boolean Node_isFile(const Node_T n) {
 */
 void* Node_getFileContents(const Node_T n) {
 	assert(n != NULL);
-	assert(Node_isFile(n));
 
 	return n->contents;
 }
