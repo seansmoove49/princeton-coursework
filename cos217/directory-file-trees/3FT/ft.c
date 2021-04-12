@@ -337,9 +337,7 @@ int FT_rmFile(char *path) {
    else if (Node_isFile(curr)==FALSE){
       result  = NOT_A_FILE;
    }
-
-   else if (Node_isFile(curr) == TRUE) {
-      if (!strcmp(Node_getPath(curr), path))
+   else if (!strcmp(Node_getPath(curr), path)) {
          return NO_SUCH_PATH;
    }
 
