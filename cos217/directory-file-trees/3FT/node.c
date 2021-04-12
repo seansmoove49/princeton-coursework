@@ -139,15 +139,13 @@ static Node_T Node_createFile(const char* dir, const Node_T parent,
 		return NULL;
 
 	new->path = Node_buildPath(parent, dir);
-	
-	new->length = length;
+
 	if (new->path == NULL) {
 		free(new);
 		return NULL;
 	}
-
-   (void) Node_assignContents(new, contents, length);
 	new->file = TRUE;
+   (void) Node_assignContents(new, contents, length);
 
 	new->parent = parent;
 	new->children = NULL;
@@ -451,6 +449,7 @@ void* Node_assignContents(Node_T n, void* contents, size_t length) {
 
    oldContents = n->contents;
    n->contents = contents;
+	n->length = length;
 
    return oldContents;
 }
