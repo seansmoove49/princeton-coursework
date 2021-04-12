@@ -133,6 +133,6 @@ int Node_unlinkChild(Node_T parent, Node_T child);
 */
 char* Node_toString(Node_T n);
 
-void Node_assignContents(Node_T n, void* contents, size_t length);
+void*  Node_assignContents(Node_T n, void* contents, size_t length);
 
 #endif

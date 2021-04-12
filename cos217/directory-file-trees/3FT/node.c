@@ -139,7 +139,7 @@ Node_T Node_createFile(const char* dir, const Node_T parent,
 		return NULL;
 	}
 
-   Node_assignContents(new, contents, length);
+   (void) Node_assignContents(new, contents, length);
 	new->file = TRUE;
 
 	new->parent = parent;
@@ -171,7 +171,6 @@ size_t Node_destroy(Node_T n) {
 	DynArray_free(n->children);
 
 	free(n->path);
-	free(n->contents);
 	count++;
 
   	return count;
@@ -340,6 +339,9 @@ static int Node_hasParentChildErr(const Node_T parent,
 	if (strncmp(child->path, parent->path, i))
 		return 1;
 
+	if(child->parent != parent)
+      return 1;
+
 	rest = child->path + i;
 
 	if (strlen(child->path) >= i && rest[0] != '/')
@@ -405,25 +407,14 @@ char* Node_toString(Node_T n) {
    assign contents function - need to do for the file
 */
 
-void Node_assignContents(Node_T n, void* contents, size_t length) {
-   void *contentCpy;
+void* Node_assignContents(Node_T n, void* contents, size_t length) {
    void *oldContents;
 
    assert(n != NULL);
    assert(CheckerFT_Node_isValid(n));
 
-   /* file contents - memory given to the client */
-	if (contents != NULL) {
-		contentCpy = malloc(length); /* not null terminated */
-		if (contents == NULL)
-			return NULL;
-
-		memcpy(contentCpy, contents, length);
-	}
-
    oldContents = n->contents;
-   free(oldContents);
-   oldContents = NULL;
+   n->contents = contents;
 
-   n->contents = contentCpy;
+   return oldContents;
 }
