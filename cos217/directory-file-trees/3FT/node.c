@@ -129,10 +129,7 @@ static Node_T Node_createFile(const char* dir, const Node_T parent,
 							  void *contents, size_t length) {
 	Node_T new;
 
-	/* file can't be the root */
-	if (parent == NULL)
-		return CONFLICTING_PATH;
-
+	assert(parent != NULL);
 	assert(CheckerFT_Node_isValid(parent));
 	assert(dir != NULL);
 	assert(!Node_isFile(parent)); /* will be moved */
@@ -167,8 +164,11 @@ Node_T Node_create(const char* dir, const Node_T parent,
 	assert(parent == NULL || CheckerFT_Node_isValid(parent));
 	assert(dir != NULL);
 
-	if (isFile)
+	if (isFile) {
+		if (parent == NULL)
+			return CONFLICTING_PATH;
 		new = Node_createFile(dir, parent, contents, length);
+	}
 	else
 		new = Node_createDir(dir, parent);
 
