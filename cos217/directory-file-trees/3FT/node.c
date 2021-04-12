@@ -361,6 +361,7 @@ static int Node_hasParentChildErr(const Node_T parent,
   Returns PARENT_CHILD_ERROR if child is not a child of parent,
   and SUCCESS otherwise.
  */
+
 int Node_unlinkChild(Node_T parent, const Node_T child) {
    size_t i;
 
@@ -378,10 +379,6 @@ int Node_unlinkChild(Node_T parent, const Node_T child) {
    assert(CheckerFT_Node_isValid(parent));
 	return SUCCESS;
 }
-
-/*
-   removed the Node_addChild() module
-*/
 
 /*
   Returns a string representation for n, 

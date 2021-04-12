@@ -22,6 +22,13 @@ static size_t count;
 
 /*--------------------------------------------------------------------*/
 
+/* Starting at the parameter curr, traverses as far down the hierarchy
+   as possible while still matching the path parameter. 
+   
+   Returns a pointer to the farthest matching node down the path, or 
+   NULL if there is no node in curr's hierarchy that matches a prefix
+   of that path. */
+
 static Node_T FT_traversePathFrom(char* path, Node_T curr) {
    Node_T found;
    size_t i;
@@ -46,6 +53,46 @@ static Node_T FT_traversePathFrom(char* path, Node_T curr) {
       return curr;
    }
    return NULL;
+}
+
+/*--------------------------------------------------------------------*/
+
+static int FT_insertRestOfDirectory(char* path, Node_T parent) {
+   Node_T curr = parent; 
+   Node_T firstNew = NULL;
+   Node_T new;
+
+   char* copyPath;
+   char* restPath = path;
+   char* dirToken;
+   char* lastToken;
+
+   int result;
+   size_t newCount = 0;
+
+   assert(path != NULL);
+
+   if (curr == NULL) {
+      if (root != NULL) {
+         return CONFLICTING_PATH;
+      }
+   } else {
+      if (!strcmp(path, Node_getPath(curr)))
+         return ALREADY_IN_TREE;
+
+      restPath += (strlen(Node_getPath(curr)) + 1);
+   }
+
+   copyPath = malloc(strlen(restPath) + 1);
+   if (copyPath == NULL)
+      return MEMORY_ERROR;
+   strcpy(copyPath, restPath);
+   dirToken = strtok(copyPath, "/");
+
+   while (dirToken != NULL) {
+
+
+   }
 }
 
 /*--------------------------------------------------------------------*/
@@ -75,7 +122,7 @@ int FT_insertDir(char *path) {
    result = FT_insertRestOfPath(path, curr);
    assert(CheckerFT_isValid(isInitialized, root, count));
 
-   return 0;
+   return result;
 }
 
 /*--------------------------------------------------------------------*/

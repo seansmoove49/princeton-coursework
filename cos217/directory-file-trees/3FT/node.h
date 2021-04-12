@@ -29,7 +29,10 @@ typedef struct node* Node_T;
    do not point to any children.
 */
 
-Node_T Node_create(const char* dir, Node_T parent);
+Node_T Node_createDir(const char* dir, const Node_T parent);
+
+Node_T Node_createFile(const char* dir, const Node_T parent, 
+							  const void *contents, size_t length);
 
 /*
   Destroys the entire hierarchy of nodes rooted at n,
