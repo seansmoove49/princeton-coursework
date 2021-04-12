@@ -75,7 +75,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
 
    assert(path != NULL);
 
-   if (Node_isFile(parent))
+   if (parent != NULL && Node_isFile(parent))
       return NOT_A_DIRECTORY;
 
    if (curr == NULL) {
