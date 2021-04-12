@@ -274,7 +274,7 @@ int FT_rmDir(char *path) {
    Node_T curr;
    int result;
 
-   assert(CheckerDT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized,root,count));
    assert(path != NULL);
 
    if(!isInitialized)
@@ -287,11 +287,11 @@ int FT_rmDir(char *path) {
       result  = NOT_A_DIRECTORY;
    }
    else{
-      result = DT_rmPathAt(path, curr);
+      result = FT_rmPathAt(path, curr);
    }
       
 
-   assert(CheckerDT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized,root,count));
    return result;
 }
 
@@ -349,7 +349,7 @@ int FT_rmFile(char *path) {
    Node_T curr, parent;
    int result;
 
-   assert(CheckerDT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized,root,count));
    assert(path != NULL);
 
    if(!isInitialized)
@@ -368,7 +368,7 @@ int FT_rmFile(char *path) {
    }
       
 
-   assert(CheckerDT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized,root,count));
    return result;
 }
 
@@ -446,7 +446,7 @@ void *FT_replaceFileContents(char *path, void *newContents,
 int FT_stat(char *path, boolean *type, size_t *length) {
    Node_T curr;
 
-   assert(CheckerDT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized,root,count));
    assert(path != NULL);
 
    if(!isInitialized)
@@ -484,13 +484,13 @@ int FT_init(void) {
 /*--------------------------------------------------------------------*/
 
 int FT_destroy(void) {
-   assert(CheckerDT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized,root,count));
    if(!isInitialized)
       return INITIALIZATION_ERROR;
    FT_removePathFrom(root);
    root = NULL;
    isInitialized = 0;
-   assert(CheckerDT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized,root,count));
    return SUCCESS;
 }
 
@@ -546,7 +546,7 @@ char *FT_toString(void) {
    size_t totalStrlen = 1;
    char* result = NULL;
 
-   assert(CheckerDT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized,root,count));
 
    if(!isInitialized)
       return NULL;
@@ -560,7 +560,7 @@ char *FT_toString(void) {
    result = malloc(totalStrlen);
    if(result == NULL) {
       DynArray_free(nodes);
-      assert(CheckerDT_isValid(isInitialized,root,count));
+      assert(CheckerFT_isValid(isInitialized,root,count));
       return NULL;
    }
    *result = '\0';
@@ -569,7 +569,7 @@ char *FT_toString(void) {
                         (void *) result);
 
    DynArray_free(nodes);
-   assert(CheckerDT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized,root,count));
    return result;
 }
 
