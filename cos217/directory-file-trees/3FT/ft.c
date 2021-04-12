@@ -74,7 +74,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
    size_t newCount = 0;
 
    assert(path != NULL);
-   
+
    if (curr == NULL) {
       if (root != NULL) {
          return CONFLICTING_PATH;
@@ -337,6 +337,12 @@ int FT_rmFile(char *path) {
    else if (Node_isFile(curr)==FALSE){
       result  = NOT_A_FILE;
    }
+
+   else if (Node_isFile(curr) == TRUE) {
+      if (!strcmp(Node_getPath(curr), path))
+         return NO_SUCH_PATH;
+   }
+
    else{
       parent = Node_getParent(curr);
       Node_unlinkChild(parent, curr);
