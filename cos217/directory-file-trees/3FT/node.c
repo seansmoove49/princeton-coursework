@@ -299,6 +299,39 @@ Node_T Node_getParent(Node_T n) {
 	return n->parent;
 }
 
+
+static int Node_hasParentChildErr(const Node_T parent, 
+                                  const Node_T child) {
+	size_t i;
+	char *rest;
+
+	assert(parent != NULL);
+	assert(child != NULL);
+	assert(CheckerFT_Node_isValid(parent));
+	assert(CheckerFT_Node_isValid(child));
+
+	i = strlen(parent->path);
+
+	if (strncmp(child->path, parent->path, i))
+		return 1;
+
+	if(child->parent != parent)
+      return 1;
+
+	rest = child->path + i;
+
+	if (strlen(child->path) >= i && rest[0] != '/')
+		return 1;
+
+   rest++;
+
+   if (strstr(rest, "/") != NULL)
+      return 1;
+
+   return 0;
+}
+
+
 /*
   Makes child a child of parent, if possible, and returns SUCCESS.
   This is not possible in the following cases:
@@ -343,37 +376,6 @@ int Node_linkChild(Node_T parent, const Node_T child) {
       assert(CheckerFT_Node_isValid(parent));
       return MEMORY_ERROR;
    }
-}
-
-static int Node_hasParentChildErr(const Node_T parent, 
-                                  const Node_T child) {
-	size_t i;
-	char *rest;
-
-	assert(parent != NULL);
-	assert(child != NULL);
-	assert(CheckerFT_Node_isValid(parent));
-	assert(CheckerFT_Node_isValid(child));
-
-	i = strlen(parent->path);
-
-	if (strncmp(child->path, parent->path, i))
-		return 1;
-
-	if(child->parent != parent)
-      return 1;
-
-	rest = child->path + i;
-
-	if (strlen(child->path) >= i && rest[0] != '/')
-		return 1;
-
-   rest++;
-
-   if (strstr(rest, "/") != NULL)
-      return 1;
-
-   return 0;
 }
 
 /*
