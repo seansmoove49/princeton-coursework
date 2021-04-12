@@ -104,8 +104,6 @@ boolean CheckerFT_Node_isValid(Node_T n) {
                exit(EXIT_FAILURE);
             }
             strcpy(strChild, Node_getPath(child));
-            fprintf(stderr, "%u", c);
-            fprintf(stderr, "child: %s \n", strChild);
             tempChildToken = strtok(strChild, delimiter);
 
             /* gets and stores the final token for the child path 
