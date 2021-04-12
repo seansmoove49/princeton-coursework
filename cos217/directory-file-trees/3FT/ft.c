@@ -65,7 +65,7 @@ static int FT_insertRestOfDirectory(char* path, Node_T parent) {
    char* copyPath;
    char* restPath = path;
    char* dirToken;
-   char* lastToken;
+   char* tempToken;
 
    int result;
    size_t newCount = 0;
