@@ -116,7 +116,7 @@ boolean CheckerFT_Node_isValid(Node_T n) {
             }
 
             strcpy(strSibling, Node_getPath(sibling));
-            fprintf(stderr, "sibling: %s \n", strSibling);
+            /*fprintf(stderr, "sibling: %s \n", strSibling);*/
             tempSiblingToken = strtok(strSibling, delimiter);
             
             /* gets and stores the final token for the sibling path 
