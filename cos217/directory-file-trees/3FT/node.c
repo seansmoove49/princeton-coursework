@@ -70,21 +70,6 @@ static char* Node_buildPath(Node_T n, const char* dir) {
    return path;
 }
 
-Node_T Node_create(const char* dir, const Node_T parent, 
-								   boolean isFile, void* contents, size_t length) {
-	Node_T new;
-	int result;
-
-	assert(parent == NULL || CheckerFT_Node_isValid(parent));
-	assert(dir != NULL);
-
-	if (isFile)
-		new = Node_createFile(dir, parent, contents, length);
-	else
-		new = Node_createDir(dir, parent);
-
-	return new;
-}
 
 
 /*
@@ -167,6 +152,23 @@ static Node_T Node_createFile(const char* dir, const Node_T parent,
 
 	return NULL;
 }
+
+Node_T Node_create(const char* dir, const Node_T parent, 
+								   boolean isFile, void* contents, size_t length) {
+	Node_T new;
+	int result;
+
+	assert(parent == NULL || CheckerFT_Node_isValid(parent));
+	assert(dir != NULL);
+
+	if (isFile)
+		new = Node_createFile(dir, parent, contents, length);
+	else
+		new = Node_createDir(dir, parent);
+
+	return new;
+}
+
 
 /*
 	Destroys the entire hierarchy of nodes rooted at n,
