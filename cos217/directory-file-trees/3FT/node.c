@@ -150,7 +150,7 @@ static Node_T Node_createFile(const char* dir, const Node_T parent,
 	new->parent = parent;
 	new->children = NULL;
 
-	return NULL;
+	return new;
 }
 
 /* the public one - returns NULL if didn't work */
