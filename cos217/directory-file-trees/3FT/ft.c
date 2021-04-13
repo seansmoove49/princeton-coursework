@@ -19,18 +19,19 @@
 static boolean isInitialized;
 /* a pointer to the root node in the hierarchy */
 static Node_T root;
-/* a count of the number of nodes in the hierarchy */
+/* a counter of the number of nodes in the hierarchy */
 static size_t count;
 
 /*--------------------------------------------------------------------*/
 
-/* Starting at the parameter curr, traverses as far down the hierarchy
+/* 
+   Starting at the parameter curr, traverses as far down the hierarchy
    as possible while still matching the path parameter. 
    
    Returns a pointer to the farthest matching node down the path, or 
    NULL if there is no node in curr's hierarchy that matches a prefix
-   of that path. */
-
+   of that path. 
+*/
 static Node_T FT_traversePathFrom(char* path, Node_T curr) {
    Node_T found;
    const char* currPath;
@@ -45,20 +46,7 @@ static Node_T FT_traversePathFrom(char* path, Node_T curr) {
    if (!strcmp(path, currPath))
       return curr;
 
-   /* theoretically our checker should make sure that files never have
-      children, so that's not something we need to take care of here */
-
    else if (!strncmp(path, currPath, strlen(currPath))) {
-
-      /*
-      for (i = 0; i < Node_getNumFileChildren(curr); i++) {
-         found = Node_getFileChild(curr, i);
-
-         if (!strcmp(path, Node_getPath(found)))
-            return found;
-      }
-      */
-
      for (i = 0; i < Node_getNumFileChildren(curr); i++) {
          found = FT_traversePathFrom(path, Node_getFileChild(curr, i));
          if (found != NULL)
@@ -75,7 +63,19 @@ static Node_T FT_traversePathFrom(char* path, Node_T curr) {
    return NULL;
 }
 
-/*--------------------------------------------------------------------*/
+/*
+   Inserts a new path into the tree rooted at parent, or, if parent is 
+   NULL, as the root of the data structure.
+
+   If a node representing path already exists, returns ALREADY_IN_TREE
+
+   If there is an allocation error in creating the new nodes or fields,
+   returns MEMORY_ERROR
+
+   If there is an error linking nodes, returns PARENT_CHILD_ERROR
+
+   Otherwise, returns SUCCESS
+*/
 
 static int FT_insertRestOfPath(char* path, Node_T parent, 
                         boolean isFile, void* contents, size_t length) {
@@ -165,19 +165,21 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
    }
 }
 
-/*--------------------------------------------------------------------*/
-
 /*
-   Inserts a new directory into the tree at path, if possible.
-   Returns SUCCESS if the new directory is inserted.
-   Returns INITIALIZATION_ERROR if not in an initialized state.
-   Returns CONFLICTING_PATH if path is not underneath existing root.
-   Returns NOT_A_DIRECTORY if a proper prefix of path exists as a file.
-   Returns ALREADY_IN_TREE if the path already exists (as dir or file).
-   Returns PARENT_CHILD_ERROR if a new child cannot be added in path.
-   Returns MEMORY_ERROR if unable to allocate sufficient memory.
+   Destroys the entire hierarchy of nodes rooted at curr,
+   including curr itself.
+*/
+/*
+static void FT_removePathFrom(Node_T curr) {
+   if(curr != NULL) {
+      count -= Node_destroy(curr);
+   }
+}
 */
 
+/*--------------------------------------------------------------------*/
+
+/* see ft.h for specification */
 int FT_insertDir(char *path) {
    Node_T curr;
    int result;
@@ -195,8 +197,7 @@ int FT_insertDir(char *path) {
    return result;
 }
 
-/*--------------------------------------------------------------------*/
-
+/* see ft.h for specification */
 boolean FT_containsDir(char *path) {
    Node_T curr;
    boolean result = TRUE;
@@ -222,17 +223,6 @@ boolean FT_containsDir(char *path) {
 
 /*--------------------------------------------------------------------*/
 /*
-   Destroys the entire hierarchy of nodes rooted at curr,
-   including curr itself.
-*/
-static void FT_removePathFrom(Node_T curr) {
-   if(curr != NULL) {
-      count -= Node_destroy(curr);
-   }
-}
-
-/*--------------------------------------------------------------------*/
-/*
   Removes the directory hierarchy rooted at path starting from
   curr. If curr is the data structure's root, root becomes NULL.
   Returns NO_SUCH_PATH if curr is not the node for path,
@@ -253,7 +243,7 @@ static int FT_rmPathAt(char* path, Node_T curr) {
       else
          Node_unlinkChild(parent, curr);
 
-      FT_removePathFrom(curr);
+      count -= Node_destroy(curr);
 
       return SUCCESS;
    }
@@ -262,8 +252,7 @@ static int FT_rmPathAt(char* path, Node_T curr) {
 
 }
 
-/*--------------------------------------------------------------------*/
-
+/* see ft.h for specification */
 int FT_rmDir(char *path) {
    Node_T curr;
    int result;
@@ -289,8 +278,7 @@ int FT_rmDir(char *path) {
    return result;
 }
 
-/*--------------------------------------------------------------------*/
-
+/* see ft.h for specification */
 int FT_insertFile(char *path, void *contents, size_t length) {
    Node_T curr;
    int result;
@@ -312,8 +300,7 @@ int FT_insertFile(char *path, void *contents, size_t length) {
    return result;
 }
 
-/*--------------------------------------------------------------------*/
-
+/* see ft.h for specification */
 boolean FT_containsFile(char *path) {
    Node_T curr;
    boolean result = TRUE;
@@ -337,8 +324,7 @@ boolean FT_containsFile(char *path) {
    return result;
 }
 
-/*--------------------------------------------------------------------*/
-
+/* see ft.h for specification */
 int FT_rmFile(char *path) {
    Node_T curr, parent;
 
@@ -367,8 +353,7 @@ int FT_rmFile(char *path) {
    return SUCCESS;
 }
 
-/*--------------------------------------------------------------------*/
-
+/* see ft.h for specification */
 void *FT_getFileContents(char *path) {
    Node_T curr;
    
@@ -392,8 +377,7 @@ void *FT_getFileContents(char *path) {
    return Node_getFileContents(curr);
 }
 
-/*--------------------------------------------------------------------*/
-
+/* see ft.h for specification */
 void *FT_replaceFileContents(char *path, void *newContents,
                              size_t newLength) {
    Node_T curr;
@@ -420,19 +404,7 @@ void *FT_replaceFileContents(char *path, void *newContents,
    return oldContents;                         
 }
 
-/*--------------------------------------------------------------------*/
-
-/*
-  Returns SUCCESS if path exists in the hierarchy,
-  returns NO_SUCH_PATH if it does not, and
-  returns INITIALIZATION_ERROR if the structure is not initialized.
-  When returning SUCCESSS,
-  if path is a directory: *type is set to FALSE, *length is unchanged
-  if path is a file: *type is set to TRUE, and
-                     *length is set to the length of file's contents.
-  When returning a non-SUCCESS status, *type and *length are unchanged.
- */
-
+/* see ft.h for specification */
 int FT_stat(char *path, boolean *type, size_t *length) {
    Node_T curr;
 
@@ -452,15 +424,14 @@ int FT_stat(char *path, boolean *type, size_t *length) {
    }
    else if (Node_isFile(curr)==TRUE){
       *type = TRUE;
-      *length = Node_getLength(curr);
+      *length = Node_getFileLength(curr);
    }
    
    return SUCCESS;
 }
 
 
-/*--------------------------------------------------------------------*/
-
+/* see ft.h for specification */
 int FT_init(void) {
    assert(CheckerFT_isValid(isInitialized, root, count));
    if (isInitialized)
@@ -473,13 +444,13 @@ int FT_init(void) {
    return SUCCESS;
 }
 
-/*--------------------------------------------------------------------*/
-
+/* see ft.h for specification */
 int FT_destroy(void) {
    assert(CheckerFT_isValid(isInitialized,root,count));
    if(!isInitialized)
       return INITIALIZATION_ERROR;
-   FT_removePathFrom(root);
+
+   count -= Node_destroy(root);
    root = NULL;
    isInitialized = 0;
    assert(CheckerFT_isValid(isInitialized,root,count));
@@ -537,6 +508,7 @@ static void FT_strcatAccumulate(char* str, char* acc) {
 
 /*--------------------------------------------------------------------*/
 
+/* see ft.h for specification */
 char *FT_toString(void) {
    DynArray_T nodes;
    size_t totalStrlen = 1;
