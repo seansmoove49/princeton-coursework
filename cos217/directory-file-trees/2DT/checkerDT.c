@@ -17,12 +17,9 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    const char* npath;
    const char* ppath;
    const char* rest;
-   size_t i, j, c;
+   size_t i, c;
    
-   char *strChild, *strSibling;
-   char *tempChildToken, *tempSiblingToken; 
-   char *finalChildToken, *finalSiblingToken, *delimiter; 
-   delimiter = "/";
+   
 
    /* Sample check: a NULL pointer is not a valid node */
    if(n == NULL) {
@@ -44,12 +41,10 @@ boolean CheckerDT_Node_isValid(Node_T n) {
       /* Sample check that parent's path must be prefix of n's path */
       ppath = Node_getPath(parent);
       i = strlen(ppath);
-      j = strlen(npath);
       if(strncmp(npath, ppath, i)) {
          fprintf(stderr, "P's path is not a prefix of C's path\n");
          return FALSE;
       }
-      
       
       /* Sample check that n's path after parent's path + '/'
          must have no further '/' characters */
@@ -71,54 +66,14 @@ boolean CheckerDT_Node_isValid(Node_T n) {
          {
             
             Node_T sibling = Node_getChild(n, c+1);
-            strChild = (char *)malloc(strlen(Node_getPath(child)+1));
-            if (strChild == NULL)
-            {
-               fprintf(stderr, "There is not sufficient memory!\n");
-               exit(EXIT_FAILURE);
-            }
-            strSibling = (char *)malloc(strlen(Node_getPath(sibling)+1));
-            if (strSibling == NULL)
-            {
-               fprintf(stderr, "There is not sufficient memory!\n");
-               exit(EXIT_FAILURE);
-            }
-            strcpy(strChild, Node_getPath(child));
-            fprintf(stderr, "%d", c);
-            fprintf(stderr, "child: %s \n", strChild);
-            tempChildToken = strtok(strChild, delimiter);
+            fprintf(stderr, "child: %s \n", Node_getPath(child));
+            fprintf(stderr, "sibling: %s \n", Node_getPath(sibling));
 
-            /* gets and stores the final token for the child path 
-            in finalChildToken */
-            while (tempChildToken!=NULL)
-            {
-               finalChildToken = tempChildToken;
-               tempChildToken = strtok(NULL, delimiter);
-
-            }
-
-            strcpy(strSibling, Node_getPath(sibling));
-            fprintf(stderr, "sibling: %s \n", strSibling);
-            tempSiblingToken = strtok(strSibling, delimiter);
-            
-            /* gets and stores the final token for the sibling path 
-            in finalSiblingToken */
-            while (tempSiblingToken!=NULL)
-            {
-               finalSiblingToken = tempSiblingToken;
-               tempSiblingToken = strtok(NULL, delimiter);
-            }
-            /* checks if the finalChildToken is greater than 
-            or equal to finalSiblingT */
-            if (strcmp(finalChildToken, finalSiblingToken)>=0)
+            if (Node_compare(child, sibling)<=0)
             {
                fprintf(stderr, "The children are not stored in sorted order\n");
-               free(strSibling);
-               free(strChild);
                return FALSE;
             }
-            free(strSibling);
-            free(strChild);
          }
       }
 
