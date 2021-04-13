@@ -376,6 +376,7 @@ int Node_linkChild(Node_T parent, const Node_T child) {
 	assert(CheckerFT_Node_isValid(parent));
 	assert(CheckerFT_Node_isValid(child));
 
+	/* status code error checks */
 	if (Node_isFile(parent)) 
 		return NOT_A_DIRECTORY;
 	
@@ -385,14 +386,15 @@ int Node_linkChild(Node_T parent, const Node_T child) {
    if (Node_hasParentChildErr(parent, child))
       return PARENT_CHILD_ERROR;
 
-	/* adding the two types */
 	if (child->isFile) {
+		/* adding a file node */
 		if (DynArray_bsearch(parent->files, child, &i, 
 			(int (*)(const void*, const void*)) Node_compare) == 1) 
 			return ALREADY_IN_TREE;
 
 		added = DynArray_addAt(parent->files, i, child);
 	} else {
+		/* adding a directory node */
 		if (DynArray_bsearch(parent->directories, child, &i, 
 			(int (*)(const void*, const void*)) Node_compare) == 1) 
 			return ALREADY_IN_TREE;
