@@ -19,10 +19,12 @@ boolean CheckerFT_Node_isValid(Node_T n) {
    const char* rest;
    size_t i, j, c;
    
+   /*
    char *strChild, *strSibling;
    char *tempChildToken, *tempSiblingToken; 
    char *finalChildToken, *finalSiblingToken, *delimiter; 
    delimiter = "/";
+   */
 
    /* Sample check: a NULL pointer is not a valid node */
    if(n == NULL) {
