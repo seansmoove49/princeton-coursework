@@ -48,6 +48,7 @@ static Node_T FT_traversePathFrom(char* path, Node_T curr) {
    if (!strcmp(path, currPath))
       return curr;
 
+   /* recur down each child node */
    else if (!strncmp(path, currPath, strlen(currPath))) {
      for (i = 0; i < Node_getNumFileChildren(curr); i++) {
          found = FT_traversePathFrom(path, Node_getFileChild(curr, i));
@@ -67,13 +68,12 @@ static Node_T FT_traversePathFrom(char* path, Node_T curr) {
 
 /*
    Inserts a new path into the tree rooted at parent, or, if parent is 
-   NULL, as the root of the data structure.
+   NULL, as the root of the data structure. If isFile == TRUE, the last
+   node in the path is file with contents and length as specified. 
 
    If a node representing path already exists, returns ALREADY_IN_TREE
-
    If there is an allocation error in creating the new nodes or fields,
    returns MEMORY_ERROR
-
    If there is an error linking nodes, returns PARENT_CHILD_ERROR
 
    Otherwise, returns SUCCESS
@@ -94,6 +94,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
 
    assert(path != NULL);
 
+   /* alternate error codes */
    if (curr == NULL) {
       if (root != NULL) {
          return CONFLICTING_PATH;
@@ -108,6 +109,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
    if (parent != NULL && Node_isFile(parent))
       return NOT_A_DIRECTORY;
 
+   /* creating the nodes in the path */
    copyPath = malloc(strlen(restPath) + 1);
    if (copyPath == NULL)
       return MEMORY_ERROR;
@@ -147,6 +149,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
 
    free(copyPath);
 
+   /* adding path to file tree */
    if (parent == NULL) {
       root = firstNew;
       count = newCount;
@@ -438,6 +441,8 @@ int FT_stat(char *path, boolean *type, size_t *length) {
 
    assert(CheckerFT_isValid(isInitialized, root, count));
    assert(path != NULL);
+   assert(type != NULL);
+   assert(length != NULL);
 
    if(!isInitialized)
       return INITIALIZATION_ERROR;
@@ -450,7 +455,7 @@ int FT_stat(char *path, boolean *type, size_t *length) {
    else if (Node_isFile(curr) == FALSE){
       *type = FALSE;
    }
-   else if (Node_isFile(curr) == TRUE){
+   else if (Node_isFile(curr) == TRUE) {
       *type = TRUE;
       *length = Node_getFileLength(curr);
    }
