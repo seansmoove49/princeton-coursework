@@ -97,17 +97,22 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
    /* alternate error codes */
    if (curr == NULL) {
       if (root != NULL) {
+         /* path not under existing root */
          return CONFLICTING_PATH;
       }
    } else {
-      if (!strcmp(path, Node_getPath(curr)))
+      if (!strcmp(path, Node_getPath(curr))) {
+         /* path/node already in tree*/
          return ALREADY_IN_TREE;
+      }
 
       restPath += (strlen(Node_getPath(curr)) + 1);
    }
 
-   if (parent != NULL && Node_isFile(parent))
+   if (parent != NULL && Node_isFile(parent)) {
+      /* files can't have children */
       return NOT_A_DIRECTORY;
+   }
 
    /* creating the nodes in the path */
    copyPath = malloc(strlen(restPath) + 1);
