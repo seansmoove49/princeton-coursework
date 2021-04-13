@@ -44,18 +44,18 @@ static Node_T FT_traversePathFrom(char* path, Node_T curr) {
    if (curr == NULL) return NULL;
 
    currPath = Node_getPath(curr);
-
    if (!strcmp(path, currPath))
       return curr;
 
    /* recur down each child node */
    else if (!strncmp(path, currPath, strlen(currPath))) {
-     for (i = 0; i < Node_getNumFileChildren(curr); i++) {
+      /* check file children */
+      for (i = 0; i < Node_getNumFileChildren(curr); i++) {
          found = FT_traversePathFrom(path, Node_getFileChild(curr, i));
          if (found != NULL)
             return found;
       }
-
+      /* check directory children */
       for (i = 0; i < Node_getNumDirChildren(curr); i++) {
          found = FT_traversePathFrom(path, Node_getDirChild(curr, i));
          if (found != NULL)
@@ -127,6 +127,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
          new = Node_create(tempToken, curr, FALSE, NULL, 0);
       newCount++;
 
+      /* linking child node to its parent */
       if (firstNew == NULL)
          firstNew = new;
       else {
@@ -138,6 +139,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
          }
       }
 
+      /* potential memory allocation errors */
       if (new == NULL) {
          (void) Node_destroy(firstNew);
          free(copyPath);
