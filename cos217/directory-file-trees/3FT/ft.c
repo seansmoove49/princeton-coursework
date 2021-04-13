@@ -14,6 +14,8 @@
 #include "node.h"
 #include "checkerFT.h"
 
+/*--------------------------------------------------------------------*/
+
 /* A File Tree is an AO with 3 state variables: */
 /* a flag for if it is in an initialized state (TRUE) or not (FALSE) */
 static boolean isInitialized;
@@ -76,7 +78,6 @@ static Node_T FT_traversePathFrom(char* path, Node_T curr) {
 
    Otherwise, returns SUCCESS
 */
-
 static int FT_insertRestOfPath(char* path, Node_T parent, 
                         boolean isFile, void* contents, size_t length) {
    Node_T curr = parent; 
@@ -117,19 +118,16 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
       tempToken = dirToken;
       dirToken = strtok(NULL, "/");
 
-      /* last node is a file */
-      if (isFile && dirToken == NULL) {
+      /* if needed make the last node a file; otherwise make a dir */
+      if (isFile && dirToken == NULL) 
          new = Node_create(tempToken, curr, TRUE, contents, length);
-      } else {
-         /* creating a directory node */
-      new = Node_create(tempToken, curr, FALSE, NULL, 0);
-      }
+      else 
+         new = Node_create(tempToken, curr, FALSE, NULL, 0);
       newCount++;
 
       if (firstNew == NULL)
          firstNew = new;
       else {
-         /* ft link parent to child code with curr and new as params */
          if (Node_linkChild(curr, new) != SUCCESS) {
             (void) Node_destroy(new);
             (void) Node_destroy(firstNew);
@@ -166,16 +164,81 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
 }
 
 /*
-   Destroys the entire hierarchy of nodes rooted at curr,
-   including curr itself.
-*/
-/*
-static void FT_removePathFrom(Node_T curr) {
-   if(curr != NULL) {
+  Removes the directory hierarchy rooted at path starting from
+  curr. If curr is the data structure's root, root becomes NULL.
+  
+  Returns NO_SUCH_PATH if curr is not the node for path,
+  and SUCCESS otherwise.
+ */
+static int FT_rmPathAt(char* path, Node_T curr) {
+
+   Node_T parent;
+
+   assert(path != NULL);
+   assert(curr != NULL);
+
+   parent = Node_getParent(curr);
+
+   if(!strcmp(path,Node_getPath(curr))) {
+      if(parent == NULL)
+         root = NULL;
+      else
+         Node_unlinkChild(parent, curr);
+
       count -= Node_destroy(curr);
+
+      return SUCCESS;
    }
+   else
+      return NO_SUCH_PATH;
 }
+
+/*
+   Performs a pre-order traversal of the tree rooted at n,
+   inserting each payload to DynArray_T d beginning at index i.
+   Returns the next unused index in d after the insertion(s).
 */
+static size_t FT_preOrderTraversal(Node_T n, DynArray_T d, size_t i) {
+   size_t c;
+
+   assert(d != NULL);
+
+   if(n != NULL) {
+      (void) DynArray_set(d, i, Node_getPath(n));
+      i++;
+
+      for(c = 0; c < Node_getNumFileChildren(n); c++)
+         i = FT_preOrderTraversal(Node_getFileChild(n, c), d, i);
+
+      for(c = 0; c < Node_getNumDirChildren(n); c++)
+         i = FT_preOrderTraversal(Node_getDirChild(n, c), d, i);
+   }
+   return i;
+}
+
+/*
+   Alternate version of strlen that uses pAcc as an in-out parameter
+   to accumulate a string length, rather than returning the length of
+   str, and also always adds one more in addition to str's length.
+*/
+static void FT_strlenAccumulate(char* str, size_t* pAcc) {
+   assert(pAcc != NULL);
+
+   if(str != NULL)
+      *pAcc += (strlen(str) + 1);
+}
+
+/*
+   Alternate version of strcat that inverts the typical argument
+   order, appending str onto acc, and also always adds a newline at
+   the end of the concatenated string.
+*/
+static void FT_strcatAccumulate(char* str, char* acc) {
+   assert(acc != NULL);
+
+   if(str != NULL)
+      strcat(acc, str); strcat(acc, "\n");
+}
 
 /*--------------------------------------------------------------------*/
 
@@ -221,60 +284,28 @@ boolean FT_containsDir(char *path) {
    return result;
 }
 
-/*--------------------------------------------------------------------*/
-/*
-  Removes the directory hierarchy rooted at path starting from
-  curr. If curr is the data structure's root, root becomes NULL.
-  Returns NO_SUCH_PATH if curr is not the node for path,
-  and SUCCESS otherwise.
- */
-static int FT_rmPathAt(char* path, Node_T curr) {
-
-   Node_T parent;
-
-   assert(path != NULL);
-   assert(curr != NULL);
-
-   parent = Node_getParent(curr);
-
-   if(!strcmp(path,Node_getPath(curr))) {
-      if(parent == NULL)
-         root = NULL;
-      else
-         Node_unlinkChild(parent, curr);
-
-      count -= Node_destroy(curr);
-
-      return SUCCESS;
-   }
-   else
-      return NO_SUCH_PATH;
-
-}
-
 /* see ft.h for specification */
 int FT_rmDir(char *path) {
    Node_T curr;
    int result;
 
-   assert(CheckerFT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized, root, count));
    assert(path != NULL);
 
    if(!isInitialized)
       return INITIALIZATION_ERROR;
 
    curr = FT_traversePathFrom(path, root);
-   if(curr == NULL)
+   if (curr == NULL)
       result =  NO_SUCH_PATH;
-   else if (Node_isFile(curr)==TRUE){
-      result  = NOT_A_DIRECTORY;
+   else if (Node_isFile(curr) == TRUE){
+      result = NOT_A_DIRECTORY;
    }
    else{
       result = FT_rmPathAt(path, curr);
    }
-      
 
-   assert(CheckerFT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized, root, count));
    return result;
 }
 
@@ -337,17 +368,14 @@ int FT_rmFile(char *path) {
    curr = FT_traversePathFrom(path, root);
    if(curr == NULL)
       return NO_SUCH_PATH;
-   else if (Node_isFile(curr)==FALSE){
+   else if (Node_isFile(curr)==FALSE) 
       return NOT_A_FILE;
-   }
-   else if (strcmp(Node_getPath(curr), path)) {
+   else if (strcmp(Node_getPath(curr), path)) 
       return NO_SUCH_PATH;
-   }
    
    parent = Node_getParent(curr);
    Node_unlinkChild(parent, curr);
    count -= Node_destroy(curr);
-   
 
    assert(CheckerFT_isValid(isInitialized,root,count));
    return SUCCESS;
@@ -408,7 +436,7 @@ void *FT_replaceFileContents(char *path, void *newContents,
 int FT_stat(char *path, boolean *type, size_t *length) {
    Node_T curr;
 
-   assert(CheckerFT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized, root, count));
    assert(path != NULL);
 
    if(!isInitialized)
@@ -419,17 +447,16 @@ int FT_stat(char *path, boolean *type, size_t *length) {
       return NO_SUCH_PATH;
    else if (strcmp(path, Node_getPath(curr)))
       return NO_SUCH_PATH;
-   else if (Node_isFile(curr)==FALSE){
+   else if (Node_isFile(curr) == FALSE){
       *type = FALSE;
    }
-   else if (Node_isFile(curr)==TRUE){
+   else if (Node_isFile(curr) == TRUE){
       *type = TRUE;
       *length = Node_getFileLength(curr);
    }
    
    return SUCCESS;
 }
-
 
 /* see ft.h for specification */
 int FT_init(void) {
@@ -446,67 +473,16 @@ int FT_init(void) {
 
 /* see ft.h for specification */
 int FT_destroy(void) {
-   assert(CheckerFT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized, root, count));
    if(!isInitialized)
       return INITIALIZATION_ERROR;
 
    count -= Node_destroy(root);
    root = NULL;
    isInitialized = 0;
-   assert(CheckerFT_isValid(isInitialized,root,count));
+   assert(CheckerFT_isValid(isInitialized, root, count));
    return SUCCESS;
 }
-
-/*--------------------------------------------------------------------*/
-
-/*
-   Performs a pre-order traversal of the tree rooted at n,
-   inserting each payload to DynArray_T d beginning at index i.
-   Returns the next unused index in d after the insertion(s).
-*/
-static size_t FT_preOrderTraversal(Node_T n, DynArray_T d, size_t i) {
-   size_t c;
-
-   assert(d != NULL);
-
-   if(n != NULL) {
-      (void) DynArray_set(d, i, Node_getPath(n));
-      i++;
-
-      for(c = 0; c < Node_getNumFileChildren(n); c++)
-         i = FT_preOrderTraversal(Node_getFileChild(n, c), d, i);
-
-      for(c = 0; c < Node_getNumDirChildren(n); c++)
-         i = FT_preOrderTraversal(Node_getDirChild(n, c), d, i);
-   }
-   return i;
-}
-
-/*
-   Alternate version of strlen that uses pAcc as an in-out parameter
-   to accumulate a string length, rather than returning the length of
-   str, and also always adds one more in addition to str's length.
-*/
-static void FT_strlenAccumulate(char* str, size_t* pAcc) {
-   assert(pAcc != NULL);
-
-   if(str != NULL)
-      *pAcc += (strlen(str) + 1);
-}
-
-/*
-   Alternate version of strcat that inverts the typical argument
-   order, appending str onto acc, and also always adds a newline at
-   the end of the concatenated string.
-*/
-static void FT_strcatAccumulate(char* str, char* acc) {
-   assert(acc != NULL);
-
-   if(str != NULL)
-      strcat(acc, str); strcat(acc, "\n");
-}
-
-/*--------------------------------------------------------------------*/
 
 /* see ft.h for specification */
 char *FT_toString(void) {

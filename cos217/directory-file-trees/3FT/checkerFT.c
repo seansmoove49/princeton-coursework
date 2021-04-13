@@ -21,14 +21,14 @@ boolean CheckerFT_Node_isValid(Node_T n) {
    size_t i, c;
 
    /* Sample check: a NULL pointer is not a valid node */
-   if(n == NULL) {
+   if (n == NULL) {
       fprintf(stderr, "A node is a NULL pointer\n");
       return FALSE;
    }
 
    /* Sample check: a node with a path field that is
    a NULL pointer is not a valid node */
-   if(Node_getPath(n) == NULL) {
+   if (Node_getPath(n) == NULL) {
       fprintf(stderr, "Node has path field that is a NULL pointer\n");
       return FALSE;
    }
@@ -49,13 +49,13 @@ boolean CheckerFT_Node_isValid(Node_T n) {
    }
 
    parent = Node_getParent(n);
-   if(parent != NULL) {
+   if (parent != NULL) {
       npath = Node_getPath(n);
 
       /* Sample check that parent's path must be prefix of n's path */
       ppath = Node_getPath(parent);
       i = strlen(ppath);
-      if(strncmp(npath, ppath, i)) {
+      if (strncmp(npath, ppath, i)) {
          fprintf(stderr, "P's path is not a prefix of C's path\n");
          return FALSE;
       }
@@ -64,7 +64,7 @@ boolean CheckerFT_Node_isValid(Node_T n) {
          must have no further '/' characters */
       rest = npath + i;
       rest++;
-      if(strstr(rest, "/") != NULL) {
+      if (strstr(rest, "/") != NULL) {
          fprintf(stderr, "C's path has grandchild of P's path\n");
          return FALSE;
       }
@@ -78,9 +78,9 @@ boolean CheckerFT_Node_isValid(Node_T n) {
       if (c+1 < Node_getNumDirChildren(n)) {
          Node_T sibling = Node_getDirChild(n, c+1);
 
-         if (Node_compare(child, sibling)>=0)
-         {
-            fprintf(stderr, "The children are not stored in sorted order\n");
+         if (Node_compare(child, sibling) >= 0) {
+            fprintf(stderr, "The children are not stored"
+                    " in sorted order\n");
             return FALSE;
          }
       }
@@ -91,9 +91,9 @@ boolean CheckerFT_Node_isValid(Node_T n) {
       if (c+1 < Node_getNumFileChildren(n)) {
          Node_T sibling = Node_getFileChild(n, c+1);
 
-         if (Node_compare(child, sibling)>=0)
-         {
-            fprintf(stderr, "The children are not stored in sorted order\n");
+         if (Node_compare(child, sibling)>=0) {
+            fprintf(stderr, "The children are not stored"
+                    " in sorted order\n");
             return FALSE;
          }
       }
@@ -110,30 +110,25 @@ boolean CheckerFT_Node_isValid(Node_T n) {
 static boolean CheckerFT_treeCheck(Node_T n, size_t *pnumNodes) 
 {
    size_t c;
-   
 
-   if(n != NULL) 
-   {
+   if (n != NULL) {
       /* Sample check on each non-root node: node must be valid */
       /* If not, pass that failure back up immediately */
-      if(!CheckerFT_Node_isValid(n))
+      if (!CheckerFT_Node_isValid(n))
          return FALSE;
       *pnumNodes = *pnumNodes + 1;
       
       /* Sample check: check if child node 
       has a parent field equal to NULL (not a valid node)*/
-      if(strchr(Node_getPath(n), '/')!=NULL)
-      {
-            if (Node_getParent(n)==NULL)
-            {
+      if (strchr(Node_getPath(n), '/') != NULL) {
+            if (Node_getParent(n) == NULL) {
                fprintf(stderr, "The child node has a parent " 
-               "field equal to NULL\n");
+                       "field equal to NULL\n");
                return FALSE;
             }
       }
 
-      for(c = 0; c < Node_getNumDirChildren(n); c++)
-      {
+      for (c = 0; c < Node_getNumDirChildren(n); c++) {
          Node_T child = Node_getDirChild(n, c);
          
          /* if recurring down one subtree results in a failed check
@@ -142,8 +137,7 @@ static boolean CheckerFT_treeCheck(Node_T n, size_t *pnumNodes)
             return FALSE;
       }
 
-      for(c = 0; c < Node_getNumFileChildren(n); c++)
-      {
+      for (c = 0; c < Node_getNumFileChildren(n); c++) {
          Node_T child = Node_getFileChild(n, c);
          
          /* if recurring down one subtree results in a failed check
@@ -165,35 +159,33 @@ boolean CheckerFT_isValid(boolean isInit, Node_T root, size_t count) {
    /* Sample check on a top-level data structure invariant:
       if the DT is not initialized, its count should be 0
       and its root should be NULL. */
-   if(!isInit)
-   {
+   if (!isInit) {
       if (root != NULL) {
          fprintf(stderr, "Not initialized, but root is not NULL\n");
          return FALSE;
       }
-      if(count != 0) {
+      if (count != 0) {
          fprintf(stderr, "Not initialized, but count is not 0\n");
          return FALSE;
       }
    }
    
-   if(isInit)
-   {
-      if (root != NULL){
+   if(isInit) {
+      if (root != NULL) {
          /* Sample check on a top-level data structure invariant:
          if the DT is  initialized and the root is not NULL, its count 
          should be greater than 0 */
          if (count == 0) {
-            fprintf(stderr, "Initialized with a root node, but count is 0\n");
+            fprintf(stderr, "Initialized with a root node,"
+                            " but count is 0\n");
             return FALSE;
          }
          /* Sample check on a top-level data structure invariant:
          if the DT is  initialized and the root is not NULL, 
          the root node should have a parent field  equal to NULL */
-         if (Node_getParent(root)!=NULL)
-         {
+         if (Node_getParent(root) != NULL) {
             fprintf(stderr, "The root node has a parent " 
-            "field not equal to NULL\n");
+                    "field not equal to NULL\n");
             return FALSE;
          }  
 
@@ -207,9 +199,10 @@ boolean CheckerFT_isValid(boolean isInit, Node_T root, size_t count) {
       /* Sample check on a top-level data structure invariant:
       if the DT is  initialized and the root is NULL, its count 
       should be 0 */
-      if (root == NULL){
+      if (root == NULL) {
          if (count != 0) {
-            fprintf(stderr, "Initialized without a root node, but count is not 0\n");
+            fprintf(stderr, "Initialized without a root node, "
+                    "but count is not 0\n");
             return FALSE;
          }
       }
@@ -218,7 +211,7 @@ boolean CheckerFT_isValid(boolean isInit, Node_T root, size_t count) {
 
    /* Now checks invariants recursively at each node from the root. */
    treeCheck = CheckerFT_treeCheck(root, &numNodes);
-   if (numNodes!=count){
+   if (numNodes != count) {
       fprintf(stderr, "The count does not match the number of nodes\n");
       return FALSE;
    }
