@@ -19,7 +19,6 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    const char* rest;
    size_t i, c;
    
-   
 
    /* Sample check: a NULL pointer is not a valid node */
    if(n == NULL) {
@@ -64,10 +63,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
          Node_T child = Node_getChild(n, c);
          if (c+1 < Node_getNumChildren(n))
          {
-            
             Node_T sibling = Node_getChild(n, c+1);
-            fprintf(stderr, "child: %s \n", Node_getPath(child));
-            fprintf(stderr, "sibling: %s \n", Node_getPath(sibling));
 
             if (Node_compare(child, sibling)>=0)
             {
