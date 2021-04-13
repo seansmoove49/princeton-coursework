@@ -33,7 +33,7 @@ static size_t count;
 
 static Node_T FT_traversePathFrom(char* path, Node_T curr) {
    Node_T found;
-   char* currPath;
+   const char* currPath;
    size_t i;
 
    assert(path != NULL);
@@ -53,7 +53,7 @@ static Node_T FT_traversePathFrom(char* path, Node_T curr) {
       for (i = 0; i < Node_getNumFileChildren(curr); i++) {
          found = Node_getFileChild(curr, i);
 
-         if (!strcmpn(path, Node_getPath(found), strlen(currPath)))
+         if (!strncmp(path, Node_getPath(found), strlen(currPath)))
             return found;
       }
 
