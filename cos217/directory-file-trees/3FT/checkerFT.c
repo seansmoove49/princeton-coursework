@@ -74,23 +74,38 @@ boolean CheckerFT_Node_isValid(Node_T n) {
    /* Sample check: check if child node 
       has a neighboring sibling node whose path is less 
       than the child node's path (not in sorted order)*/
-   for(c = 0; c < Node_getNumChildren(n); c++)
+   for(c = 0; c < Node_getNumDirChildren(n); c++) {
+      Node_T child = Node_getDirChild(n, c);
+      if (c+1 < Node_getNumDirChildren(n))
       {
-         Node_T child = Node_getChild(n, c);
-         if (c+1 < Node_getNumChildren(n))
-         {
-            
-            Node_T sibling = Node_getChild(n, c+1);
-            fprintf(stderr, "child: %s \n", Node_getPath(child));
-            fprintf(stderr, "sibling: %s \n", Node_getPath(sibling));
+         Node_T sibling = Node_getDirChild(n, c+1);
+         fprintf(stderr, "child: %s \n", Node_getPath(child));
+         fprintf(stderr, "sibling: %s \n", Node_getPath(sibling));
 
-            if (Node_compare(child, sibling)>=0)
-            {
-               fprintf(stderr, "The children are not stored in sorted order\n");
-               return FALSE;
-            }
+         if (Node_compare(child, sibling)>=0)
+         {
+            fprintf(stderr, "The children are not stored in sorted order\n");
+            return FALSE;
          }
       }
+   }
+
+   for(c = 0; c < Node_getNumFileChildren(n); c++) {
+      Node_T child = Node_getFileChild(n, c);
+      if (c+1 < Node_getNumFileChildren(n))
+      {
+         
+         Node_T sibling = Node_getFileChild(n, c+1);
+         fprintf(stderr, "child: %s \n", Node_getPath(child));
+         fprintf(stderr, "sibling: %s \n", Node_getPath(sibling));
+
+         if (Node_compare(child, sibling)>=0)
+         {
+            fprintf(stderr, "The children are not stored in sorted order\n");
+            return FALSE;
+         }
+      }
+   }
 
    return TRUE;
 }
