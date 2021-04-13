@@ -69,7 +69,7 @@ boolean CheckerDT_Node_isValid(Node_T n) {
             fprintf(stderr, "child: %s \n", Node_getPath(child));
             fprintf(stderr, "sibling: %s \n", Node_getPath(sibling));
 
-            if (Node_compare(child, sibling)<=0)
+            if (Node_compare(child, sibling)>=0)
             {
                fprintf(stderr, "The children are not stored in sorted order\n");
                return FALSE;
