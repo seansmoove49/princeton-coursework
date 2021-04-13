@@ -17,6 +17,7 @@ boolean CheckerFT_Node_isValid(Node_T n) {
    const char* npath;
    const char* ppath;
    const char* rest;
+   size_t numChildren;
    size_t i, j, c;
 
    /* Sample check: a NULL pointer is not a valid node */
