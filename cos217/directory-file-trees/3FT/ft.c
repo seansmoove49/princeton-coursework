@@ -50,10 +50,18 @@ static Node_T FT_traversePathFrom(char* path, Node_T curr) {
 
    else if (!strncmp(path, currPath, strlen(currPath))) {
 
+      /*
       for (i = 0; i < Node_getNumFileChildren(curr); i++) {
          found = Node_getFileChild(curr, i);
 
          if (!strcmp(path, Node_getPath(found)))
+            return found;
+      }
+      */
+
+     for (i = 0; i < Node_getNumFileChildren(curr); i++) {
+         found = FT_traversePathFrom(path, Node_getFileChild(curr, i));
+         if (found != NULL)
             return found;
       }
 
