@@ -1,13 +1,13 @@
-all: sampleft
+all: ft
 
 clean: 
-	rm -f sampleft
+	rm -f ft
 
 clobber: clean
 	rm -f ft_client.o dynarray.o node.o ft.o checkerFT.o *~
 
-sampleft: dynarray.o node.o ft.o ft_client.o checkerFT.o
-	gcc217 -g dynarray.o ft.o ft_client.o node.o checkerFT.o -o sampleft
+ft: dynarray.o node.o ft.o ft_client.o checkerFT.o
+	gcc217 -g dynarray.o ft.o ft_client.o node.o checkerFT.o -o ft
 
 checkerFT.o: checkerFT.c dynarray.h checkerFT.h node.h a4def.h
 	gcc217 -g -c checkerFT.c
