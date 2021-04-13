@@ -47,9 +47,17 @@ static Node_T FT_traversePathFrom(char* path, Node_T curr) {
 
    else if (!strncmp(path, Node_getPath(curr), 
             strlen(Node_getPath(curr)))) {
-      for (i = 0; i < Node_getNumChildren(curr); i++) {
-         found = FT_traversePathFrom(path, Node_getChild(curr, i));
+
+      for (i = 0; i < Node_getNumDirChildren(curr); i++) {
+         found = FT_traversePathFrom(path, Node_getDirChild(curr, i));
          if (found != NULL)
+            return found;
+      }
+
+      for (i = 0; i < Node_getNumFileChildren(curr); i++) {
+         found = Node_getFileChild(curr, i);
+
+         if (!strcmp(path, Node_getPath(found)))
             return found;
       }
       return curr;
@@ -483,8 +491,12 @@ static size_t FT_preOrderTraversal(Node_T n, DynArray_T d, size_t i) {
    if(n != NULL) {
       (void) DynArray_set(d, i, Node_getPath(n));
       i++;
-      for(c = 0; c < Node_getNumChildren(n); c++)
-         i = FT_preOrderTraversal(Node_getChild(n, c), d, i);
+
+      for(c = 0; c < Node_getNumFileChildren(n); c++)
+         i = FT_preOrderTraversal(Node_getFileChild(n, c), d, i);
+
+      for(c = 0; c < Node_getNumDirChildren(n); c++)
+         i = FT_preOrderTraversal(Node_getDirChild(n, c), d, i);
    }
    return i;
 }
