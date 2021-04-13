@@ -315,7 +315,7 @@ void* Node_getFileContents(const Node_T n) {
 */
 int Node_hasChild(Node_T n, const char* path, size_t* childID) {
 	size_t index;
-	int result;
+	int result = 0;
 	Node_T checker;
 
 	assert(n != NULL);
@@ -435,10 +435,8 @@ int Node_linkChild(Node_T parent, const Node_T child) {
 
 	if (Node_isFile(parent)) 
 		return NOT_A_DIRECTORY;
-
-	added = Node_hasChild(parent, child->path, NULL);
-
-	if (added)
+	
+	if (Node_hasChild(parent, child->path, NULL))
 		return ALREADY_IN_TREE;
 
    if (Node_hasParentChildErr(parent, child))
