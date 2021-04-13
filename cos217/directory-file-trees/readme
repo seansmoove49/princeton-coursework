@@ -75,20 +75,25 @@ None
 Student 1: What is your assessment of the assignment? Was it helpful?
 Was it fun?
 
-
+I found this assignment to be very helpful in learning how to use gdb 
+in real-life debugging applications. Part 2 was especially enjoyable 
+because it was sort of like solving a puzzle. 
 
 ------------------------------------------------------------------------
 Student 2: What is your assessment of the assignment? Was it helpful?
 Was it fun?
 
-
+I definitely struggled a lot at times, but I now feel a lot more 
+comfortable with using gdb to debug both my own and other people's code.
+Analyzing code other people was really helpful because it helped me 
+understand how to critique and refactor my own code. 
 
 ------------------------------------------------------------------------
 (optional) What information can you provide about your submission that
 will help your grader to grade it in the most favorable light? In
 particular, what bugs are in your submission?
 
-
+None that we are aware of. 
 
 ------------------------------------------------------------------------
 What warnings does splint generate for Part 2's checker, and what are
@@ -96,7 +101,7 @@ your disagreements with them? Copy the splint warnings here, and
 express your disagreement after each warning. If there are no
 warnings, then write "None."
 
-
+None.
 
 ------------------------------------------------------------------------
 What warnings does critTer generate on checkerDT.c, and what are your
@@ -104,7 +109,7 @@ disagreements with them? Copy the critTer warnings here, and express
 your disagreement after each warning. If there are no warnings, then
 write "None."
 
-
+None. 
 
 ------------------------------------------------------------------------
 What warnings does splint generate on your Part 3 code, and what are
@@ -112,7 +117,13 @@ your disagreements with them? Copy the splint warnings here, and
 express your disagreement after each warning. If there are no
 warnings, then write "None."
 
-
+ft.c: (in function FT_insertRestOfPath)
+ft.c:157:9: Unallocated storage copyPath passed as out parameter: 
+            copyPath
+We have allocated the copyPath memory prior to the free call on line 157
+and the allocation is not within any condition. Furthermore, the 
+function in question calls free(copyPath) on two other occasions and 
+neither of those triggered this warning. 
 
 ------------------------------------------------------------------------
 What warnings does critTer generate on your Part 3 code, and what are
@@ -120,7 +131,25 @@ your disagreements with them? Copy the critTer warnings here, and
 express your disagreement after each warning. If there are no
 warnings, then write "None."
 
+in node.c:
 
+node.c: line 463: low priority: 
+A file should contain no more than 15 functions;
+We believe the number of functions makes sense for our implementation.
+
+all of the assert warnings:
+We do not want to call assert on the parameters specified because this 
+would be an incorrect implementation.
+
+in ft.c:
+
+file function number: same as node.c.
+
+ft.c: line 529: low priority: 
+   A source code file should contain fewer than 500 lines;
+We need this number of lines for our working implementation + comments.
+
+assert warnings: see node.c. 
 
 ------------------------------------------------------------------------
 For each of the first three faulty BDT implementations required by Step
@@ -190,43 +219,43 @@ int Node_compare(Node_T node1, Node_T node2). To remain consistent
 with the other function parameters, it would be better to rename the 
 parameters as n1 and n2. 
 
-There are also many functions in dtGood.c that are redundant or unnecessary. 
-For instance, there is no need to have separate functions for 
-DT_traversePathFrom and DT_traversePath. DT_traversePath is just a 
+There are also many functions in dtGood.c that are redundant or 
+unnecessary. For instance, there is no need to have separate functions 
+for DT_traversePathFrom and DT_traversePath. DT_traversePath is just a 
 more specific version of DT_traversePathFrom. 
 
-Similarly, there is no need for separate functions DT_rmPathAt and DT_rmPath. 
-The functionality for DT_rmPathAt can just be placed inside DT_rmPath, 
-considering that only 1 function, DT_rmPath uses DT_rmPathAt. 
+Similarly, there is no need for separate functions DT_rmPathAt and 
+DT_rmPath. The functionality for DT_rmPathAt can just be placed inside
+DT_rmPath, considering that only 1 function, DT_rmPath uses DT_rmPathAt. 
 
-Another function which seems unnecessary is DT_linkParentToChild. The caller 
-can simply just call Node_linkChild and call Node_destroy on the child if 
-the link is unsucessful. 
+Another function which seems unnecessary is DT_linkParentToChild. The 
+caller can simply just call Node_linkChild and call Node_destroy on the 
+child if the link is unsucessful. 
 
 There are also a lot of asserts which are redundant because the inputs
 don't change. For instance, in Node_linkChild it calls the 
 assert(CheckerDT_Node_isValid(parent)) and 
 assert(CheckerDT_Node_isValid(child)) multiple times in the conditionals
-despite parent and child not changing at all. Furthermore, in the case of
-the parameter (parent) not changing in the function, it would be better
-to make the parameter const. 
+despite parent and child not changing at all. Furthermore, in the case 
+of the parameter (parent) not changing in the function, it would be 
+better to make the parameter const. 
 
 Another critique is that the function Node_hasChild is a public function
 despite it not being used outside of nodeGood.c. To prevent the client 
-from understanding more of the uderlying structure of nodeGood.c it is best
-that we make this a static function.
+from understanding more of the uderlying structure of nodeGood.c it is 
+best that we make this a static function.
 
 In nodeGood.c, Node_addChild essentially does the same job as Node_create 
 and Node_linkChild in conjunction. As a result, it would be better to 
-make Node_create and Node_linkChild be static functions, used internally in
-Node_addChild. Or we can also choose to get rid Node_addChild and simply
-have the caller use Node_create and Node_linkChild.
+make Node_create and Node_linkChild be static functions, used internally 
+in Node_addChild. Or we can also choose to get rid Node_addChild and 
+simply have the caller use Node_create and Node_linkChild.
 
 Lastly, there are very few local comments in both dtGood.c and nodeGood, 
 which makes it very difficult to understand.
-It is good that there are comments describing the static functions, however,
-for clarity purposes it would be better to make comments describing the work 
-performed in long functions like DT_insertRestOfPath.
+It is good that there are comments describing the static functions, 
+however, for clarity purposes it would be better to make comments 
+describing work performed in long functions like DT_insertRestOfPath.
 
 
 
