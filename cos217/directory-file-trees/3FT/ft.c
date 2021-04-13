@@ -33,25 +33,27 @@ static size_t count;
 
 static Node_T FT_traversePathFrom(char* path, Node_T curr) {
    Node_T found;
+   char* currPath;
    size_t i;
 
    assert(path != NULL);
 
    if (curr == NULL) return NULL;
 
-   else if (!strcmp(path, Node_getPath(curr)))
+   currPath = Node_getPath(curr);
+
+   if (!strcmp(path, currPath))
       return curr;
 
    /* theoretically our checker should make sure that files never have
       children, so that's not something we need to take care of here */
 
-   else if (!strncmp(path, Node_getPath(curr), 
-            strlen(Node_getPath(curr)))) {
+   else if (!strncmp(path, currPath, strlen(currPath))) {
 
       for (i = 0; i < Node_getNumFileChildren(curr); i++) {
          found = Node_getFileChild(curr, i);
 
-         if (!strcmp(path, Node_getPath(found)))
+         if (!strcmpn(path, Node_getPath(found), strlen(currPath)))
             return found;
       }
 
