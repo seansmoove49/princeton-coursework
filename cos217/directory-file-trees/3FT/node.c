@@ -148,7 +148,8 @@ static Node_T Node_createFile(const char* dir, const Node_T parent,
 		return NULL;
 	}
 	new->file = TRUE;
-   (void) Node_assignContents(new, contents, length);
+   new->contents = contents;
+	new->length = length;
 
 	new->parent = parent;
 	new->children = NULL;
