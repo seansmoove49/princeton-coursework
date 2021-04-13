@@ -169,7 +169,7 @@ static Node_T Node_createFile(const char* dir, const Node_T parent,
    store the identifier that such a child would have in *childID.
 */
 static int Node_hasChild(Node_T n, const char* path, size_t* childID) {
-	size_t index;
+	size_t index = 0;
 	int result = 0;
 	Node_T checker;
 
@@ -368,7 +368,7 @@ Node_T Node_getParent(Node_T n) {
 
 /* see node.h for specification */
 int Node_linkChild(Node_T parent, const Node_T child) {
-	size_t i;
+	size_t i = 0;
 	int added;
 
 	assert(parent != NULL);
@@ -408,7 +408,7 @@ int Node_linkChild(Node_T parent, const Node_T child) {
 
 /* see node.h for specification */
 int Node_unlinkChild(Node_T parent, const Node_T child) {
-   size_t i;
+   size_t i = 0;
 
    assert(parent != NULL);
 	assert(child != NULL);
@@ -444,8 +444,6 @@ char* Node_toString(Node_T n) {
       return NULL;
    else
       return strcpy(copyPath, n->path);
-
-	return NULL;
 }
 
 /* see node.h for specification */

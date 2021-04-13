@@ -84,7 +84,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
    Node_T firstNew = NULL;
    Node_T new;
 
-   char* copyPath;
+   char* copyPath = NULL;
    char* restPath = path;
    char* dirToken;
    char* tempToken;
@@ -157,7 +157,7 @@ static int FT_insertRestOfPath(char* path, Node_T parent,
       if (result == SUCCESS) 
          count += newCount;
       else
-         Node_destroy(firstNew);
+         (void) Node_destroy(firstNew);
       
       return result;
    }
