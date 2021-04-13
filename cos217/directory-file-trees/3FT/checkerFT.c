@@ -80,10 +80,12 @@ boolean CheckerFT_Node_isValid(Node_T n) {
          return FALSE;
       }
    }
-
+   
    /* Sample check: check if child node 
       has a neighboring sibling node whose path is less 
       than the child node's path (not in sorted order)*/
+
+   /*
    for(c = 0; c < Node_getNumChildren(n); c++)
       {
          Node_T child = Node_getChild(n, c);
@@ -106,8 +108,6 @@ boolean CheckerFT_Node_isValid(Node_T n) {
             strcpy(strChild, Node_getPath(child));
             tempChildToken = strtok(strChild, delimiter);
 
-            /* gets and stores the final token for the child path 
-            in finalChildToken */
             while (tempChildToken!=NULL)
             {
                finalChildToken = tempChildToken;
@@ -116,18 +116,16 @@ boolean CheckerFT_Node_isValid(Node_T n) {
             }
 
             strcpy(strSibling, Node_getPath(sibling));
-            /*fprintf(stderr, "sibling: %s \n", strSibling);*/
+
             tempSiblingToken = strtok(strSibling, delimiter);
             
-            /* gets and stores the final token for the sibling path 
-            in finalSiblingToken */
+
             while (tempSiblingToken!=NULL)
             {
                finalSiblingToken = tempSiblingToken;
                tempSiblingToken = strtok(NULL, delimiter);
             }
-            /* checks if the finalChildToken is greater than 
-            or equal to finalSiblingT */
+
             if (strcmp(finalChildToken, finalSiblingToken)>=0)
             {
                fprintf(stderr, "The children are not stored in sorted order\n");
@@ -139,6 +137,7 @@ boolean CheckerFT_Node_isValid(Node_T n) {
             free(strChild);
          }
       }
+      */
 
    return TRUE;
 }
