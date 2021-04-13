@@ -78,10 +78,13 @@ boolean CheckerDT_Node_isValid(Node_T n) {
    Performs a pre-order traversal of the tree rooted at n.
    Returns FALSE if a broken invariant is found and
    returns TRUE otherwise. 
+   Updates pnumNodes to reflect the number of nodes in the file tree. 
 */
 static boolean CheckerDT_treeCheck(Node_T n, size_t *pnumNodes) 
 {
    size_t c; 
+
+   assert(pnumNodes != NULL);
 
    if (n != NULL) {
       /* Sample check on each non-root node: node must be valid */
