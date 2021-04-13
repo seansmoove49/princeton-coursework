@@ -436,7 +436,9 @@ int Node_linkChild(Node_T parent, const Node_T child) {
 	if (Node_isFile(parent)) 
 		return NOT_A_DIRECTORY;
 
-	if (Node_hasChild(parent, child->path, NULL))
+	added = Node_hasChild(parent, child->path, NULL);
+
+	if (added)
 		return ALREADY_IN_TREE;
 
    if (Node_hasParentChildErr(parent, child))
