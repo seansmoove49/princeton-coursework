@@ -32,8 +32,11 @@ boolean CheckerFT_Node_isValid(Node_T n) {
       return FALSE;
    }
 
+   numChildren += Node_getNumDirChildren(n);
+   numChildren += Node_getNumFileChildren(n);
+
    /* Sample check: a file node cannot have children */
-   if (Node_isFile(n) && Node_getNumChildren(n) != 0) {
+   if (Node_isFile(n) && numChildren != 0) {
       fprintf(stderr, "File node has children\n");
       return FALSE;
    }
@@ -121,15 +124,24 @@ static boolean CheckerFT_treeCheck(Node_T n, size_t *pnumNodes)
             }
       }
 
-      for(c = 0; c < Node_getNumChildren(n); c++)
+      for(c = 0; c < Node_getNumDirChildren(n); c++)
       {
-         Node_T child = Node_getChild(n, c);
+         Node_T child = Node_getDirChild(n, c);
          
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
          if(!CheckerFT_treeCheck(child, pnumNodes))
             return FALSE;
+      }
+
+      for(c = 0; c < Node_getNumFileChildren(n); c++)
+      {
+         Node_T child = Node_getFileChild(n, c);
          
+         /* if recurring down one subtree results in a failed check
+            farther down, passes the failure back up immediately */
+         if(!CheckerFT_treeCheck(child, pnumNodes))
+            return FALSE;
       }
    }
    return TRUE;

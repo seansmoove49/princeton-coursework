@@ -62,7 +62,12 @@ size_t Node_getLength(const Node_T n);
 /*
   Returns the number of child directories n has.
 */
-size_t Node_getNumChildren(Node_T n);
+size_t Node_getNumDirChildren(Node_T n);
+
+/*
+  Returns the number of child files n has.
+*/
+size_t Node_getNumFileChildren(Node_T n);
 
 /*
   Returns the type of the node. 
@@ -89,7 +94,9 @@ int Node_hasChild(Node_T n, const char* path, size_t* childID);
    Returns the child node of n with identifier childID, if one exists,
    otherwise returns NULL.
 */
-Node_T Node_getChild(Node_T n, size_t childID);
+Node_T Node_getDirChild(Node_T n, size_t childID);
+
+Node_T Node_getFileChild(Node_T n, size_t childID);
 
 /*
    Returns the parent node of n, if it exists, otherwise returns NULL

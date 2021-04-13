@@ -33,22 +33,40 @@ static size_t count;
 
 static Node_T FT_traversePathFrom(char* path, Node_T curr) {
    Node_T found;
+   const char* currPath;
    size_t i;
 
    assert(path != NULL);
 
    if (curr == NULL) return NULL;
 
-   else if (!strcmp(path, Node_getPath(curr)))
+   currPath = Node_getPath(curr);
+
+   if (!strcmp(path, currPath))
       return curr;
 
    /* theoretically our checker should make sure that files never have
       children, so that's not something we need to take care of here */
 
-   else if (!strncmp(path, Node_getPath(curr), 
-            strlen(Node_getPath(curr)))) {
-      for (i = 0; i < Node_getNumChildren(curr); i++) {
-         found = FT_traversePathFrom(path, Node_getChild(curr, i));
+   else if (!strncmp(path, currPath, strlen(currPath))) {
+
+      /*
+      for (i = 0; i < Node_getNumFileChildren(curr); i++) {
+         found = Node_getFileChild(curr, i);
+
+         if (!strcmp(path, Node_getPath(found)))
+            return found;
+      }
+      */
+
+     for (i = 0; i < Node_getNumFileChildren(curr); i++) {
+         found = FT_traversePathFrom(path, Node_getFileChild(curr, i));
+         if (found != NULL)
+            return found;
+      }
+
+      for (i = 0; i < Node_getNumDirChildren(curr); i++) {
+         found = FT_traversePathFrom(path, Node_getDirChild(curr, i));
          if (found != NULL)
             return found;
       }
@@ -483,8 +501,12 @@ static size_t FT_preOrderTraversal(Node_T n, DynArray_T d, size_t i) {
    if(n != NULL) {
       (void) DynArray_set(d, i, Node_getPath(n));
       i++;
-      for(c = 0; c < Node_getNumChildren(n); c++)
-         i = FT_preOrderTraversal(Node_getChild(n, c), d, i);
+
+      for(c = 0; c < Node_getNumFileChildren(n); c++)
+         i = FT_preOrderTraversal(Node_getFileChild(n, c), d, i);
+
+      for(c = 0; c < Node_getNumDirChildren(n); c++)
+         i = FT_preOrderTraversal(Node_getDirChild(n, c), d, i);
    }
    return i;
 }
