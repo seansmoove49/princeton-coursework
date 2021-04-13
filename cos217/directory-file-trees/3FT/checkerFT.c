@@ -75,11 +75,8 @@ boolean CheckerFT_Node_isValid(Node_T n) {
       than the child node's path (not in sorted order)*/
    for(c = 0; c < Node_getNumDirChildren(n); c++) {
       Node_T child = Node_getDirChild(n, c);
-      if (c+1 < Node_getNumDirChildren(n))
-      {
+      if (c+1 < Node_getNumDirChildren(n)) {
          Node_T sibling = Node_getDirChild(n, c+1);
-         fprintf(stderr, "child: %s \n", Node_getPath(child));
-         fprintf(stderr, "sibling: %s \n", Node_getPath(sibling));
 
          if (Node_compare(child, sibling)>=0)
          {
@@ -91,12 +88,8 @@ boolean CheckerFT_Node_isValid(Node_T n) {
 
    for(c = 0; c < Node_getNumFileChildren(n); c++) {
       Node_T child = Node_getFileChild(n, c);
-      if (c+1 < Node_getNumFileChildren(n))
-      {
-         
+      if (c+1 < Node_getNumFileChildren(n)) {
          Node_T sibling = Node_getFileChild(n, c+1);
-         fprintf(stderr, "child: %s \n", Node_getPath(child));
-         fprintf(stderr, "sibling: %s \n", Node_getPath(sibling));
 
          if (Node_compare(child, sibling)>=0)
          {
