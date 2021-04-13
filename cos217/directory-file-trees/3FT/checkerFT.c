@@ -17,8 +17,8 @@ boolean CheckerFT_Node_isValid(Node_T n) {
    const char* npath;
    const char* ppath;
    const char* rest;
-   size_t numChildren;
-   size_t i, j, c;
+   size_t numChildren = 0;
+   size_t i, c;
 
    /* Sample check: a NULL pointer is not a valid node */
    if(n == NULL) {
@@ -55,7 +55,6 @@ boolean CheckerFT_Node_isValid(Node_T n) {
       /* Sample check that parent's path must be prefix of n's path */
       ppath = Node_getPath(parent);
       i = strlen(ppath);
-      j = strlen(npath);
       if(strncmp(npath, ppath, i)) {
          fprintf(stderr, "P's path is not a prefix of C's path\n");
          return FALSE;
