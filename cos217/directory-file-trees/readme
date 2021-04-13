@@ -174,6 +174,60 @@ nodes, it will fail an assert.
 What are your critiques of the given DT implementations, as
 specified in Step 2.5?
 
+First off there is a commented out function for Node_getPath in 
+nodeGood.c. This is bad style and if we were to use this implementation
+rather than the uncommented out implementation,
+it would fail resource management as it does not free allocated memory 
+(pathCopy) and does not include a comment in node.h mentioning 
+that the caller is responsible for freeing it.
+
+We can also see there is an issue of consistency. In node.h, the 
+parameter order is not consistent in the functions 
+Node_T Node_create(const char* dir, Node_T parent) and 
+int Node_addChild(Node_T parent, const char* dir). Another quibble has 
+to do with the parameter naming convention for 
+int Node_compare(Node_T node1, Node_T node2). To remain consistent 
+with the other function parameters, it would be better to rename the 
+parameters as n1 and n2. 
+
+There are also many functions in dtGood.c that are redundant or unnecessary. 
+For instance, there is no need to have separate functions for 
+DT_traversePathFrom and DT_traversePath. DT_traversePath is just a 
+more specific version of DT_traversePathFrom. 
+
+Similarly, there is no need for separate functions DT_rmPathAt and DT_rmPath. 
+The functionality for DT_rmPathAt can just be placed inside DT_rmPath, 
+considering that only 1 function, DT_rmPath uses DT_rmPathAt. 
+
+Another function which seems unnecessary is DT_linkParentToChild. The caller 
+can simply just call Node_linkChild and call Node_destroy on the child if 
+the link is unsucessful. 
+
+There are also a lot of asserts which are redundant because the inputs
+don't change. For instance, in Node_linkChild it calls the 
+assert(CheckerDT_Node_isValid(parent)) and 
+assert(CheckerDT_Node_isValid(child)) multiple times in the conditionals
+despite parent and child not changing at all. Furthermore, in the case of
+the parameter (parent) not changing in the function, it would be better
+to make the parameter const. 
+
+Another critique is that the function Node_hasChild is a public function
+despite it not being used outside of nodeGood.c. To prevent the client 
+from understanding more of the uderlying structure of nodeGood.c it is best
+that we make this a static function.
+
+In nodeGood.c, Node_addChild essentially does the same job as Node_create 
+and Node_linkChild in conjunction. As a result, it would be better to 
+make Node_create and Node_linkChild be static functions, used internally in
+Node_addChild. Or we can also choose to get rid Node_addChild and simply
+have the caller use Node_create and Node_linkChild.
+
+Lastly, there are very few local comments in both dtGood.c and nodeGood, 
+which makes it very difficult to understand.
+It is good that there are comments describing the static functions, however,
+for clarity purposes it would be better to make comments describing the work 
+performed in long functions like DT_insertRestOfPath.
+
 
 
 ------------------------------------------------------------------------
