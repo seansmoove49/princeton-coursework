@@ -48,16 +48,16 @@ static Node_T FT_traversePathFrom(char* path, Node_T curr) {
    else if (!strncmp(path, Node_getPath(curr), 
             strlen(Node_getPath(curr)))) {
 
-      for (i = 0; i < Node_getNumDirChildren(curr); i++) {
-         found = FT_traversePathFrom(path, Node_getDirChild(curr, i));
-         if (found != NULL)
-            return found;
-      }
-
       for (i = 0; i < Node_getNumFileChildren(curr); i++) {
          found = Node_getFileChild(curr, i);
 
          if (!strcmp(path, Node_getPath(found)))
+            return found;
+      }
+
+      for (i = 0; i < Node_getNumDirChildren(curr); i++) {
+         found = FT_traversePathFrom(path, Node_getDirChild(curr, i));
+         if (found != NULL)
             return found;
       }
       return curr;
