@@ -161,16 +161,25 @@ the error manifests itself or is "noticed" by the client.
 
       Executable         Function with the underlying error
 ===============================================================
-         ./bdtBad1        BDT_InsertPath()
+         ./bdtBad1        BDT_insertPath()
 ---------------------------------------------------------------
-         ./bdtBad2        BDT_InsertPath()
+         ./bdtBad2        BDT_newNode()
 ---------------------------------------------------------------
-         ./bdtBad3        BDT_rmPath()
+         ./bdtBad3        BDT_unlinkParentToChild()
 ===============================================================
 
 For bdtBad4, you do not have to find the bug. Instead, indicate what
 is different about trying to debug this executable in gdb versus the
 other three:
+
+The bug here is that in BDT_toString(), the programmer never 
+initialized the memory that they malloced and then passed it to a 
+function that concatenated characters to what was already in the
+memory rather than overwriting it. Debugging this was different 
+because this bug was dependent on memory in the heap being reused;
+the programmer may not have had this happen to them and therefore 
+the bug may never have manifested when they ran it on their 
+operating system. 
 
 The first three bad executables failed on specific function calls in 
 the gdb. We could identify which specific functions had the error. 
