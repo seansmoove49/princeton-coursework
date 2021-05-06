@@ -129,7 +129,7 @@ Address        Content        Description
 
 BSS section: 
 
-Address        Content 
+Address        Description 
 ------------------------------------------------------------------------
 0x420058       name array (will fill later)
 
@@ -142,6 +142,8 @@ Offset         Description
 8
 16
 24
+32
+40             X30
 
 
 

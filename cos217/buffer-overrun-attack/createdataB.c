@@ -15,11 +15,10 @@ int main(void)
 {
    FILE *psFile;
    psFile = fopen("data", "w");
-   unsigned int uiData;
-   uiData = 0x01234567;
-   fwrite(&uiData, sizeof(unsigned int), 1, psFile);
+   unsigned long ulData;
 
-/* Writes 01100111 01000101 00100011 00000001 */
+   ulData = 0x0123456789abcdef;
+   fwrite(&ulData, sizeof(unsigned long), 1, psFile);
 
    fclose(psFile);
 
