@@ -28,7 +28,13 @@ int main(void)
    for (i = 0; i<(48-(strlen(psName)+1)); i++){
        fprintf(psFile, "%c", 0x00);
    }
+   
+   unsigned int uiData;
+   uiData = 0x01234567;
    fwrite(&uiData, sizeof(unsigned int), 1, psFile);
+
+/* Writes 01100111 01000101 00100011 00000001 */
+
    fclose(psFile);
 
 
