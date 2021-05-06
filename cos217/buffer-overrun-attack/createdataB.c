@@ -14,7 +14,7 @@
 int main(void)
 {
    FILE *psFile;
-   psFile = fopen("dataB", "w");
+   psFile = fopen("data", "w");
    unsigned int uiData;
    uiData = 0x01234567;
    fwrite(&uiData, sizeof(unsigned int), 1, psFile);
