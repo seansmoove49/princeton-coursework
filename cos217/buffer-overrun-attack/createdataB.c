@@ -23,6 +23,8 @@ int main(void)
    for (i = 0; i<strlen(psName); i++){
        fprintf(psFile, "%c", psName[i]);
    }
+   fprintf(psFile, "%c", 0x00);
+   
    
 
    fclose(psFile);
