@@ -31,7 +31,7 @@ int main(void)
    }
    /* Writes filler to the dataA file
    so instruction starts at multiple of 4 */
-   for (i = 0; i<4; i++){
+   for (i = 0; i<3; i++){
        fprintf(psFile, "%c", 0x00);
    }
    /* Writes the instruction mov w0, ‘A’ */
@@ -40,7 +40,7 @@ int main(void)
  
    /* Writes the instruction adr x1, grade */
    uiInstr = MiniAssembler_adr(1, 0x420044,
-   0x420068);
+   0x420064);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction strb w0, [x1] */
@@ -48,7 +48,7 @@ int main(void)
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction b 0x400864 (call of printf) */
-   uiInstr = MiniAssembler_b(0x400864, 0x420070);
+   uiInstr = MiniAssembler_b(0x400864, 0x42006C);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes enough null bytes to the dataB file

