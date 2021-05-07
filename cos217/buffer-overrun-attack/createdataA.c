@@ -5,7 +5,7 @@
 
 
 #include <stdio.h>
-#include <miniassembler.h>
+#include "miniassembler.h"
 enum {BUFSIZE = 48};
 
 /*--------------------------------------------------------------------*/
