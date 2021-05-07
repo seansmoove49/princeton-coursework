@@ -39,7 +39,7 @@ int main(void)
  
    /* Writes the instruction adr x1, grade */
    uiInstr = MiniAssembler_adr(1, 0x420044,
-   0x420058+16);
+   0x420068);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction strb w0, [x1] */
@@ -59,7 +59,7 @@ int main(void)
 
 /* Writes the address which corresponds to 
    instruction: mov w0, ‘A’ in BSS section */
-   ulData = 0x420058;
+   ulData = 0x420058+;
    fwrite(&ulData, sizeof(unsigned long), 1, psFile);
 
    fclose(psFile);
