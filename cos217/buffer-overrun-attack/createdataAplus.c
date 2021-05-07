@@ -72,7 +72,7 @@ int main(void)
    
    /* Writes enough null bytes to the dataB file
    to overrun until X30 */
-   for (i = 0; i<BUFSIZE-40; i++){
+   for (i = 0; i<4; i++){
        fprintf(psFile, "%c", 0x00);
    }
 
