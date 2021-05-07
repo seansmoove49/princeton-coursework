@@ -70,11 +70,7 @@ int main(void)
    0x42007C);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
    
-   /* Writes enough null bytes to the dataB file
-   to overrun until X30 */
-   for (i = 0; i<4; i++){
-       fprintf(psFile, "%c", 0x00);
-   }
+   
 
 /* Writes the address which corresponds to 
    instruction: mov w0, ‘A’ in BSS section */
