@@ -22,7 +22,7 @@ int main(void)
    unsigned long ulData;
    char* psName;
    FILE *psFile;
-   psFile = fopen("dataA", "w");
+   psFile = fopen("dataAplus", "w");
    psName = "Sean Wang";
 
    /* Writes the student's name to the dataA file */
