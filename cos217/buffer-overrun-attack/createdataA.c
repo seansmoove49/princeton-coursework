@@ -48,7 +48,7 @@ int main(void)
 
    /* Writes the instruction b 0x40085c (call of printf) */
    uiInstr = MiniAssembler_b(0x40085c,
-   0x420058+24);
+   0x420070);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes enough null bytes to the dataB file
@@ -59,7 +59,7 @@ int main(void)
 
 /* Writes the address which corresponds to 
    instruction: mov w0, ‘A’ in BSS section */
-   ulData = 0x420058+;
+   ulData = 0x420064;
    fwrite(&ulData, sizeof(unsigned long), 1, psFile);
 
    fclose(psFile);
