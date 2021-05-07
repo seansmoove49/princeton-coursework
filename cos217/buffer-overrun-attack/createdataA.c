@@ -47,9 +47,8 @@ int main(void)
    uiInstr = MiniAssembler_strb(0,1);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
-   /* Writes the instruction b 0x40085c (call of printf) */
-   uiInstr = MiniAssembler_b(0x400864,
-   0x420070);
+   /* Writes the instruction b 0x400864 (call of printf) */
+   uiInstr = MiniAssembler_b(0x400864, 0x420070);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes enough null bytes to the dataB file
