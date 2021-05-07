@@ -74,7 +74,7 @@ int main(void)
 
 /* Writes the address which corresponds to 
    instruction: mov w0, ‘A’ in BSS section */
-   ulData = 0x420064;
+   ulData = 0x420060;
    fwrite(&ulData, sizeof(unsigned long), 1, psFile);
 
    fclose(psFile);
