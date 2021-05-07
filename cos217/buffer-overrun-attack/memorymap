@@ -123,7 +123,7 @@ Data section:
 
 Address        Content        Description
 ------------------------------------------------------------------------
-0x420044      0x00000044      character stored in grade global variable. 
+0x420044      0x00000044      grade global variable. 
 
 
 

@@ -1,0 +1,138 @@
+Contents of section .rodata:
+ 0000 57686174 20697320 796f7572 206e616d  What is your nam
+ 0010 653f0000 00000000 416e6472 65772041  e?......Andrew A
+ 0020 7070656c 00000000 25632069 7320796f  ppel....%c is yo
+ 0030 75722067 72616465 2e0a0000 00000000  ur grade........
+ 0040 5468616e 6b20796f 752c2025 732e0a00  Thank you, %s...
+
+-------
+
+Contents of section .data:
+ 0000 44                                   D 
+
+
+-------
+
+Disassembly of section .text:
+
+0000000000000000 <readString>:
+   0:	a9bb7bfd 	stp	x29, x30, [sp,#-80]!
+   4:	910003fd 	mov	x29, sp
+   8:	b9004fbf 	str	wzr, [x29,#76]
+   c:	90000000 	adrp	x0, 0 <stdin>
+			c: R_AARCH64_ADR_PREL_PG_HI21	stdin
+  10:	91000000 	add	x0, x0, #0x0
+			10: R_AARCH64_ADD_ABS_LO12_NC	stdin
+  14:	f9400000 	ldr	x0, [x0]
+  18:	94000000 	bl	0 <fgetc>
+			18: R_AARCH64_CALL26	fgetc
+  1c:	b9004ba0 	str	w0, [x29,#72]
+  20:	b9404ba0 	ldr	w0, [x29,#72]
+  24:	3100041f 	cmn	w0, #0x1
+  28:	540001a0 	b.eq	5c <readString+0x5c>
+  2c:	b9404ba0 	ldr	w0, [x29,#72]
+  30:	7100281f 	cmp	w0, #0xa
+  34:	54000140 	b.eq	5c <readString+0x5c>
+  38:	b9404ba0 	ldr	w0, [x29,#72]
+  3c:	53001c02 	uxtb	w2, w0
+  40:	910063a1 	add	x1, x29, #0x18
+  44:	b9804fa0 	ldrsw	x0, [x29,#76]
+  48:	38206822 	strb	w2, [x1,x0]
+  4c:	b9404fa0 	ldr	w0, [x29,#76]
+  50:	11000400 	add	w0, w0, #0x1
+  54:	b9004fa0 	str	w0, [x29,#76]
+  58:	17ffffed 	b	c <readString+0xc>
+  5c:	910063a1 	add	x1, x29, #0x18
+  60:	b9804fa0 	ldrsw	x0, [x29,#76]
+  64:	3820683f 	strb	wzr, [x1,x0]
+  68:	b9004fbf 	str	wzr, [x29,#76]
+  6c:	1400000b 	b	98 <readString+0x98>
+  70:	910063a1 	add	x1, x29, #0x18
+  74:	b9804fa0 	ldrsw	x0, [x29,#76]
+  78:	38606822 	ldrb	w2, [x1,x0]
+  7c:	90000000 	adrp	x0, 30 <readString+0x30>
+			7c: R_AARCH64_ADR_PREL_PG_HI21	name
+  80:	91000001 	add	x1, x0, #0x0
+			80: R_AARCH64_ADD_ABS_LO12_NC	name
+  84:	b9804fa0 	ldrsw	x0, [x29,#76]
+  88:	38206822 	strb	w2, [x1,x0]
+  8c:	b9404fa0 	ldr	w0, [x29,#76]
+  90:	11000400 	add	w0, w0, #0x1
+  94:	b9004fa0 	str	w0, [x29,#76]
+  98:	b9404fa0 	ldr	w0, [x29,#76]
+  9c:	7100bc1f 	cmp	w0, #0x2f
+  a0:	54fffe8d 	b.le	70 <readString+0x70>
+  a4:	a8c57bfd 	ldp	x29, x30, [sp],#80
+  a8:	d65f03c0 	ret
+
+00000000000000ac <getName>:
+  ac:	a9bf7bfd 	stp	x29, x30, [sp,#-16]!
+  b0:	910003fd 	mov	x29, sp
+  b4:	90000000 	adrp	x0, 0 <readString>
+			b4: R_AARCH64_ADR_PREL_PG_HI21	.rodata
+  b8:	91000000 	add	x0, x0, #0x0
+			b8: R_AARCH64_ADD_ABS_LO12_NC	.rodata
+  bc:	94000000 	bl	0 <puts>
+			bc: R_AARCH64_CALL26	puts
+  c0:	94000000 	bl	0 <readString>
+			c0: R_AARCH64_CALL26	readString
+  c4:	a8c17bfd 	ldp	x29, x30, [sp],#16
+  c8:	d65f03c0 	ret
+
+00000000000000cc <main>:
+  cc:	a9bf7bfd 	stp	x29, x30, [sp,#-16]!
+  d0:	910003fd 	mov	x29, sp
+  d4:	90000000 	adrp	x0, 30 <readString+0x30>
+			d4: R_AARCH64_ADR_PREL_PG_HI21	name
+  d8:	91000000 	add	x0, x0, #0x0
+			d8: R_AARCH64_ADD_ABS_LO12_NC	name
+  dc:	9274cc00 	and	x0, x0, #0xfffffffffffff000
+  e0:	d2800021 	mov	x1, #0x1                   	// #1
+  e4:	528000e2 	mov	w2, #0x7                   	// #7
+  e8:	94000000 	bl	0 <mprotect>
+			e8: R_AARCH64_CALL26	mprotect
+  ec:	94000000 	bl	ac <getName>
+			ec: R_AARCH64_CALL26	getName
+  f0:	90000000 	adrp	x0, 30 <readString+0x30>
+			f0: R_AARCH64_ADR_PREL_PG_HI21	name
+  f4:	91000000 	add	x0, x0, #0x0
+			f4: R_AARCH64_ADD_ABS_LO12_NC	name
+  f8:	90000001 	adrp	x1, 0 <readString>
+			f8: R_AARCH64_ADR_PREL_PG_HI21	.rodata+0x18
+  fc:	91000021 	add	x1, x1, #0x0
+			fc: R_AARCH64_ADD_ABS_LO12_NC	.rodata+0x18
+ 100:	94000000 	bl	0 <strcmp>
+			100: R_AARCH64_CALL26	strcmp
+ 104:	6b1f001f 	cmp	w0, wzr
+ 108:	540000a1 	b.ne	11c <main+0x50>
+ 10c:	90000000 	adrp	x0, 0 <readString>
+			10c: R_AARCH64_ADR_PREL_PG_HI21	grade
+ 110:	91000000 	add	x0, x0, #0x0
+			110: R_AARCH64_ADD_ABS_LO12_NC	grade
+ 114:	52800841 	mov	w1, #0x42                  	// #66
+ 118:	39000001 	strb	w1, [x0]
+ 11c:	90000000 	adrp	x0, 0 <readString>
+			11c: R_AARCH64_ADR_PREL_PG_HI21	grade
+ 120:	91000000 	add	x0, x0, #0x0
+			120: R_AARCH64_ADD_ABS_LO12_NC	grade
+ 124:	39400000 	ldrb	w0, [x0]
+ 128:	2a0003e1 	mov	w1, w0
+ 12c:	90000000 	adrp	x0, 0 <readString>
+			12c: R_AARCH64_ADR_PREL_PG_HI21	.rodata+0x28
+ 130:	91000000 	add	x0, x0, #0x0
+			130: R_AARCH64_ADD_ABS_LO12_NC	.rodata+0x28
+ 134:	94000000 	bl	0 <printf>
+			134: R_AARCH64_CALL26	printf
+ 138:	90000000 	adrp	x0, 0 <readString>
+			138: R_AARCH64_ADR_PREL_PG_HI21	.rodata+0x40
+ 13c:	91000000 	add	x0, x0, #0x0
+			13c: R_AARCH64_ADD_ABS_LO12_NC	.rodata+0x40
+ 140:	90000001 	adrp	x1, 30 <readString+0x30>
+			140: R_AARCH64_ADR_PREL_PG_HI21	name
+ 144:	91000021 	add	x1, x1, #0x0
+			144: R_AARCH64_ADD_ABS_LO12_NC	name
+ 148:	94000000 	bl	0 <printf>
+			148: R_AARCH64_CALL26	printf
+ 14c:	52800000 	mov	w0, #0x0                   	// #0
+ 150:	a8c17bfd 	ldp	x29, x30, [sp],#16
+ 154:	d65f03c0 	ret
