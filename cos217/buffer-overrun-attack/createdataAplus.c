@@ -31,7 +31,7 @@ int main(void)
    }
    /* Writes filler to the dataA file
    so instruction starts at multiple of 4 */
-   for (i = 0; i<3; i++){
+   for (i = 0; i<4; i++){
        fprintf(psFile, "%c", 0x00);
    }
    /* Writes the instruction mov w0, ‘A’ */
