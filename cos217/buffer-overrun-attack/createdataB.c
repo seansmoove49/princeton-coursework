@@ -23,7 +23,10 @@ int main(void)
    for (i = 0; i<strlen(psName); i++){
        fprintf(psFile, "%c", psName[i]);
    }
-   fprintf(psFile, "%c", 0x00);
+   for (i = 0; i<(48-(strlen(psName))); i++){
+       fprintf(psFile, "%c", 0x00);
+   }
+   fwrite(&ulData, sizeof(unsigned long), 1, psFile);
    
    
 
