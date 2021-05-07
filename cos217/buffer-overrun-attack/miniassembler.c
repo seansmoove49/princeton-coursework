@@ -17,7 +17,11 @@
 static void setField(unsigned int uiSrc, int iSrcStartBit,
        unsigned int *puiDest, int iDestStartBit, int iNumBits)
 {
-   /* Your code here */
+   unsigned int uextractedShiftedBits;
+   uextractedShiftedBits =  (((1 << iNumBits) - 1) & (uiSrc >> iSrcStartBit)) << iDestStartBit; 
+   *puiDest = *puiDest | uextractedShiftedBits;
+
+   
 
 }
 
@@ -25,7 +29,17 @@ static void setField(unsigned int uiSrc, int iSrcStartBit,
 
 unsigned int MiniAssembler_mov(unsigned int uiReg, int iImmed)
 {
-   /* Your code here */
+   unsigned int uiInstr;
+
+   /* Base Instruction Code */
+   uiInstr = 0x52800000;
+
+   /* register to be inserted in instruction */
+   setField(uiReg, 0, &uiInstr, 0, 5);
+
+   setField((unsigned int)(iImmed), 0, &uiInstr, 5, 16);
+
+   return uiInstr;
 
 }
 
@@ -54,18 +68,42 @@ unsigned int MiniAssembler_adr(unsigned int uiReg, unsigned long ulAddr,
 
 /*--------------------------------------------------------------------*/
 
+
 unsigned int MiniAssembler_strb(unsigned int uiFromReg,
    unsigned int uiToReg)
 {
-   /* Your code here */
+   unsigned int uiInstr;
+
+   /* Base Instruction Code */
+   uiInstr = 0x39000000;
+
+   /* register to be inserted in instruction */
+   setField(uiFromReg, 0, &uiInstr, 0, 5);
+
+   setField(uiToReg, 0, &uiInstr, 5, 5);
+
+   return uiInstr;
 
 }
 
 /*--------------------------------------------------------------------*/
 
+
 unsigned int MiniAssembler_b(unsigned long ulAddr,
    unsigned long ulAddrOfThisInstr)
 {
-   /* Your code here */
+   unsigned int uiInstr;
+   unsigned int uiDisp;
+
+   /* Base Instruction Code */
+   uiInstr = 0x14000000;
+
+   uiDisp = (unsigned int)(ulAddr - ulAddrOfThisInstr);
+
+   /* register to be inserted in instruction */
+   setField(uiDisp, 0, &uiInstr, 0, 26);
+
+   return uiInstr;
+   
 
 }
