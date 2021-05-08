@@ -84,24 +84,3 @@ int main(void)
 
    return 0;
 }
-
-
-
-
-/* structure of BSS section (within buffer):
-
-student name
-
-buffer so it's a multiple of 4
-
-mov w0, 'A'
-bl putchar
-mov w0, '+'
-bl putchar
-mov w0, '\0'
-adr x1, grade
-strb w0, [x1]
-b 0x40085c (call of printf)
-overrun until x30
-write address
-*/
