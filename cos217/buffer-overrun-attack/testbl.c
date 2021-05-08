@@ -25,6 +25,7 @@ int main(void)
    char* psName;
    FILE *psFile;
    psFile = fopen("blTest", "w");
+   psName = "Sean Wang";
 
    /* Writes the student's name to the dataA file */
    for (i = 0; i < strlen(psName); i++) {
