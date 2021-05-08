@@ -39,16 +39,18 @@ int main(void)
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction bl printf - NOT WORKING */
-   uiInstr = MiniAssembler_mov(0, 'A');
-   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
+   for (i = 0; i<4; i++){
+       fprintf(psFile, "%c", 0x00);
+   }
  
    /* Writes the instruction mov w0, '+' */ 
    uiInstr = MiniAssembler_mov(0, '+');
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction bl printf - NOT WORKING */
-   uiInstr = MiniAssembler_mov(0, '+');
-   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
+   for (i = 0; i<4; i++){
+       fprintf(psFile, "%c", 0x00);
+   }
 
    /* Writes the instruction mov w0, '\0' */ 
    uiInstr = MiniAssembler_mov(0, '\0');
