@@ -26,9 +26,16 @@ int main(void)
    FILE *psFile;
    psFile = fopen("blTest", "w");
 
+   /* Writes the instruction b 0x400864 (call of printf) */
+   uiInstr = MiniAssembler_b(0x400864, 0x420070);
+   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
+
+/*
    uiInstr = MiniAssembler_bl(0x400600, 0x420064);
    printf("%u", uiInstr);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
+
+   */
 
    fclose(psFile);
 
