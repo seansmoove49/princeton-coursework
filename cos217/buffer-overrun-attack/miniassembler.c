@@ -120,7 +120,7 @@ unsigned int MiniAssembler_bl(unsigned long ulAddr,
    /* Base Instruction Code */
    uiInstr = 0x94000000;
 
-   uiDisp = (unsigned int)(ulAddr - ulAddrOfThisInstr)>>2;
+   uiDisp = (unsigned int)(ulAddr - ulAddrOfThisInstr)<<2;
 
    /* register to be inserted in instruction */
    setField(uiDisp, 0, &uiInstr, 0, 26);
