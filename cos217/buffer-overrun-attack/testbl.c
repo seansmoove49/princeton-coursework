@@ -28,10 +28,9 @@ int main(void)
    psName = "Sean Wang";
 
    /* Writes the instruction mov w0, ‘A’ */
-   /*
    uiInstr = MiniAssembler_mov(0, 'A');
+   printf("%u", uiInstr);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
-   */
  
    /* Writes the instruction adr x1, grade */
    uiInstr = MiniAssembler_adr(1, 0x420044, 0x420068);
