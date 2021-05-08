@@ -42,8 +42,8 @@ int main(void)
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction bl printf - SUB ONCE BUG FIXED */
-   /* uiInstr = MiniAssembler_bl(0x400600, 0x420064); */
-   uiInstr = MiniAssembler_mov(0, 'A');
+   uiInstr = MiniAssembler_bl(0x400600, 0x420064);
+   /* uiInstr = MiniAssembler_mov(0, 'A'); */
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction mov w0, ‘+’ */
