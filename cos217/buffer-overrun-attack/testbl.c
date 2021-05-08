@@ -37,11 +37,11 @@ int main(void)
 
    /* Writes the instruction strb w0, [x1] */
    uiInstr = MiniAssembler_strb(0,1);
-   printf("%u", uiInstr);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction b 0x400864 (call of printf) */
    uiInstr = MiniAssembler_b(0x400864, 0x420070);
+   printf("%u", uiInstr);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes enough null bytes to the dataB file
