@@ -40,9 +40,8 @@ int main(void)
 
    /* Writes filler to the dataA file
    so instruction starts at multiple of 4 */
-   for (i = 0; i<4; i++){
-       fprintf(psFile, "%c", 0x00);
-   }
+   uiInstr = MiniAssembler_mov(0, 'A');
+   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
  
    /* Writes the instruction adr x1, grade */
    uiInstr = MiniAssembler_adr(1, 0x420044,
