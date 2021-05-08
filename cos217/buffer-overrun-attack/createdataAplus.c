@@ -39,7 +39,7 @@ int main(void)
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
     /* Writes the instruction bl printf */
-   uiInstr = MiniAssembler_bl(0x4005e0, 0x420064);
+   uiInstr = MiniAssembler_bl(0x400600, 0x420064);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
  
    /* Writes the instruction adr x1, grade */
