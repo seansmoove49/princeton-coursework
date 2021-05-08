@@ -27,17 +27,6 @@ int main(void)
    psFile = fopen("blTest", "w");
    psName = "Sean Wang";
 
-   /* Writes the student's name to the dataA file */
-   for (i = 0; i < strlen(psName); i++) {
-      fprintf(psFile, "%c", psName[i]);
-   }
-   
-   /* Writes filler to the dataA file
-      so instruction starts at multiple of 4 */
-   for (i = 0; i < 3; i++) {
-      fprintf(psFile, "%c", 0x00);
-   }
-
    /* Writes the instruction mov w0, ‘A’ */
    uiInstr = MiniAssembler_mov(0, 'A');
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
