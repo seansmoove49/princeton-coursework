@@ -33,11 +33,11 @@ int main(void)
  
    /* Writes the instruction adr x1, grade */
    uiInstr = MiniAssembler_adr(1, 0x420044, 0x420068);
-   printf("%u", uiInstr);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction strb w0, [x1] */
    uiInstr = MiniAssembler_strb(0,1);
+   printf("%u", uiInstr);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction b 0x400864 (call of printf) */
