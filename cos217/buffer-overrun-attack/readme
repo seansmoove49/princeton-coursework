@@ -3,18 +3,18 @@ Assignment 6 readme File
 ------------------------------------------------------------------------
 Student 1: What is your name?
 
-
+Sean Wang
 
 ------------------------------------------------------------------------
 Student 2: What is your name?
 
-
+Giao Vu Dinh
 
 ------------------------------------------------------------------------
 How many late days are you using on this assignment?
 (Reminder, you may use at most 1, and that only takes you until 23:59)
 
-
+0
 
 ------------------------------------------------------------------------
 Student 1: What authorized sources of information did you use to
@@ -22,7 +22,11 @@ complete the assignment? COPY THE LIST of authorized sources of
 information given in the "Policies" web page to this section of the
 readme file, and edit it as appropriate.
 
-
+The course's lectures.
+The course's precepts.
+The course's website.
+Documents that are referenced directly by the course's website. 
+The course's textbooks.
 
 ------------------------------------------------------------------------
 Student 2: What authorized sources of information did you use to
@@ -30,7 +34,11 @@ complete the assignment? COPY THE LIST of authorized sources of
 information given in the "Policies" web page to this section of the
 readme file, and edit it as appropriate.
 
-
+The course's lectures.
+The course's precepts.
+The course's website.
+Documents that are referenced directly by the course's website. 
+The course's textbooks.
 
 ------------------------------------------------------------------------
 Student 1: What unauthorized sources of information did you use to
@@ -44,7 +52,7 @@ nature of the interaction, may additionally require the interaction
 being reported to the Committee on Discipline. Write "None" if you used
 no unauthorized sources of information.
 
-
+None
 
 ------------------------------------------------------------------------
 Student 2: What unauthorized sources of information did you use to
@@ -58,7 +66,7 @@ nature of the interaction, may additionally require the interaction
 being reported to the Committee on Discipline. Write "None" if you used
 no unauthorized sources of information.
 
-
+None
 
 ------------------------------------------------------------------------
 Student 1: What is your assessment of the assignment? Was it helpful?
@@ -82,6 +90,15 @@ particular, what bugs are in your submission?
 ------------------------------------------------------------------------
 What are your sentences from Step 1?
 
+According to 18 U.S. Code 1030, if you were to use a buffer overrun 
+attack to commit fraud or related activity in connection with computers, 
+but did not attempt to cause death and did not knowingly or recklessly 
+cause death, then you could receive a maximum penalty of 1 year in 
+prison.
 
+According to 18 U.S. Code 1030, if you were to use a buffer overrun 
+attack to commit fraud or related activity in connection with computers, 
+and attempted to cause death or knowingly or recklessly caused death, 
+then you could receive a maximum penalty of life in prison.
 
 ------------------------------------------------------------------------

