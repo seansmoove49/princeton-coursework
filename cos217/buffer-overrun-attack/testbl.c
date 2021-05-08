@@ -27,6 +27,8 @@ int main(void)
    psFile = fopen("blTest", "w");
 
    uiInstr = MiniAssembler_bl(0x400600, 0x420064);
+   printf("%u", uiInstr);
+   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    fclose(psFile);
 
