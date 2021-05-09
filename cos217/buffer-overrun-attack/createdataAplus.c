@@ -43,7 +43,7 @@ int main(void)
 
    /* Writes the instruction bl printf - SUB ONCE BUG FIXED */
    /*uiInstr = MiniAssembler_bl(0x400600, 0x420068);*/
-   uiInstr = MiniAssembler_mov(0, '+');
+   uiInstr = MiniAssembler_bl(0x400600, 0x420068);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction mov w0, ‘+’ */
