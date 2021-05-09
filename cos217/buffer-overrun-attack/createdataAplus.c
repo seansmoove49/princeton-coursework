@@ -23,9 +23,11 @@ int main(void)
    unsigned int uiInstr;
    unsigned long ulData;
    char* psName;
+   char* format;
    FILE *psFile;
    psFile = fopen("dataAplus", "w");
    psName = "Sean Wang";
+   format = "%c";
 
    /* Writes the student's name to the dataA file */
    for (i = 0; i<strlen(psName); i++){
@@ -37,8 +39,12 @@ int main(void)
        fprintf(psFile, "%c", 0x00);
    }
 
-   /* Writes the instruction mov w0, ‘A’ */
-   uiInstr = MiniAssembler_mov(0, 'A');
+   /* Writes the instruction mov w0, "%c" */
+   uiInstr = MiniAssembler_mov(0, format);
+   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
+
+   /* Writes the instruction mov w0, A */
+   uiInstr = MiniAssembler_mov(1, 'A');
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction bl printf - SUB ONCE BUG FIXED */
