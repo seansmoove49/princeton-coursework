@@ -71,7 +71,7 @@ int main(void)
    /* Writes enough null bytes to the dataAplus file
       to overrun until X30. 36 is the number of elements filled
       in the name array by dataAplus. */
-   for (i = 0; i < BUFSIZE - 36; i++) {
+   for (i = 0; i < BUFSIZE-36; i++) {
        fprintf(psFile, "%c", 0x00);
    }
 

@@ -35,8 +35,8 @@ int main(void)
        fprintf(psFile, "%c", psName[i]);
    }
 
-   /* Writes filler to the dataA file
-   so instruction starts at multiple of 4 */
+   /* Writes filler to the dataA file so instruction starts 
+      at multiple of 4 */
    for (i = 0; i < 3; i++) {
        fprintf(psFile, "%c", 0x00);
    }
