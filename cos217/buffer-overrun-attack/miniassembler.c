@@ -17,6 +17,8 @@
 static void setField(unsigned int uiSrc, int iSrcStartBit,
                      unsigned int *puiDest, int iDestStartBit, 
                      int iNumBits) {
+   assert(puiDest != NULL);
+
    unsigned int uextractedShiftedBits;
    uextractedShiftedBits = (((1 << iNumBits) - 1) & 
                            (uiSrc >> iSrcStartBit)) << iDestStartBit; 
