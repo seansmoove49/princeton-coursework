@@ -32,7 +32,8 @@ int main(void)
        fprintf(psFile, "%c", psName[i]);
    }
    fprintf(psFile, "%c", 0x00);
-   fprintf(psFile, "%s", "A");
+   fprintf(psFile, "%c", "A");
+   fprintf(psFile, "%c", 0x00);
    fprintf(psFile, "%c", 0x00);
 
    /* Writes the instruction adr w0, "A" */
