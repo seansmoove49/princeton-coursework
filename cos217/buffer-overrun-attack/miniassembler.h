@@ -1,6 +1,6 @@
 /*--------------------------------------------------------------------*/
 /* miniassembler.h                                                    */
-/* Author: Bob Dondero, Donna Gabai                                   */
+/* Author: Giao Vu Dinh, Sean Wang                                    */
 /*--------------------------------------------------------------------*/
 
 #ifndef MINIASSEMBLER_INCLUDED
@@ -67,7 +67,6 @@ unsigned int MiniAssembler_b(unsigned long ulAddr,
 
 unsigned int MiniAssembler_bl(unsigned long ulAddr,
    unsigned long ulAddrOfThisInstr);
-
 
 
 #endif

@@ -1,3 +1,5 @@
+Authors: Sean Wang, Giao Vu Dinh
+-----------------------------------------------------------------
 
 Text section:
 
@@ -128,6 +130,10 @@ Address        Content        Description
 
 
 
+
+
+
+
 BSS section: 
 
 Address        A Description                                  
@@ -187,10 +193,3 @@ Offset         Description
 64              buf
 72              buf
 80              X30
-
-
-
-
-
-
-

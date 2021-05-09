@@ -101,7 +101,6 @@ unsigned int MiniAssembler_b(unsigned long ulAddr,
 
 /*--------------------------------------------------------------------*/
 
-
 unsigned int MiniAssembler_bl(unsigned long ulAddr,
                               unsigned long ulAddrOfThisInstr) {
    unsigned int uiInstr;
