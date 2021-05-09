@@ -32,7 +32,7 @@ int main(void)
        fprintf(psFile, "%c", psName[i]);
    }
    fprintf(psFile, "%c", 0x00);
-   fprintf(psFile, "%c", "A");
+   fprintf(psFile, "%c", 'A');
    fprintf(psFile, "%c", 0x00);
    fprintf(psFile, "%c", 0x00);
 
