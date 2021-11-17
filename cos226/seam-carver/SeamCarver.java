@@ -3,11 +3,7 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class SeamCarver {
 
-    double[][] energies;
-
-    private double[] distTo;
-    private int[][] edgeTo;
-
+    // picture object
     private Picture picture;
 
     // create a seam carver object based on the given picture
@@ -15,19 +11,14 @@ public class SeamCarver {
         if (picture == null) {
             throw new IllegalArgumentException();
         }
-        this.picture = picture;
-        this.energies = new double[picture.width()][picture.height()];
-        for (int x = 0; x < picture.width(); x++) {
-            for (int y = 0; y < picture.height(); y++) {
-                energies[x][y] = energy(x, y);
-            }
-        }
 
+        this.picture = new Picture(picture);
     }
 
     // current picture
     public Picture picture() {
-        return picture;
+        Picture copy = new Picture(picture);
+        return copy;
     }
 
     // width of current picture
@@ -40,8 +31,9 @@ public class SeamCarver {
         return picture.height();
     }
 
+    // calculates energy of specified pixel
     public double energy(int x, int y) {
-        if (x > picture.height() || x < 0 || y > picture.width() || y < 0)
+        if (x > width() - 1 || x < 0 || y > height() - 1 || y < 0)
             throw new IllegalArgumentException("Pixel outside of range");
 
         int height = picture.height();
@@ -79,72 +71,70 @@ public class SeamCarver {
         return gradient;
     }
 
+    // transposes the picture
+    private void transpose() {
+        Picture transPic = new Picture(height(), width());
+        for (int col = 0; col < width(); col++) {
+            for (int row = 0; row < height(); row++) {
+                transPic.setRGB(row, col, picture.getRGB(col, row));
+
+            }
+        }
+
+        picture = transPic;
+    }
+
     // sequence of indices for horizontal seam
-
     public int[] findHorizontalSeam() {
-        edgeTo = new int[width()][height()];
-        distTo = new double[height()];
-        int[] seam = new int[width()];
-        double[] prevDistTo = new double[height()];
-
-        double minWeight = Double.POSITIVE_INFINITY;
-        int minIndex = 0;
-
-        for (int i = 0; i < distTo.length; i++) {
-            distTo[i] = Double.POSITIVE_INFINITY;
-        }
-
-        for (int x = 0; x < width(); x++) {
-            for (int y = 0; y < height(); y++) {
-                relaxHorizontal(x, y, prevDistTo, y - 1);
-                relaxHorizontal(x, y, prevDistTo, y);
-                relaxHorizontal(x, y, prevDistTo, y + 1);
-            }
-        }
-
-        for (int i = 0; i < distTo.length; i++) {
-            double weight = distTo[i];
-            if (weight < minWeight) {
-                minWeight = weight;
-                minIndex = i;
-            }
-        }
-
-        for (int x = width() - 1; x >= 0; x--) {
-            seam[x] = minIndex;
-            minIndex = edgeTo[minIndex][x];
-        }
-
+        transpose();
+        int[] seam = findVerticalSeam();
+        transpose();
         return seam;
-
-
     }
 
     // sequence of indices for vertical seam
     public int[] findVerticalSeam() {
-        edgeTo = new int[width()][height()];
-        distTo = new double[width()];
-        int[] seam = new int[height()];
-        double[] prevDistTo = new double[width()];
+        int[][] edgeTo = new int[width()][height()];
+        double[][] distTo = new double[width()][height()];
+
+        int[] seam = new int[height()]; // store x-value to remove for each row
+        double[][] energies = new double[width()][height()];
 
         double minWeight = Double.POSITIVE_INFINITY;
         int minIndex = 0;
 
+        for (int x = 0; x < picture.width(); x++) {
+            for (int y = 0; y < picture.height(); y++) {
+                energies[x][y] = energy(x, y);
+            }
+        }
+
         for (int i = 0; i < distTo.length; i++) {
-            distTo[i] = Double.POSITIVE_INFINITY;
+            distTo[i][0] = energies[i][0];
+        }
+        for (int i = 0; i < distTo.length; i++) {
+            for (int j = 1; j < distTo[0].length; j++) {
+                distTo[i][j] = Double.POSITIVE_INFINITY;
+            }
+
         }
 
         for (int y = 0; y < height(); y++) {
             for (int x = 0; x < width(); x++) {
-                relaxVertical(x, y, prevDistTo, x - 1);
-                relaxVertical(x, y, prevDistTo, x);
-                relaxVertical(x, y, prevDistTo, x + 1);
+                // straight down
+                relax(x, y, x, y + 1, distTo, edgeTo, energies);
+
+                // down, left
+                relax(x, y, x - 1, y + 1, distTo, edgeTo, energies);
+
+                // down, right
+                relax(x, y, x + 1, y + 1, distTo, edgeTo, energies);
 
             }
         }
 
         for (int i = 0; i < distTo.length; i++) {
-            double weight = distTo[i];
+            double weight = distTo[i][height() - 1];
             if (weight < minWeight) {
                 minWeight = weight;
                 minIndex = i;
@@ -157,71 +147,91 @@ public class SeamCarver {
         }
 
         return seam;
-
     }
 
-    private void relaxVertical(int x, int y, double[] prevDistTo, int prev) {
-        if (prev < 0 || prev >= prevDistTo.length) {
-            return;
-        }
+    // relaxes edges and updates smallest distTo and edgeTo arrays
+    private void relax(int x, int y, int nextX, int nextY,
+                       double[][] distTo, int[][] edgeTo, double[][] energies) {
+        if (nextX < 0 || nextX >= distTo.length ||
+                nextY < 0 || nextY >= distTo[0].length) return;
 
-        double weight = prevDistTo[prev];
-        double energy = energies[x][y];
-        if (distTo[x] > weight + energy) {
-            distTo[x] = weight + energy;
-            edgeTo[x][y] = prev;
-        }
+        double weight = distTo[x][y];
+        double energy = energies[nextX][nextY];
 
-    }
-
-    private void relaxHorizontal(int x, int y, double[] prevDistTo, int prev) {
-        if (prev < 0 || prev >= prevDistTo.length) {
-            return;
-        }
-
-        double weight = prevDistTo[prev];
-        double energy = energies[x][y];
-        if (distTo[y] > weight + energy) {
-            distTo[y] = weight + energy;
-            edgeTo[x][y] = prev;
+        if (distTo[nextX][nextY] > weight + energy) {
+            distTo[nextX][nextY] = weight + energy;
+            edgeTo[nextX][nextY] = x;
         }
     }
 
+    // validate the seam array
+    private void validateSeam(int[] seam) {
+        // length and null check
+        if (seam == null)
+            throw new IllegalArgumentException("Null argument");
+
+        if (seam.length != height())
+            throw new IllegalArgumentException("Argument of wrong length");
+
+        if (width() == 1)
+            throw new IllegalArgumentException("Width is equal to one");
+
+
+        // check that seam does not have jumps
+        for (int i = 0; i < seam.length - 1; i++) {
+            if (Math.abs(seam[i + 1] - seam[i]) > 1)
+                throw new IllegalArgumentException("Not a valid seam");
+        }
+
+        for (int i = 0; i < seam.length; i++) {
+            if (seam[i] >= width() || seam[i] < 0)
+                throw new IllegalArgumentException("Illegal Argument");
+        }
+    }
 
     // remove horizontal seam from current picture
     public void removeHorizontalSeam(int[] seam) {
-        if (seam == null) {
-            throw new IllegalArgumentException();
-        }
-
+        transpose();
+        removeVerticalSeam(seam);
+        transpose();
     }
 
     // remove vertical seam from current picture
     public void removeVerticalSeam(int[] seam) {
-        if (seam == null) {
-            throw new IllegalArgumentException();
-        }
-    }
+        validateSeam(seam);
 
-    private void remove(int[] seam, int width, int height) {
-        Picture newPic = new Picture(width, height);
+        Picture newPic = new Picture(width() - 1, height());
 
-        for (int i = 0; i < width; i++) {
-            
-            for (int j = 0; j < height; j++) {
-
+        for (int row = 0; row < height(); row++) {
+            for (int col = 0; col < newPic.width(); col++) {
+                if (col < seam[row])
+                    newPic.setRGB(col, row, picture.getRGB(col, row));
+                else
+                    newPic.setRGB(col, row, picture.getRGB(col + 1, row));
             }
         }
 
+        picture = newPic;
     }
+
 
     //  unit testing (required)
     public static void main(String[] args) {
-        String filename = args[0];
-        Picture picture = new Picture(filename);
-        SeamCarver test = new SeamCarver(picture);
+        Picture pic = new Picture("3x4.png");
+        SeamCarver sc = new SeamCarver(pic);
 
-        StdOut.println("energy: " + test.energy(1, 2));
+        StdOut.println("(0, 0) " + sc.energy(0, 0));
+        StdOut.println(sc.height());
+        StdOut.println(sc.width());
+        StdOut.println(sc.picture());
+
+        int[] vertSeam = sc.findVerticalSeam();
+        int[] horSeam = sc.findHorizontalSeam();
+        sc.removeVerticalSeam(vertSeam);
+        sc.removeHorizontalSeam(horSeam);
+        StdOut.println((sc.height()));
+        StdOut.println((sc.width()));
+
 
     }
 
