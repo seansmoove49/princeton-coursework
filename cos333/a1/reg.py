@@ -11,9 +11,14 @@ def main():
 
             with contextlib.closing(connection.cursor()) as cursor:
                 cursor.execute("SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title from classes inner join courses on classes.courseid = courses.courseid inner join crosslistings on crosslistings.courseid = classes.courseid order by crosslistings.dept, crosslistings.coursenum, classes.classid")
+                
+                titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
+                underline = ["_"*len(title) for title in titles]
+                print(' '.join(titles))
+                print(' '.join(underline))
                 row = cursor.fetchone()
                 while row is not None:
-                    print("".join(row))
+                    print(''.join(map(str, row)))
                     row = cursor.fetchone()
 
     except Exception as ex:
