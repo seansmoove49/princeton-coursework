@@ -14,12 +14,13 @@ def main():
                 
                 titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
                 underline = ["_"*len(title) for title in titles]
-                print(' '.join(titles))
-                print(' '.join(underline))
+
+                res = '  '.join(titles) + "\n" + '  '.join(underline)+"\n"
                 row = cursor.fetchone()
                 while row is not None:
-                    print(''.join(map(str, row)))
+                    res+=(('  '.join(map(str, row))) +"\n")
                     row = cursor.fetchone()
+                print(res)
 
     except Exception as ex:
         print(ex, file=sys.stderr)
