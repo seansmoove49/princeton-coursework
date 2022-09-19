@@ -24,9 +24,8 @@ def main():
                 while row is not None:
                     row_print = ''.join(map(str, row))
                     row = cursor.fetchone()
-                    wrapper = textwrap.TextWrapper()
     
-                    word_list = wrapper.wrap(width = 72, text=row_print, subsequent_indent = 20)
+                    word_list = textwrap.wrap(width=72, text=row_print, subsequent_indent = 20)
 
                     for i,element in enumerate(word_list):
                         if i == 0:
