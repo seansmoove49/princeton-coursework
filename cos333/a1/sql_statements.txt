@@ -1,0 +1,42 @@
+
+-d contains cos
+SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title
+from classes
+inner join courses 
+on classes.courseid = courses.courseid
+inner join crosslistings 
+on crosslistings.courseid = classes.courseid 
+where crosslistings.dept like "%cos%"
+order by crosslistings.dept, crosslistings.coursenum, classes.classid
+
+
+
+-n contains 333
+SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title
+from classes
+inner join courses 
+on classes.courseid = courses.courseid
+inner join crosslistings 
+on crosslistings.courseid = classes.courseid 
+where crosslistings.coursenum like "%33%"
+order by crosslistings.dept, crosslistings.coursenum, classes.classid
+
+-a contains qr
+SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title
+from classes
+inner join courses 
+on classes.courseid = courses.courseid
+inner join crosslistings 
+on crosslistings.courseid = classes.courseid 
+where courses.area like "%qr%"
+order by crosslistings.dept, crosslistings.coursenum, classes.classid
+
+-t contains intro
+SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title
+from classes
+inner join courses 
+on classes.courseid = courses.courseid
+inner join crosslistings 
+on crosslistings.courseid = classes.courseid 
+where courses.title like "%intro%"
+order by crosslistings.dept, crosslistings.coursenum, classes.classid
