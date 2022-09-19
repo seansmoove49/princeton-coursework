@@ -13,13 +13,34 @@ def main():
             uri=True) as connection:
             
             with contextlib.closing(connection.cursor()) as cursor:
-                select_stmt = "SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title from classes inner join courses on classes.courseid = courses.courseid inner join crosslistings on crosslistings.courseid = classes.courseid "
+                select_stmt = "SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title FROM classes INNER JOIN courses ON classes.courseid = courses.courseid INNER JOIN crosslistings ON crosslistings.courseid = classes.courseid "
 
+                booleans = {"d":False, "n":False, "a":False, "t":False}
                 if args.d:
                     department = args.d
-                    select_stmt += "and crosslistings.dept='" + department + "' "
+                    if "_" in department:
+                        department.replace('_', '+_')
+                    if True in list(booleans.values()):
+                        select_stmt += "AND crosslistings.dept LIKE '%" + department + "%' ESCAPE '+' "
                     
-                select_stmt += "order by crosslistings.dept, crosslistings.coursenum, classes.classid"
+                    else:
+                        select_stmt += "WHERE crosslistings.dept LIKE '%" + department + "%' ESCAPE '+' "
+                        booleans["d"] == True
+                if args.n:
+                    number = args.n
+                    if "_" in number:
+                        number.replace('_', '+_')
+                    if True in list(booleans.values()):
+                        select_stmt += "AND crosslistings.coursenum LIKE '%" + number + "%' ESCAPE '+' "
+                    
+                    else:
+                        select_stmt += "WHERE crosslistings.coursenum LIKE '%" + number + "%' ESCAPE '+' "
+                        booleans["n"] == True
+
+                
+                select_stmt += "ORDER BY crosslistings.dept, crosslistings.coursenum, classes.classid"
+                print(select_stmt)
+
                 cursor.execute(select_stmt)
                 print_table(cursor, args)
             #if not any(vars(args).values()): <--- No args (full table)
@@ -43,23 +64,26 @@ def parse_args():
     args = parser.parse_args()
     return args
     
-def print_table(cursor, args):
+def print_table(cursor, args):                
     titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
-    underline = ["_"*len(title) for title in titles]
-                    
-    print('  '.join(titles))
-    print('  '.join(underline))
+    underline = ["-"*len(title) for title in titles]
+    
+    print(' '.join(titles))
+    print(' '.join(underline))
     row = cursor.fetchone()
 
 
     while row is not None:
-        row_print = '  '.join(map(str, row))
-        row = cursor.fetchone()
-        wrapper = textwrap.TextWrapper(width=72)
-        
-        word_list = wrapper.wrap(text=row_print)
+        for i, element in enumerate(list(row)):
+            if i < len(titles) - 1:
+                print(('{:>' + str(len(titles[i])) +'}').format(element), end=" ")
 
-        for element in word_list:
-            print(element) 
+            else:
+                line_list = textwrap.wrap(text=element, width = 72-23)
+                for j, line in enumerate(line_list):
+                    if j != 0:
+                        print(23*" ", end="")
+                    print(line)
+        row = cursor.fetchone()
 if __name__ == '__main__':
     main()
