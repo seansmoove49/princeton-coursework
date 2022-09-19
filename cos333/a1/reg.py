@@ -1,6 +1,7 @@
 import sys
 import contextlib
 import sqlite3
+import textwrap
 
 DATABASE_URL = 'file:reg.sqlite?mode=ro'
 
@@ -18,15 +19,18 @@ def main():
                 print('  '.join(titles))
                 print('  '.join(underline))
                 row = cursor.fetchone()
+
+                row_print = ""
+
                 while row is not None:
-                    list_row = list(row)
-
-                    row_print = '  '.join(map(str, row))
-
-                    # if len(row_print) > 72:
-
-
+                    row_print += '  '.join(map(str, row))
                     row = cursor.fetchone()
+                wrapper = textwrap.TextWrapper(width=72)
+  
+                word_list = wrapper.wrap(text=row_print)
+
+                for element in word_list:
+                    print(element) 
 
     except Exception as ex:
         print(ex, file=sys.stderr)
