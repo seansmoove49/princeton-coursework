@@ -20,17 +20,16 @@ def main():
                 print('  '.join(underline))
                 row = cursor.fetchone()
 
-                row_print = ""
 
                 while row is not None:
-                    row_print += '  '.join(map(str, row))
+                    row_print = '  '.join(map(str, row))
                     row = cursor.fetchone()
-                wrapper = textwrap.TextWrapper(width=72)
-  
-                word_list = wrapper.wrap(text=row_print)
+                    wrapper = textwrap.TextWrapper(width=72)
+    
+                    word_list = wrapper.wrap(text=row_print)
 
-                for element in word_list:
-                    print(element) 
+                    for element in word_list:
+                        print(element) 
 
     except Exception as ex:
         print(ex, file=sys.stderr)
