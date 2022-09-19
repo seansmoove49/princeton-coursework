@@ -1,5 +1,5 @@
 ClsId Dept CrsNum Area Title
-_____ ____ ______ ____ _____
+----- ---- ------ ---- -----
  8361  AAS    211   LA The American Dance Experience and Africanist
                        Dance Practices
  9897  AAS    221   SA Inequality: Class, Race, and Gender
