@@ -22,7 +22,7 @@ def main():
 
 
                 while row is not None:
-                    row_print = ''.join(map(str, row))
+                    row_print = ' '.join(map(str, row))
                     row = cursor.fetchone()
                     word_list = textwrap.wrap(text=row_print, width=72,subsequent_indent = 20)
 
