@@ -27,8 +27,10 @@ def main():
                             print(('{:>' + str(len(titles[i])) +'}').format(element), end=" ")
 
                         else:
-                            line_list = textwrap.wrap(text=element, width = 72-23, subsequent_indent=23*" ")
-                            for line in line_list:
+                            line_list = textwrap.wrap(text=element, width = 72-23)
+                            for j, line in enumerate(line_list):
+                                if j != 0:
+                                    print(23*" ", end="")
                                 print(line)
                     row = cursor.fetchone()
 
