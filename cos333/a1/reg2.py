@@ -17,7 +17,7 @@ def main():
 
                 booleans = {"d":False, "n":False, "a":False, "t":False}
                 if args.d:
-                    department = args.d
+                    department = args.d.lower()
                     if "_" in department:
                         department.replace('_', '+_')
                     if True in list(booleans.values()):
@@ -25,9 +25,9 @@ def main():
                     
                     else:
                         select_stmt += "WHERE crosslistings.dept LIKE '%" + department + "%' ESCAPE '+' "
-                        booleans["d"] == True
+                        booleans["d"] = True
                 if args.n:
-                    number = args.n
+                    number = args.n.lower()
                     if "_" in number:
                         number.replace('_', '+_')
                     if True in list(booleans.values()):
@@ -35,15 +35,38 @@ def main():
                     
                     else:
                         select_stmt += "WHERE crosslistings.coursenum LIKE '%" + number + "%' ESCAPE '+' "
-                        booleans["n"] == True
+                        booleans["n"] = True
+                
+                if args.a:
+                    area = args.a.lower()
+                    if "_" in number:
+                        number.replace('_', '+_')
+                    if True in list(booleans.values()):
+                        select_stmt += "AND courses.area LIKE '%" + area + "%' ESCAPE '+' "
+                    
+                    else:
+                        select_stmt += "WHERE courses.area LIKE '%" + area + "%' ESCAPE '+' "
+                        booleans["a"] = True
+                
+                if args.t:
+                    title = args.t.lower()
+                    if "_" in number:
+                        number.replace('_', '+_')
+                    if True in list(booleans.values()):
+                        select_stmt += "AND courses.title LIKE '%" + title + "%' ESCAPE '+' "
+                    
+                    else:
+                        select_stmt += "WHERE courses.title LIKE '%" + title + "%' ESCAPE '+' "
+                        booleans["t"] = True
+
 
                 
                 select_stmt += "ORDER BY crosslistings.dept, crosslistings.coursenum, classes.classid"
-                print(select_stmt)
-
                 cursor.execute(select_stmt)
                 print_table(cursor, args)
-            #if not any(vars(args).values()): <--- No args (full table)
+
+
+
 
     except Exception as ex:
         print(ex, file=sys.stderr)
@@ -72,7 +95,7 @@ def print_table(cursor, args):
     print(' '.join(underline))
     row = cursor.fetchone()
 
-
+    
     while row is not None:
         for i, element in enumerate(list(row)):
             if i < len(titles) - 1:
