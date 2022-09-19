@@ -30,7 +30,6 @@ def main():
                             line_list = textwrap.wrap(text=element, width = 72-23, subsequent_indent=23*" ")
                             for line in line_list:
                                 print(line)
-                    print("\n")
                     row = cursor.fetchone()
 
 
