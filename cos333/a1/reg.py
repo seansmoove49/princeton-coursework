@@ -16,30 +16,21 @@ def main():
                 titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
                 underline = ["_"*len(title) for title in titles]
                 
-                print('  '.join(titles))
-                print('  '.join(underline))
+                print(' '.join(titles))
+                print(' '.join(underline))
                 row = cursor.fetchone()
 
 
                 while row is not None:
-                    row_print = '  '.join(map(str, row))
-                    wrapper = textwrap.TextWrapper(width=50, subsequent_indent=20*" ")
-  
-                    word_list = wrapper.wrap(text=row_print)
+                    for i, element in enumerate(list(row)):
+                        if i < len(titles) - 1:
+                            print(('{:>' + str(len(titles[i])) +'}').format(element), end=" ")
 
-                    # Print each line.
-                    for element in word_list:
-                        print(element)
-                    # for i,element in enumerate(word_list):
-                    #     if i == 0:
-                    #         print('{:>5}'.format(element))
-                    #     elif i==1:
-                    #          print('{:>3}'.format(element))
-                    #     elif i==2:
-                    #          print('{:>4}'.format(element))
-                    #     else:
-                    #         print(element)
-                    
+                        else:
+                            line_list = textwrap.wrap(text=element, width = 72-23, subsequent_indent=23*" ")
+                            for line in line_list:
+                                print(line)
+                    print("\n")
                     row = cursor.fetchone()
 
 
