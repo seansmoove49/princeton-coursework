@@ -22,20 +22,25 @@ def main():
 
 
                 while row is not None:
-                    row_print = ' '.join(map(str, row))
-                    row = cursor.fetchone()
-                    word_list = textwrap.wrap(text=row_print, width=72,subsequent_indent = 20)
+                    row_print = '  '.join(map(str, row))
+                    wrapper = textwrap.TextWrapper(width=50, subsequent_indent=20*" ")
+  
+                    word_list = wrapper.wrap(text=row_print)
 
-                    print(word_list)
-                    for i,element in enumerate(word_list):
-                        if i == 0:
-                            print('{:>5}'.format(element))
-                        elif i==1:
-                             print('{:>3}'.format(element))
-                        elif i==2:
-                             print('{:>4}'.format(element))
-                        else:
-                            print(element)
+                    # Print each line.
+                    for element in word_list:
+                        print(element)
+                    # for i,element in enumerate(word_list):
+                    #     if i == 0:
+                    #         print('{:>5}'.format(element))
+                    #     elif i==1:
+                    #          print('{:>3}'.format(element))
+                    #     elif i==2:
+                    #          print('{:>4}'.format(element))
+                    #     else:
+                    #         print(element)
+                    
+                    row = cursor.fetchone()
 
 
     except Exception as ex:
