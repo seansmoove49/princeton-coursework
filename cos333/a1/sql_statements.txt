@@ -1,3 +1,26 @@
+8321
+SELECT
+classes.courseid, classes.days, classes.starttime, classes.endtime, classes.bldg, classes.roomnum, 
+crosslistings.dept, crosslistings.coursenum,
+courses.area,  courses.title,  courses.descrip, courses.prereqs,
+profs.profname
+FROM profs 
+JOIN coursesprofs on profs.profid = coursesprofs.profid
+JOIN courses on coursesprofs.courseid = courses.courseid
+JOIN crosslistings on courses.courseid = crosslistings.courseid
+JOIN classes on crosslistings.courseid = classes.courseid
+WHERE classes.classid = "9032"
+ORDER BY crosslistings.dept, crosslistings.coursenum
+
+
+
+
+
+
+
+
+
+
 
 -d contains cos
 SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title
