@@ -40,7 +40,7 @@ def main():
                 if args.a:
                     area = args.a.lower()
                     if "_" in number:
-                        number.replace('_', '+_')
+                        area.replace('_', '+_')
                     if True in list(booleans.values()):
                         select_stmt += "AND courses.area LIKE '%" + area + "%' ESCAPE '+' "
                     
@@ -95,7 +95,7 @@ def print_table(cursor, args):
     print(' '.join(underline))
     row = cursor.fetchone()
 
-    
+
     while row is not None:
         for i, element in enumerate(list(row)):
             if i < len(titles) - 1:
