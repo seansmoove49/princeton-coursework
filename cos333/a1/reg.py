@@ -1,38 +1,79 @@
 import sys
 import contextlib
 import sqlite3
+import argparse
 import textwrap
-
 DATABASE_URL = 'file:reg.sqlite?mode=ro'
 
 def main():
-    try:
+    args = parse_args()
+
+    try:            
         with sqlite3.connect(DATABASE_URL, isolation_level=None,
             uri=True) as connection:
-
+            
             with contextlib.closing(connection.cursor()) as cursor:
-                cursor.execute("SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title from classes inner join courses on classes.courseid = courses.courseid inner join crosslistings on crosslistings.courseid = classes.courseid order by crosslistings.dept, crosslistings.coursenum, classes.classid")
+                select_stmt = "SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title FROM classes INNER JOIN courses ON classes.courseid = courses.courseid INNER JOIN crosslistings ON crosslistings.courseid = classes.courseid "
+
+                booleans = {"d":False, "n":False, "a":False, "t":False}
+                prepared_variables = []
+                if args.d:
+                    department = args.d.lower()
+                    if "_" in department:
+                        department.replace('_', '+_')
+                    if True in list(booleans.values()):
+                        select_stmt += "AND crosslistings.dept LIKE ? ESCAPE '+' "
+                    else:
+                        select_stmt += "WHERE crosslistings.dept LIKE ? ESCAPE '+' "
+                        booleans["d"] = True
+                    
+                    prepared_variables.append(f"%{department}%")
+                if args.n:
+                    number = args.n.lower()
+                    if "_" in number:
+                        number.replace('_', '+_')
+                    if True in list(booleans.values()):
+                        select_stmt += "AND crosslistings.coursenum LIKE ? ESCAPE '+' "
+                    
+                    else:
+                        select_stmt += "WHERE crosslistings.coursenum LIKE ? ESCAPE '+' "
+                        booleans["n"] = True
+                    
+                    prepared_variables.append(f"%{number}%")
                 
-                titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
-                underline = ["-"*len(title) for title in titles]
+                if args.a:
+                    area = args.a.lower()
+                    if "_" in number:
+                        area.replace('_', '+_')
+                    if True in list(booleans.values()):
+                        select_stmt += "AND courses.area LIKE ? ESCAPE '+' "
+                    
+                    else:
+                        select_stmt += "WHERE courses.area LIKE ? ESCAPE '+' "
+                        booleans["a"] = True
+                    prepared_variables.append(f"%{area}%")
                 
-                print(' '.join(titles))
-                print(' '.join(underline))
-                row = cursor.fetchone()
+                if args.t:
+                    title = args.t.lower()
+                    if "_" in title:
+                        title.replace('_', '+_')
+                    if True in list(booleans.values()):
+                        select_stmt += "AND courses.title LIKE ? ESCAPE '+' "
+                    
+                    else:
+                        select_stmt += "WHERE courses.title LIKE ? ESCAPE '+' "
+                        booleans["t"] = True
+                    prepared_variables.append(f"%{title}%")
 
 
-                while row is not None:
-                    for i, element in enumerate(list(row)):
-                        if i < len(titles) - 1:
-                            print(('{:>' + str(len(titles[i])) +'}').format(element), end=" ")
+                
+                select_stmt += "ORDER BY crosslistings.dept, crosslistings.coursenum, classes.classid"
+                print(select_stmt)
+                print(prepared_variables)
+                cursor.execute(select_stmt, prepared_variables)
+                print_table(cursor, args)
 
-                        else:
-                            line_list = textwrap.wrap(text=element, width = 72-23)
-                            for j, line in enumerate(line_list):
-                                if j != 0:
-                                    print(23*" ", end="")
-                                print(line)
-                    row = cursor.fetchone()
+
 
 
     except Exception as ex:
@@ -40,6 +81,40 @@ def main():
         sys.exit(1)
 
 #-----------------------------------------------------------------------
+def parse_args():
+    parser = argparse.ArgumentParser(description='Registrar application: show overviews of classes', allow_abbrev=False)
+    
+    parser.add_argument('-d', metavar='dept',
+                    help='show only those classes whose department contains dept')
+    parser.add_argument('-n', metavar='num',
+                    help='show only those classes whose course number contains num')
+    parser.add_argument('-a', metavar='area',
+                    help='show only those classes whose distrib area contains area')
+    parser.add_argument('-t', metavar='title',
+                    help='show only those classes whose course title contains title')
+    args = parser.parse_args()
+    return args
+    
+def print_table(cursor):                
+    titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
+    underline = ["-"*len(title) for title in titles]
+    
+    print(' '.join(titles))
+    print(' '.join(underline))
+    row = cursor.fetchone()
 
+    
+    while row is not None:
+        for i, element in enumerate(list(row)):
+            if i < len(titles) - 1:
+                print(('{:>' + str(len(titles[i])) +'}').format(element), end=" ")
+
+            else:
+                line_list = textwrap.wrap(text=element, width = 72-23)
+                for j, line in enumerate(line_list):
+                    if j != 0:
+                        print(23*" ", end="")
+                    print(line)
+        row = cursor.fetchone()
 if __name__ == '__main__':
     main()
