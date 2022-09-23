@@ -1,3 +1,4 @@
+from operator import truediv
 import sys
 import contextlib
 import sqlite3
@@ -15,28 +16,46 @@ def main():
             with contextlib.closing(connection.cursor()) as cursor:
                 select_stmt = "SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title FROM classes INNER JOIN courses ON classes.courseid = courses.courseid INNER JOIN crosslistings ON crosslistings.courseid = classes.courseid "
 
-                booleans = {"d":False, "n":False, "a":False, "t":False}
+                is_first = True
+
                 if args.d:
                     department = args.d
                     if "_" in department:
                         department.replace('_', '+_')
-                    if True in list(booleans.values()):
-                        select_stmt += "AND crosslistings.dept LIKE '%" + department + "%' ESCAPE '+' "
-                    
-                    else:
-                        select_stmt += "WHERE crosslistings.dept LIKE '%" + department + "%' ESCAPE '+' "
-                        booleans["d"] == True
+                    w_or_a = "WHERE " if is_first else "AND "
+                    if is_first:
+                        is_first = False
+                    select_stmt += w_or_a + "crosslistings.dept LIKE '%" + department + "%' ESCAPE '+' "
+
                 if args.n:
                     number = args.n
                     if "_" in number:
                         number.replace('_', '+_')
-                    if True in list(booleans.values()):
-                        select_stmt += "AND crosslistings.coursenum LIKE '%" + number + "%' ESCAPE '+' "
-                    
-                    else:
-                        select_stmt += "WHERE crosslistings.coursenum LIKE '%" + number + "%' ESCAPE '+' "
-                        booleans["n"] == True
+                    w_or_a = "WHERE " if is_first else "AND "
+                    if is_first: 
+                        is_first = False
+                    select_stmt += w_or_a + "crosslistings.coursenum LIKE '%" + number + "%' ESCAPE '+' "
 
+                if args.a:
+                    course_area = args.a
+                    if "_" in course_area:
+                        number.replace('_', '+_')
+                    w_or_a = "WHERE " if is_first else "AND "
+                    if is_first: 
+                        is_first = False
+                    select_stmt += w_or_a + "courses.area LIKE '%" + course_area + "%' ESCAPE '+' "
+
+
+                if args.t:
+                    course_title = args.t
+                    if "_" in course_title:
+                        course_title.replace('_', '+_')
+                    w_or_a = "WHERE " if is_first else "AND "
+                    if is_first: 
+                        is_first = False
+                    select_stmt += w_or_a + "courses.title LIKE '%" + course_title + "%' ESCAPE '+' "
+
+                    
                 
                 select_stmt += "ORDER BY crosslistings.dept, crosslistings.coursenum, classes.classid"
                 print(select_stmt)
