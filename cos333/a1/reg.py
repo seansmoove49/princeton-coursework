@@ -15,29 +15,30 @@ def main():
             with contextlib.closing(connection.cursor()) as cursor:
                 select_stmt = "SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title FROM classes INNER JOIN courses ON classes.courseid = courses.courseid INNER JOIN crosslistings ON crosslistings.courseid = classes.courseid "
 
-                booleans = {"d":False, "n":False, "a":False, "t":False}
+                is_first = True
                 prepared_variables = []
                 if args.d:
                     department = args.d.lower()
                     if "_" in department:
                         department.replace('_', '+_')
-                    if True in list(booleans.values()):
-                        select_stmt += "AND crosslistings.dept LIKE ? ESCAPE '+' "
-                    else:
-                        select_stmt += "WHERE crosslistings.dept LIKE ? ESCAPE '+' "
-                        booleans["d"] = True
+                    
+                    w_or_a = "WHERE " if is_first else "AND "
+                    if is_first:
+                        is_first = False
+                    
+                    select_stmt += w_or_a + "crosslistings.dept LIKE ? ESCAPE '+' "
                     
                     prepared_variables.append(f"%{department}%")
                 if args.n:
                     number = args.n.lower()
                     if "_" in number:
                         number.replace('_', '+_')
-                    if True in list(booleans.values()):
-                        select_stmt += "AND crosslistings.coursenum LIKE ? ESCAPE '+' "
+
+                    w_or_a = "WHERE " if is_first else "AND "
+                    if is_first:
+                        is_first = False
                     
-                    else:
-                        select_stmt += "WHERE crosslistings.coursenum LIKE ? ESCAPE '+' "
-                        booleans["n"] = True
+                    select_stmt += w_or_a + "crosslistings.coursenum LIKE ? ESCAPE '+' "
                     
                     prepared_variables.append(f"%{number}%")
                 
@@ -45,24 +46,23 @@ def main():
                     area = args.a.lower()
                     if "_" in number:
                         area.replace('_', '+_')
-                    if True in list(booleans.values()):
-                        select_stmt += "AND courses.area LIKE ? ESCAPE '+' "
+                    w_or_a = "WHERE " if is_first else "AND "
+                    if is_first:
+                        is_first = False
                     
-                    else:
-                        select_stmt += "WHERE courses.area LIKE ? ESCAPE '+' "
-                        booleans["a"] = True
+                    select_stmt += w_or_a + "courses.area LIKE ? ESCAPE '+' "
+                    
                     prepared_variables.append(f"%{area}%")
                 
                 if args.t:
                     title = args.t.lower()
                     if "_" in title:
                         title.replace('_', '+_')
-                    if True in list(booleans.values()):
-                        select_stmt += "AND courses.title LIKE ? ESCAPE '+' "
+                    w_or_a = "WHERE " if is_first else "AND "
+                    if is_first:
+                        is_first = False
                     
-                    else:
-                        select_stmt += "WHERE courses.title LIKE ? ESCAPE '+' "
-                        booleans["t"] = True
+                    select_stmt += w_or_a +  "courses.title LIKE ? ESCAPE '+' "
                     prepared_variables.append(f"%{title}%")
 
 
@@ -71,7 +71,7 @@ def main():
                 print(select_stmt)
                 print(prepared_variables)
                 cursor.execute(select_stmt, prepared_variables)
-                print_table(cursor, args)
+                print_table(cursor)
 
 
 
