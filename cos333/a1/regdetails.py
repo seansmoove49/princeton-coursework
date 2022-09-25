@@ -68,7 +68,10 @@ def __print_details(cursor):
         __print_tw('Dept and Number: ', str(depts_nums[i][0] + " " + depts_nums[i][1]))
     print()
     print(row_print[8])
-    __print_tw('Area: ', row_print[8] if row_print[8] else " ")
+    if row_print[8]:
+        __print_tw('Area: ', row_print[8])
+    else:
+        print('Area: ')
     print()
     __print_tw('Title: ', row_print[9])
     print() 
