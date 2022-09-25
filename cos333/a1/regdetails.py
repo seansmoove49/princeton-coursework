@@ -13,21 +13,21 @@ def main():
             uri=True) as connection:
             
             with contextlib.closing(connection.cursor()) as cursor:
-                select_stmt = '''SELECT classes.courseid, classes.days, classes.starttime, 
-                classes.endtime, classes.bldg, classes.roomnum, 
-                crosslistings.dept, crosslistings.coursenum,
-                courses.area,  courses.title,  courses.descrip, courses.prereqs,
-                profs.profname '''
-                select_stmt += '''FROM profs 
-                JOIN coursesprofs on profs.profid = coursesprofs.profid
-                JOIN courses on coursesprofs.courseid = courses.courseid
-                JOIN crosslistings on courses.courseid = crosslistings.courseid
-                JOIN classes on crosslistings.courseid = classes.courseid '''
-                select_stmt += "WHERE classes.classid = ? "
-                select_stmt += "ORDER BY crosslistings.dept, crosslistings.coursenum"
-                print(select_stmt)
-                cursor.execute(select_stmt, [str(args.classid)])
+                select_stmt_1 = "SELECT classes.courseid, classes.days, classes.starttime, classes.endtime, classes.bldg, classes.roomnum, crosslistings.dept, crosslistings.coursenum, courses.area,  courses.title,  courses.descrip, courses.prereqs FROM courses INNER JOIN crosslistings on courses.courseid = crosslistings.courseid INNER JOIN classes on crosslistings.courseid = classes.courseid"
+                select_stmt_1 += " WHERE classes.classid = ?"
+                select_stmt_1 += " ORDER BY crosslistings.dept, crosslistings.coursenum"
+                print(select_stmt_1)
+                cursor.execute(select_stmt_1, [str(args.classid)])
                 print_details(cursor)
+                
+
+
+                select_stmt_2 = "SELECT profs.profname FROM profs JOIN coursesprofs on profs.profid = coursesprofs.profid JOIN courses on coursesprofs.courseid = courses.courseid JOIN classes on courses.courseid = classes.courseid" 
+                select_stmt_2 += "WHERE classes.classid = ? ORDER BY profs.profname"
+                print(select_stmt_2)
+                cursor.execute(select_stmt_2, [str(args.classid)])
+
+                print_professor(cursor)
 
 
 
@@ -50,18 +50,18 @@ def print_tw(title, element):
         
 def print_details(cursor):      
     depts_nums = {}
-    profs = set()
+    # profs = set()
     row = cursor.fetchone() 
     row_print = row 
 
     while row is not None: 
         if row[6] not in depts_nums: 
             depts_nums[row[6]] = row[7]
-        if row[12] not in profs: 
-            profs.add(row[12])
+        # if row[12] not in profs: 
+        #     profs.add(row[12])
         row = cursor.fetchone()
     depts_nums = sorted(depts_nums.items())
-    profs = sorted(profs)
+    # profs = sorted(profs)
     print_tw('Course Id: ', row_print[0])
     print()
     print_tw('Days: ', row_print[1])
@@ -81,10 +81,11 @@ def print_details(cursor):
     print()
     print_tw('Prerequisites: ', row_print[11])
     print()
-    for i in range(len(profs)):
-        print_tw('Professor: ', profs[i])
+    # for i in range(len(profs)):
+    #     print_tw('Professor: ', profs[i])
 
-
+def print_professor(cursor):
+    row = cursor.fetchone()
    
 
 
