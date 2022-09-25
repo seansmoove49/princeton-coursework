@@ -22,9 +22,8 @@ def main():
                 
 
 
-                select_stmt_2 = "SELECT profs.profname FROM profs JOIN coursesprofs on profs.profid = coursesprofs.profid JOIN courses on coursesprofs.courseid = courses.courseid JOIN classes on courses.courseid = classes.courseid" 
+                select_stmt_2 = "SELECT profs.profname FROM profs JOIN coursesprofs on profs.profid = coursesprofs.profid JOIN courses on coursesprofs.courseid = courses.courseid JOIN classes on courses.courseid = classes.courseid " 
                 select_stmt_2 += "WHERE classes.classid = ? ORDER BY profs.profname"
-                print(select_stmt_2)
                 cursor.execute(select_stmt_2, [str(args.classid)])
 
                 print_professor(cursor)
@@ -86,7 +85,9 @@ def print_details(cursor):
 
 def print_professor(cursor):
     row = cursor.fetchone()
-   
+    while row is not None:
+        print_tw('Professor: ', row[0])
+        row = cursor.fetchone()
 
 
 if __name__ == '__main__':
