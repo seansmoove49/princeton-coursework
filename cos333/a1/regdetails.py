@@ -67,7 +67,6 @@ def __print_details(cursor):
     for i in range(len(depts_nums)):
         __print_tw('Dept and Number: ', str(depts_nums[i][0] + " " + depts_nums[i][1]))
     print()
-    print(row_print[8])
     if row_print[8]:
         __print_tw('Area: ', row_print[8])
     else:
