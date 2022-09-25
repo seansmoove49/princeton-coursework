@@ -16,7 +16,6 @@ def main():
                 select_stmt_1 = "SELECT classes.courseid, classes.days, classes.starttime, classes.endtime, classes.bldg, classes.roomnum, crosslistings.dept, crosslistings.coursenum, courses.area,  courses.title,  courses.descrip, courses.prereqs FROM courses INNER JOIN crosslistings on courses.courseid = crosslistings.courseid INNER JOIN classes on crosslistings.courseid = classes.courseid"
                 select_stmt_1 += " WHERE classes.classid = ?"
                 select_stmt_1 += " ORDER BY crosslistings.dept, crosslistings.coursenum"
-                print(select_stmt_1)
                 cursor.execute(select_stmt_1, [str(args.classid)])
                 __print_details(cursor)
                 
@@ -68,7 +67,7 @@ def __print_details(cursor):
     for i in range(len(depts_nums)):
         __print_tw('Dept and Number: ', str(depts_nums[i][0] + " " + depts_nums[i][1]))
     print()
-    __print_tw('Area: ', row_print[8])
+    __print_tw('Area: ', row_print[8] if row_print[8] else [" "])
     print()
     __print_tw('Title: ', row_print[9])
     print() 
