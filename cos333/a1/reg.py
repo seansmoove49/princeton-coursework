@@ -20,7 +20,9 @@ def main():
                 if args.d:
                     department = args.d.lower()
                     if "_" in department:
-                        department.replace('_', '+_')
+                        department = department.replace('_', '+_')
+                    if "%" in department:
+                        department = department.replace('%', '+%')
                     
                     w_or_a = "WHERE " if is_first else "AND "
                     if is_first:
@@ -32,7 +34,9 @@ def main():
                 if args.n:
                     number = args.n.lower()
                     if "_" in number:
-                        number.replace('_', '+_')
+                        number = number.replace('_', '+_')
+                    if "%" in number:
+                        number = number.replace('%', '+%')
 
                     w_or_a = "WHERE " if is_first else "AND "
                     if is_first:
@@ -44,8 +48,10 @@ def main():
                 
                 if args.a:
                     area = args.a.lower()
-                    if "_" in number:
-                        area.replace('_', '+_')
+                    if "_" in area:
+                        area = area.replace('_', '+_')
+                    if "%" in area:
+                        area = area.replace('%', '+%')
                     w_or_a = "WHERE " if is_first else "AND "
                     if is_first:
                         is_first = False
@@ -57,7 +63,9 @@ def main():
                 if args.t:
                     title = args.t.lower()
                     if "_" in title:
-                        title.replace('_', '+_')
+                        title = title.replace('_', '+_')
+                    if "%" in title:
+                        title = title.replace('%', '+%')
                     w_or_a = "WHERE " if is_first else "AND "
                     if is_first:
                         is_first = False
@@ -68,10 +76,10 @@ def main():
 
                 
                 select_stmt += "ORDER BY crosslistings.dept, crosslistings.coursenum, classes.classid"
-                print(select_stmt)
-                print(prepared_variables)
                 cursor.execute(select_stmt, prepared_variables)
                 print_table(cursor)
+                print(select_stmt)
+                print(prepared_variables)
 
 
 
