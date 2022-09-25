@@ -8,21 +8,35 @@ DATABASE_URL = 'file:reg.sqlite?mode=ro'
 def main():
     args = parse_args()
 
-    try:            
+    try:
         with sqlite3.connect(DATABASE_URL, isolation_level=None,
             uri=True) as connection:
-            
+
             with contextlib.closing(connection.cursor()) as cursor:
-                select_stmt_1 = "SELECT classes.courseid, classes.days, classes.starttime, classes.endtime, classes.bldg, classes.roomnum, crosslistings.dept, crosslistings.coursenum, courses.area,  courses.title,  courses.descrip, courses.prereqs FROM courses INNER JOIN crosslistings on courses.courseid = crosslistings.courseid INNER JOIN classes on crosslistings.courseid = classes.courseid"
+                select_stmt_1 = '''SELECT classes.courseid,
+                classes.days, classes.starttime,
+                classes.endtime, classes.bldg,
+                classes.roomnum, crosslistings.dept, crosslistings.coursenum,
+                courses.area,  courses.title,  courses.descrip, courses.prereqs
+                FROM courses
+                INNER JOIN crosslistings on courses.courseid =
+                crosslistings.courseid
+                INNER JOIN classes on crosslistings.courseid = classes.courseid'''
                 select_stmt_1 += " WHERE classes.classid = ?"
-                select_stmt_1 += " ORDER BY crosslistings.dept, crosslistings.coursenum"
+                select_stmt_1 += ''' ORDER BY crosslistings.dept,
+                crosslistings.coursenum'''
                 cursor.execute(select_stmt_1, [str(args.classid)])
                 __print_details(cursor)
-                
 
 
-                select_stmt_2 = "SELECT profs.profname FROM profs JOIN coursesprofs on profs.profid = coursesprofs.profid JOIN courses on coursesprofs.courseid = courses.courseid JOIN classes on courses.courseid = classes.courseid " 
-                select_stmt_2 += "WHERE classes.classid = ? ORDER BY profs.profname"
+
+                select_stmt_2 = '''SELECT profs.profname
+                FROM profs 
+                JOIN coursesprofs on profs.profid = coursesprofs.profid 
+                JOIN courses on coursesprofs.courseid = courses.courseid 
+                JOIN classes on courses.courseid = classes.courseid '''
+                select_stmt_2 += '''WHERE classes.classid =
+                ? ORDER BY profs.profname'''
                 cursor.execute(select_stmt_2, [str(args.classid)])
 
                 __print_professor(cursor)
@@ -36,23 +50,25 @@ def main():
 
 #-----------------------------------------------------------------------
 def parse_args():
-    parser = argparse.ArgumentParser(description='Registrar application: show details about a class ', allow_abbrev=False)
-    parser.add_argument('classid', type=int, help='the id of the class whose details should be shown')
+    parser = argparse.ArgumentParser(description='''Registrar
+    application: show details about a class ''', allow_abbrev=False)
+    parser.add_argument('classid', type=int,
+    help='the id of the class whose details should be shown')
     args = parser.parse_args()
     return args
 
 def __print_tw(title, element):
     line_list = textwrap.wrap(text=title + str(element), width = 72)
-    for j, line in enumerate(line_list):
+    for _, line in enumerate(line_list):
         print(line)
-        
-def __print_details(cursor):      
-    depts_nums = {}
-    row = cursor.fetchone() 
-    row_print = row 
 
-    while row is not None: 
-        if row[6] not in depts_nums: 
+def __print_details(cursor):
+    depts_nums = {}
+    row = cursor.fetchone()
+    row_print = row
+
+    while row is not None:
+        if row[6] not in depts_nums:
             depts_nums[row[6]] = row[7]
         row = cursor.fetchone()
     depts_nums = sorted(depts_nums.items())
@@ -64,8 +80,9 @@ def __print_details(cursor):
     __print_tw('Building: ', row_print[4])
     __print_tw('Room: ', row_print[5])
     print()
-    for i in range(len(depts_nums)):
-        __print_tw('Dept and Number: ', str(depts_nums[i][0] + " " + depts_nums[i][1]))
+    for _, dept in enumerate(depts_nums):
+        __print_tw('Dept and Number: ',
+        str(dept[0] + " " + dept[1]))
     print()
     if row_print[8]:
         __print_tw('Area: ', row_print[8])
@@ -73,7 +90,7 @@ def __print_details(cursor):
         print('Area: ')
     print()
     __print_tw('Title: ', row_print[9])
-    print() 
+    print()
     __print_tw('Description: ', row_print[10])
     print()
     __print_tw('Prerequisites: ', row_print[11])
