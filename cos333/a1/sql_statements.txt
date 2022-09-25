@@ -1,20 +1,22 @@
-8321
 SELECT
 classes.courseid, classes.days, classes.starttime, classes.endtime, classes.bldg, classes.roomnum, 
 crosslistings.dept, crosslistings.coursenum,
-courses.area,  courses.title,  courses.descrip, courses.prereqs,
+courses.area,  courses.title,  courses.descrip, courses.prereqs
+FROM courses 
+INNER JOIN crosslistings on courses.courseid = crosslistings.courseid
+INNER JOIN classes on crosslistings.courseid = classes.courseid
+WHERE classes.classid = "10188"
+ORDER BY crosslistings.dept, crosslistings.coursenum
+
+
+SELECT
 profs.profname
 FROM profs 
 JOIN coursesprofs on profs.profid = coursesprofs.profid
 JOIN courses on coursesprofs.courseid = courses.courseid
-JOIN crosslistings on courses.courseid = crosslistings.courseid
-JOIN classes on crosslistings.courseid = classes.courseid
+JOIN classes on courses.courseid = classes.courseid
 WHERE classes.classid = "9032"
-ORDER BY crosslistings.dept, crosslistings.coursenum
-
-
-
-
+ORDER BY profs.profname
 
 
 
