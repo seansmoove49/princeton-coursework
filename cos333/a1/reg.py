@@ -77,7 +77,7 @@ def main():
                 
                 select_stmt += "ORDER BY crosslistings.dept, crosslistings.coursenum, classes.classid"
                 cursor.execute(select_stmt, prepared_variables)
-                print_table(cursor)
+                __print_table(cursor)
                 print(select_stmt)
                 print(prepared_variables)
 
@@ -103,7 +103,7 @@ def parse_args():
     args = parser.parse_args()
     return args
     
-def print_table(cursor):                
+def __print_table(cursor):                
     titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
     underline = ["-"*len(title) for title in titles]
     

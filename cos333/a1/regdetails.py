@@ -18,7 +18,7 @@ def main():
                 select_stmt_1 += " ORDER BY crosslistings.dept, crosslistings.coursenum"
                 print(select_stmt_1)
                 cursor.execute(select_stmt_1, [str(args.classid)])
-                print_details(cursor)
+                __print_details(cursor)
                 
 
 
@@ -26,7 +26,7 @@ def main():
                 select_stmt_2 += "WHERE classes.classid = ? ORDER BY profs.profname"
                 cursor.execute(select_stmt_2, [str(args.classid)])
 
-                print_professor(cursor)
+                __print_professor(cursor)
 
 
 
@@ -42,51 +42,45 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-def print_tw(title, element):
+def __print_tw(title, element):
     line_list = textwrap.wrap(text=title + str(element), width = 72)
     for j, line in enumerate(line_list):
         print(line)
         
-def print_details(cursor):      
+def __print_details(cursor):      
     depts_nums = {}
-    # profs = set()
     row = cursor.fetchone() 
     row_print = row 
 
     while row is not None: 
         if row[6] not in depts_nums: 
             depts_nums[row[6]] = row[7]
-        # if row[12] not in profs: 
-        #     profs.add(row[12])
         row = cursor.fetchone()
     depts_nums = sorted(depts_nums.items())
-    # profs = sorted(profs)
-    print_tw('Course Id: ', row_print[0])
+    __print_tw('Course Id: ', row_print[0])
     print()
-    print_tw('Days: ', row_print[1])
-    print_tw('Start time: ', row_print[2])
-    print_tw('End time: ', row_print[3])
-    print_tw('Building: ', row_print[4])
-    print_tw('Room: ', row_print[5])
+    __print_tw('Days: ', row_print[1])
+    __print_tw('Start time: ', row_print[2])
+    __print_tw('End time: ', row_print[3])
+    __print_tw('Building: ', row_print[4])
+    __print_tw('Room: ', row_print[5])
     print()
     for i in range(len(depts_nums)):
-        print_tw('Dept and Number: ', str(depts_nums[i][0] + " " + depts_nums[i][1]))
+        __print_tw('Dept and Number: ', str(depts_nums[i][0] + " " + depts_nums[i][1]))
     print()
-    print_tw('Area: ', row_print[8])
+    __print_tw('Area: ', row_print[8])
     print()
-    print_tw('Title: ', row_print[9])
+    __print_tw('Title: ', row_print[9])
     print() 
-    print_tw('Description: ', row_print[10])
+    __print_tw('Description: ', row_print[10])
     print()
-    print_tw('Prerequisites: ', row_print[11])
+    __print_tw('Prerequisites: ', row_print[11])
     print()
-    # for i in range(len(profs)):
-    #     print_tw('Professor: ', profs[i])
 
-def print_professor(cursor):
+def __print_professor(cursor):
     row = cursor.fetchone()
     while row is not None:
-        print_tw('Professor: ', row[0])
+        __print_tw('Professor: ', row[0])
         row = cursor.fetchone()
 
 
