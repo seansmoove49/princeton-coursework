@@ -66,8 +66,6 @@ def main():
                 classes.classid'''
                 cursor.execute(select_stmt, prepared_variables)
                 print_table(cursor)
-                print(select_stmt)
-                print(prepared_variables)
 
 
 
