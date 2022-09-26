@@ -3,19 +3,24 @@ sw42_ac63
 
 Sean Wang, Alina Chen,1
 
-Sean's Contribution
+Sean's Contribution:
 I was responsible for displaying the data and together we both composed the SQL statement for
 reg.py. I was also responsible for formatting the table for reg.py and figuring out the textwrap.
-In regdetails.py, again we both helped compose the SQL statement
+In regdetails.py, again we both helped compose the SQL statement and I also helped with the error
+handlings. Finally, we both worked on creating test cases.
 
-Alina's Contribution
+Alina's Contribution:
 Alina worked with Sean to compose the SQL statement for reg.py. She did the formatting for 
 regdetails.py. She also worked to modularize reg.py and regdetails.py. For reg.py, she also 
 worked with argparse. 
 
-
-
-
+Help Received:
 We did not receive any help from other people while doing the assignment.
 
-Sources of information
+Sources of information:
+Python documentation, Stack Overflow, course handouts and lecture slides
+
+Hours spent: 10 
+
+Assessment of assignment: This assignment was useful for learning SQL statements and working
+with database queries.
