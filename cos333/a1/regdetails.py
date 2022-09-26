@@ -26,7 +26,7 @@ def main():
                 select_stmt_1 += ''' ORDER BY crosslistings.dept,
                 crosslistings.coursenum'''
                 cursor.execute(select_stmt_1, [str(args.classid)])
-                __print_details(cursor)
+                __print_details(cursor, args)
 
 
 
@@ -62,11 +62,15 @@ def __print_tw(title, element):
     for _, line in enumerate(line_list):
         print(line)
 
-def __print_details(cursor):
+def __print_details(cursor, args):
     depts_nums = {}
     row = cursor.fetchone()
     row_print = row
 
+    if row is None:
+        raise Exception(f"no class with classid {args.classid}")
+
+    
     while row is not None:
         if row[6] not in depts_nums:
             depts_nums[row[6]] = row[7]
