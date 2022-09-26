@@ -70,34 +70,33 @@ def __print_details(cursor, args):
     if row is None:
         raise Exception(f"no class with classid {args.classid}")
 
-    
     while row is not None:
         if row[6] not in depts_nums:
             depts_nums[row[6]] = row[7]
         row = cursor.fetchone()
     depts_nums = sorted(depts_nums.items())
-    __print_tw('Course Id: ', row_print[0])
+    __print_row("Course Id", row_print, 0)
     print()
-    __print_tw('Days: ', row_print[1])
-    __print_tw('Start time: ', row_print[2])
-    __print_tw('End time: ', row_print[3])
-    __print_tw('Building: ', row_print[4])
-    __print_tw('Room: ', row_print[5])
+    __print_row("Days", row_print, 1)
+    __print_row("Start time", row_print, 2)
+    __print_row("End time", row_print, 3)
+    __print_row("Building", row_print, 4)
+    __print_row("Room", row_print, 5)
     print()
     for _, dept in enumerate(depts_nums):
         __print_tw('Dept and Number: ',
         str(dept[0] + " " + dept[1]))
     print()
-    if row_print[8]:
-        __print_tw('Area: ', row_print[8])
-    else:
-        print('Area: ')
+
+    __print_row("Area", row_print, 8)
+
     print()
-    __print_tw('Title: ', row_print[9])
+    __print_row('Title', row_print, 9)
     print()
-    __print_tw('Description: ', row_print[10])
+    __print_row("Description", row_print, 10)
     print()
-    __print_tw('Prerequisites: ', row_print[11])
+    __print_row("Prerequisites", row_print, 11)
+
     print()
 
 def __print_professor(cursor):
@@ -105,6 +104,15 @@ def __print_professor(cursor):
     while row is not None:
         __print_tw('Professor: ', row[0])
         row = cursor.fetchone()
+
+def __print_row(text, row_print, num):
+    if row_print[num]:
+        __print_tw(f'{text}: ', row_print[num])
+    else:
+        if num in (10, 11):
+            print(f"{text}:")
+        else:
+            print(f"{text}: ")
 
 
 if __name__ == '__main__':

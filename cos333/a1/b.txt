@@ -1,0 +1,24 @@
+Course Id: 3601
+
+Days: MW
+Start time: 11:00 AM
+End time: 12:20 PM
+Building: EQUAA
+Room: A224
+
+Dept and Number: CHE 441
+
+Area: 
+
+Title: Chemical Reaction Engineering
+
+Description: Introduction to chemical reaction engineering and reactor
+design in chemical and biological processes.  Concepts of chemical
+kinetics for both homogeneous and heterogeneous reactions.  Coupled
+transport and chemical/biological rate processes.  Reaction network
+analysis.
+
+Prerequisites: CHE 341. Audit not available for department
+concentrators.
+
+Professor: Yannis G. Kevrekidis
