@@ -1,24 +1,29 @@
-Course Id: 3601
+Course Id: 4614
 
-Days: MW
-Start time: 11:00 AM
-End time: 12:20 PM
-Building: EQUAA
-Room: A224
+Days: TTh
+Start time: 01:00 PM
+End time: 02:25 PM
+Building: FIRES
+Room: 36J
 
-Dept and Number: CHE 441
+Dept and Number: POP 508
+Dept and Number: WWS 598
 
 Area: 
 
-Title: Chemical Reaction Engineering
+Title: Epidemiology
 
-Description: Introduction to chemical reaction engineering and reactor
-design in chemical and biological processes.  Concepts of chemical
-kinetics for both homogeneous and heterogeneous reactions.  Coupled
-transport and chemical/biological rate processes.  Reaction network
-analysis.
+Description: Course covers the basic concepts and methods of
+epidemiology and demonstrates how these can be applied to improve
+population health and reduce health inequities. Topics include:
+measuring the health of the population, understanding the causes of poor
+health, developing interventions for improving health, translating
+evidence into practice, and evaluating the impact of policies and
+programs. Key epidemiological concepts such as association, bias and
+confounding are covered, as well as the main epidemiological study
+designs.
 
-Prerequisites: CHE 341. Audit not available for department
-concentrators.
+Prerequisites: This is a required course for graduate students in the
+Health and Health Policy certificate program.
 
-Professor: Yannis G. Kevrekidis
+Professor: Anne Andermann

@@ -18,6 +18,7 @@ def main():
                 all = cursor.fetchall()
                 for row in all:
                     class_id = row[0]
+                    print(class_id)
                     os.system(f"python regdetails.py {class_id} > a.txt")
                     os.system(f"python ref_regdetails.pyc {class_id} > b.txt")
                     os.system("diff a.txt b.txt")

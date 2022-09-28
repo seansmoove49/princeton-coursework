@@ -4,7 +4,6 @@ import sqlite3
 import argparse
 import textwrap
 DATABASE_URL = 'file:reg.sqlite?mode=ro'
-
 def main():
     args = parse_args()
 
@@ -25,7 +24,7 @@ def main():
                 is_first = True
                 prepared_variables = []
                 if args.d:
-                    replace_var(args.d, prepared_variables)
+                    __replace_var(args.d, prepared_variables)
                     w_or_a = "WHERE " if is_first else "AND "
                     if is_first:
                         is_first = False
@@ -34,7 +33,7 @@ def main():
                     LIKE ? ESCAPE '+' '''
 
                 if args.n:
-                    replace_var(args.n, prepared_variables)
+                    __replace_var(args.n, prepared_variables)
                     w_or_a = "WHERE " if is_first else "AND "
                     if is_first:
                         is_first = False
@@ -43,7 +42,7 @@ def main():
                     LIKE ? ESCAPE '+' '''
 
                 if args.a:
-                    replace_var(args.a, prepared_variables)
+                    __replace_var(args.a, prepared_variables)
                     w_or_a = "WHERE " if is_first else "AND "
                     if is_first:
                         is_first = False
@@ -52,7 +51,7 @@ def main():
                     LIKE ? ESCAPE '+' '''
 
                 if args.t:
-                    replace_var(args.t, prepared_variables)
+                    __replace_var(args.t, prepared_variables)
                     w_or_a = "WHERE " if is_first else "AND "
                     if is_first:
                         is_first = False
@@ -65,7 +64,7 @@ def main():
                 crosslistings.coursenum, 
                 classes.classid'''
                 cursor.execute(select_stmt, prepared_variables)
-                print_table(cursor)
+                __print_table(cursor)
 
 
 
@@ -94,7 +93,7 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-def print_table(cursor):
+def __print_table(cursor):
     titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
     underline = ["-"*len(title) for title in titles]
 
@@ -117,7 +116,7 @@ def print_table(cursor):
                     print(line)
         row = cursor.fetchone()
 
-def replace_var(args_var, prepared_variables):
+def __replace_var(args_var, prepared_variables):
     variable = args_var.lower()
     if "_" in variable:
         variable = variable.replace('_', '+_')
