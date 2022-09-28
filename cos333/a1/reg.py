@@ -1,9 +1,73 @@
+#!/usr/bin/env python
+
+#-----------------------------------------------------------------------
+# reg.py
+# Authors: Sean Wang, Alina Chen
+#-----------------------------------------------------------------------
+
+
 import sys
 import contextlib
 import sqlite3
 import argparse
 import textwrap
+
+#-----------------------------------------------------------------------
+
+
 DATABASE_URL = 'file:reg.sqlite?mode=ro'
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='''Registrar
+    application: show overviews of classes''', allow_abbrev=False)
+
+    parser.add_argument('-d', metavar='dept',
+                    help='''show only those classes whose
+                    department contains dept''')
+    parser.add_argument('-n', metavar='num',
+                    help='''show only those classes whose
+                    course number contains num''')
+    parser.add_argument('-a', metavar='area',
+                    help='''show only those classes whose
+                    distrib area contains area''')
+    parser.add_argument('-t', metavar='title',
+                    help='''show only those classes whose
+                    course title contains title''')
+    args = parser.parse_args()
+    return args
+
+def __print_table(cursor):
+    titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
+    underline = ["-"*len(title) for title in titles]
+
+    print(' '.join(titles))
+    print(' '.join(underline))
+    row = cursor.fetchone()
+
+
+    while row is not None:
+        for i, element in enumerate(list(row)):
+            if i < len(titles) - 1:
+                print(('{:>' + str(len(titles[i])) +'}')
+                .format(element), end=" ")
+
+            else:
+                line_list = textwrap.wrap(text=element, width = 72-23)
+                for j, line in enumerate(line_list):
+                    if j != 0:
+                        print(23*" ", end="")
+                    print(line)
+        row = cursor.fetchone()
+
+def __replace_var(args_var, prepared_variables):
+    variable = args_var.lower()
+    if "_" in variable:
+        variable = variable.replace('_', '+_')
+    if "%" in variable:
+        variable = variable.replace('%', '+%')
+    prepared_variables.append(f"%{variable}%")
+
 def main():
     args = parse_args()
 
@@ -73,56 +137,6 @@ def main():
         print(ex, file=sys.stderr)
         sys.exit(1)
 
-#-----------------------------------------------------------------------
-def parse_args():
-    parser = argparse.ArgumentParser(description='''Registrar
-    application: show overviews of classes''', allow_abbrev=False)
-
-    parser.add_argument('-d', metavar='dept',
-                    help='''show only those classes whose
-                    department contains dept''')
-    parser.add_argument('-n', metavar='num',
-                    help='''show only those classes whose
-                    course number contains num''')
-    parser.add_argument('-a', metavar='area',
-                    help='''show only those classes whose
-                    distrib area contains area''')
-    parser.add_argument('-t', metavar='title',
-                    help='''show only those classes whose
-                    course title contains title''')
-    args = parser.parse_args()
-    return args
-
-def __print_table(cursor):
-    titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
-    underline = ["-"*len(title) for title in titles]
-
-    print(' '.join(titles))
-    print(' '.join(underline))
-    row = cursor.fetchone()
-
-
-    while row is not None:
-        for i, element in enumerate(list(row)):
-            if i < len(titles) - 1:
-                print(('{:>' + str(len(titles[i])) +'}')
-                .format(element), end=" ")
-
-            else:
-                line_list = textwrap.wrap(text=element, width = 72-23)
-                for j, line in enumerate(line_list):
-                    if j != 0:
-                        print(23*" ", end="")
-                    print(line)
-        row = cursor.fetchone()
-
-def __replace_var(args_var, prepared_variables):
-    variable = args_var.lower()
-    if "_" in variable:
-        variable = variable.replace('_', '+_')
-    if "%" in variable:
-        variable = variable.replace('%', '+%')
-    prepared_variables.append(f"%{variable}%")
 
 
 if __name__ == '__main__':

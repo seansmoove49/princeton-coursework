@@ -10,9 +10,9 @@ In regdetails.py, again we both helped compose the SQL statement and I also help
 handlings. Finally, we both worked on creating test cases.
 
 Alina's Contribution:
-Alina worked with Sean to compose the SQL statement for reg.py. She did the formatting for 
-regdetails.py. She also worked to modularize reg.py and regdetails.py. For reg.py, she also 
-worked with argparse. 
+Alina worked with Sean to compose the SQL statement for reg.py. She also figured out and implemented 
+the formatting for regdetails.py. She also worked to modularize reg.py and regdetails.py. 
+For reg.py and regdetails.py, she worked with creating argsparse. 
 
 Help Received:
 We did not receive any help from other people while doing the assignment.
