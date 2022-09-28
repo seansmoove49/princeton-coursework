@@ -50,32 +50,6 @@ os.system("python reg.py -d cos -a qr -n 2 -t intro > a")
 os.system("python ref_reg.pyc -d cos -a qr -n 2 -t intro > b")
 os.system("diff a b")
 
-var = "Independent Study"
-os.system(f"python reg.py -t {var} > a")
-os.system(f"python ref_reg.pyc -t {var} > b")
-os.system("diff a b")
-
-var = "Independent Study "
-os.system(f"python reg.py -t {var} > a")
-os.system(f"python ref_reg.pyc -t {var} > b")
-os.system("diff a b")
-
-var = "Independent Study  "
-os.system(f"python reg.py -t {var} > a")
-os.system(f"python ref_reg.pyc -t {var} > b")
-os.system("diff a b")
-
-var = " Independent Study"
-os.system(f"python reg.py -t {var} > a")
-os.system(f"python ref_reg.pyc -t {var} > b")
-os.system("diff a b")
-
-
-var = "  Independent Study"
-os.system(f"python reg.py -t {var} > a")
-os.system(f"python ref_reg.pyc -t {var} > b")
-os.system("diff a b")
-
 os.system("python reg.py -t=-c  > a")
 os.system("python ref_reg.pyc -t=-c  > b")
 os.system("diff a b")
