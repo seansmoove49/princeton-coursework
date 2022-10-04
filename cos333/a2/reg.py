@@ -22,7 +22,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='''Registrar
     application: show overviews of classes''', allow_abbrev=False)
 
-    parser.add_argument('-d', metavar='dept',
+    parser.add_argument('-h', metavar='dept',
                     help='''show only those classes whose
                     department contains dept''')
     parser.add_argument('-n', metavar='num',
