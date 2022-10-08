@@ -36,8 +36,8 @@ def query_courses(args):
                 is_first = True
                 prepared_variables = []
 
-                if 'dept' in args.keys():
-                    __replace_var(args['dept'], prepared_variables)
+                if 'd' in args.keys():
+                    __replace_var(args['d'], prepared_variables)
                     w_or_a = "WHERE " if is_first else "AND "
                     if is_first:
                         is_first = False
@@ -45,8 +45,8 @@ def query_courses(args):
                     select_stmt += w_or_a + '''crosslistings.dept
                     LIKE ? ESCAPE '+' '''
 
-                if 'num' in args.keys():
-                    __replace_var(args['num'], prepared_variables)
+                if 'n' in args.keys():
+                    __replace_var(args['n'], prepared_variables)
                     w_or_a = "WHERE " if is_first else "AND "
                     if is_first:
                         is_first = False
@@ -54,8 +54,8 @@ def query_courses(args):
                     select_stmt += w_or_a + '''crosslistings.coursenum
                     LIKE ? ESCAPE '+' '''
 
-                if 'area' in args.keys():
-                    __replace_var(args['area'], prepared_variables)
+                if 'a' in args.keys():
+                    __replace_var(args['a'], prepared_variables)
                     w_or_a = "WHERE " if is_first else "AND "
                     if is_first:
                         is_first = False
@@ -63,8 +63,8 @@ def query_courses(args):
                     select_stmt += w_or_a + '''courses.area
                     LIKE ? ESCAPE '+' '''
 
-                if 'title' in args.keys():
-                    __replace_var(args['title'], prepared_variables)
+                if 't' in args.keys():
+                    __replace_var(args['t'], prepared_variables)
                     w_or_a = "WHERE " if is_first else "AND "
                     if is_first:
                         is_first = False
@@ -78,6 +78,8 @@ def query_courses(args):
                 classes.classid'''
 
                 cursor.execute(select_stmt, prepared_variables)
+
+                print(format(cursor.fetchall()))
 
                 return format(cursor.fetchall())
 

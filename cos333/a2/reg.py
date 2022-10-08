@@ -16,7 +16,8 @@ import PyQt5.QtCore
 
 
 #-----------------------------------------------------------------------
-#-----------------------------------------------------------------------
+
+
 D = 0
 N = 1
 A = 2
@@ -43,7 +44,7 @@ def create_lineedits():
 #-----------------------------------------------------------------------
 
 def create_controlframe(labels, lineedits, button):
-    control_frame_layout = PyQt5.QtWidgets.QGridLayout
+    control_frame_layout = PyQt5.QtWidgets.QGridLayout()
     control_frame_layout.addWidget(labels[D], 0, 0)
     control_frame_layout.addWidget(labels[N], 1, 0)
     control_frame_layout.addWidget(labels[A], 2, 0)
@@ -81,7 +82,7 @@ def create_centralframe(labels, lineedits, button, list):
 
     grid_layout = PyQt5.QtWidgets.QGridLayout()
     grid_layout.addWidget(control_frame, 0, 0)
-    #grid_layout.addWidget(list_frame, 1, 0)
+    grid_layout.addWidget(list_frame, 1, 0)
     
     frame = PyQt5.QtWidgets.QFrame()
     frame.setLayout(grid_layout)
@@ -96,7 +97,7 @@ def create_window(central_frame):
     window.resize(screen_size.width()//2, screen_size.height()//2)
     return window
 
-def show_courses(argv):
+def show_courses(argv, host, port):
     app = PyQt5.QtWidgets.QApplication(argv)
 
     labels = create_labels()
@@ -109,10 +110,32 @@ def show_courses(argv):
     
     window.show()
 
-
+    update_list(window, lineedits, list, host, port)
     exit(app.exec_())
 
 
+def update_list(window, lineedits, list, host, port):
+    out_args = {
+        "d": lineedits[D].text(),
+        "n": lineedits[N].text(),
+        "a":lineedits[A].text(),
+        "t":lineedits[T].text(),
+        "request": "get_courses"
+    }
+    # clear the list
+    list.clear()
+
+    with socket.socket() as sock:
+        sock.connect((host, port))
+        out_flo = sock.makefile(mode='wb')
+        pickle.dump(out_args, out_flo)
+        out_flo.flush()
+        print('Wrote request to server at ' + host + ':' +
+            str(port))
+        in_flo = sock.makefile(mode='rb')
+        in_args = pickle.load(in_flo)
+        
+        list.addItems(in_args)
     
 
 
@@ -129,29 +152,10 @@ def main():
         
         args = parser.parse_args()
 
-        host = sys.argv[1]
-        port = int(sys.argv[2])
-
-        with socket.socket() as sock:
-            sock.connect((host, port))
-            # # write request to socket
-            # out_flo = sock.makefile(mode = 'wb')
-            # #pickle.dump(out_args, out_flo)
-            # out_flo.flush()
-            
-            # # read request from socket
-            # in_flo = sock.makefile(mode='rb')
-            
-            # in_args = pickle.load(in_flo)
-            
-            print('hi')
-            show_courses(sys.argv)
-
-            
-            
-
-
-
+        host = args.host
+        port = int(args.port)
+        
+        show_courses(sys.argv, host, port)    
 
     except Exception as ex:
         print(ex, file=sys.stderr)
