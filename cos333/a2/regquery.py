@@ -139,9 +139,10 @@ def query_details(args):
 
 def format(rows):
     formatted_rows = []
-
+    # left align to add white space
     for row in rows:
-        formatted_rows.append('{} {} {} {} {}'.format(row[0], row[1], row[2], row[3], row[4]))
+        formatted_rows.append('{:<5} {:<5} {:<5} {:<3} {}'.format(row[0], 
+        row[1], row[2], row[3], row[4]))
     return formatted_rows
 
 
