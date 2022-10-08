@@ -79,8 +79,6 @@ def query_courses(args):
 
                 cursor.execute(select_stmt, prepared_variables)
 
-                print(format(cursor.fetchall()))
-
                 return format(cursor.fetchall())
 
 

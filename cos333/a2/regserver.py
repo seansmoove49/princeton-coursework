@@ -17,11 +17,9 @@ def handle_client(sock):
     # could be seeing courses or details
     in_flo = sock.makefile(mode="rb")
     in_args = pickle.load(in_flo)
-    print(in_args)
-    if in_args["request"] == "get_courses":
+    if in_args["request"] == "query_courses":
         out_args = query_courses(in_args)
-    print("Bob")
-    print(out_args)
+        print('lebron')
     # write to socket
     out_flo = sock.makefile(mode='wb')
     pickle.dump(out_args, out_flo)

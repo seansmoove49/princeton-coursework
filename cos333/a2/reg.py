@@ -22,7 +22,22 @@ D = 0
 N = 1
 A = 2
 T = 3
+
 #-----------------------------------------------------------------------
+
+def socket_request(host, port, out_args):
+    with socket.socket() as sock:
+        sock.connect((host, port))
+        out_flo = sock.makefile(mode='wb')
+        pickle.dump(out_args, out_flo)
+        out_flo.flush()
+        print('Wrote request to server at ' + host + ':' +
+            str(port))
+        in_flo = sock.makefile(mode='rb')
+        in_args = pickle.load(in_flo)
+        return in_args
+#-----------------------------------------------------------------------
+
 def create_label(text):
     label = PyQt5.QtWidgets.QLabel(text)
     label.setAlignment(PyQt5.QtCore.Qt.AlignRight | PyQt5.QtCore.Qt.AlignVCenter) # prolly need to change this
@@ -110,7 +125,12 @@ def show_courses(argv, host, port):
     
     window.show()
 
+    
+
+    # show initial list on start up
     update_list(window, lineedits, list, host, port)
+
+
     exit(app.exec_())
 
 
@@ -118,24 +138,17 @@ def update_list(window, lineedits, list, host, port):
     out_args = {
         "d": lineedits[D].text(),
         "n": lineedits[N].text(),
-        "a":lineedits[A].text(),
-        "t":lineedits[T].text(),
-        "request": "get_courses"
+        "a": lineedits[A].text(),
+        "t": lineedits[T].text(),
+        "request": "query_courses"
     }
     # clear the list
     list.clear()
 
-    with socket.socket() as sock:
-        sock.connect((host, port))
-        out_flo = sock.makefile(mode='wb')
-        pickle.dump(out_args, out_flo)
-        out_flo.flush()
-        print('Wrote request to server at ' + host + ':' +
-            str(port))
-        in_flo = sock.makefile(mode='rb')
-        in_args = pickle.load(in_flo)
-        
-        list.addItems(in_args)
+    in_args = socket_request(host, port, out_args)
+    print(in_args)
+    
+    list.addItems(in_args)
     
 
 
