@@ -9,8 +9,6 @@
 import sys
 import contextlib
 import sqlite3
-import argparse
-import textwrap
 
 #-----------------------------------------------------------------------
 
@@ -82,7 +80,7 @@ def query_courses(args):
                 return {"error": False, "result":format_table(cursor.fetchall())}
 
     except Exception as ex:
-        print(ex, file=sys.stderr)
+        print(f"{sys.argv[0]}: {ex}", file=sys.stderr)
         return {"error": True, 'result': '''A server error occurred. 
         Please contact the system administrator'''}
 
@@ -113,7 +111,7 @@ def query_details(args):
                 # class id does not exist
                 if len(rows) == 0:
                     err = f"no class with classid {args['class_id']}"
-                    print(err, file=sys.stderr)
+                    print(f"{sys.argv[0]}: {err}", file=sys.stderr)
                     return {"error": True, "result": err}
                 
                 res += format_details(rows)
@@ -134,7 +132,7 @@ def query_details(args):
 
 
     except Exception as ex:
-        print(ex, file=sys.stderr)
+        print(f"{sys.argv[0]}: {ex}", file=sys.stderr)
         return {"error": True, 'result': '''A server error occurred. 
         Please contact the system administrator'''}
 

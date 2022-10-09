@@ -5,7 +5,6 @@
 # Author: Sean Wang, Alina Chen
 #-----------------------------------------------------------------------
 
-import os
 import sys
 import socket
 import argparse
@@ -204,7 +203,7 @@ def main():
         show_courses(sys.argv, host, port)    
 
     except Exception as ex:
-        print(ex, file=sys.stderr)
+        print(f"{sys.argv[0]}: {ex}", file=sys.stderr)
         sys.exit(1)
 
 #-----------------------------------------------------------------------
