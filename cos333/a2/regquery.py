@@ -141,16 +141,10 @@ def query_details(args):
 def format_table(rows):
     formatted_rows = []
 
-    titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
-
+    # titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
     for row in rows:
-        temp = ""
-        for i, element in enumerate(list(row)):
-            if i < len(titles) - 1:
-                temp+=('{:>' + str(len(titles[i])) +'}').format(element)
-            else:
-                temp+=f" {element}"
-        formatted_rows.append(temp)
+        formatted_rows.append('{:>5} {:>4} {:>6} {:>4} {}'.format(
+            row[0], row[1], row[2], row[3], row[4]))
     return formatted_rows
 
 
