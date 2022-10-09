@@ -146,45 +146,44 @@ def format_table(rows):
         row[1], row[2], row[3], row[4]))
     return formatted_rows
 
+
 def format_details(rows):
     res = ""
     row = rows[0]
 
-    res += "Course Id: {}\n\n".format(str(row[0]))
-    res += "Days: {}\n".format(str(row[1]))
-    res += "Start time: {}\n".format(str(row[2]))
-    res += "End time: {}\n".format(str(row[3]))
-    res += "Building: {}\n".format(str(row[4]))
-    res += "Room: {}\n\n".format(str(row[5]))
-    for r in rows:
-        res += "Dept and Number: {} {}".format(str(r[6]), 
-        str(r[7])) + '\n'
-    res += '\n'
-    res += "Area: {}\n\n".format(str(row[8]))
+    res += f"Course Id: {row[0]}\n\n"
+    res += f"Days: {row[1]}\n"
+    res += f"Start time: {row[2]}\n"
+    res += f"End time: {row[3]}\n"
+    res += f"Building: {row[4]}\n"
+    res += f"Room: {row[5]}\n\n"
 
-    if len(row[9]) == 0:
+    for r in rows:
+        res += f"Dept and Number: {r[6]} {r[7]}\n"
+    res += '\n'
+    res += f"Area: {row[8]}\n\n"
+
+    if row[9]:
+        res += f"Title: {row[9]}\n"
+    else:
         res += "Title:\n"
-    else:
-        res += "Title: {}".format(str(row[9])) + '\n'
     res += '\n'
-    if len(row[10]) == 0:
+    if row[10]:
+        res += f"Description: {row[10]}\n"
+    else:
         res += "Description:\n"
-    else:
-        res += "Description: {}".format(
-            str(row[10])) + '\n'
     res += '\n'
-    if len(row[11]) == 0:
-        res += "Prerequisites:\n"
+    if row[11]:
+        res += f"Prerequisites: {row[11]}\n"
     else:
-        res += "Prerequisites: {}".format(
-            str(row[11])) + '\n'
+        res += "Prerequisites:\n"
     res += '\n'
     return res
 
 def format_profs(rows):
     res = ""
     for row in rows:
-        res += "Professor: {}".format(str(row[0])) + '\n'
+        res += f"Professor: {row[0]}\n"
     return res
 def __replace_var(args_var, prepared_variables):
     variable = args_var.lower()
