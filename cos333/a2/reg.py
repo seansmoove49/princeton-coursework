@@ -85,6 +85,7 @@ def create_list():
 def create_listframe(list):
     grid_layout = PyQt5.QtWidgets.QGridLayout()
     grid_layout.addWidget(list)
+    grid_layout.setContentsMargins(0, 0, 0, 0)
     list_frame = PyQt5.QtWidgets.QFrame()
     list_frame.setLayout(grid_layout)
     return list_frame 
@@ -94,6 +95,8 @@ def create_centralframe(labels, lineedits, button, list):
     list_frame = create_listframe(list)   
 
     grid_layout = PyQt5.QtWidgets.QGridLayout()
+    grid_layout.setSpacing(0)
+    grid_layout.setContentsMargins(0, 0, 0, 0)
     grid_layout.addWidget(control_frame, 0, 0)
     grid_layout.addWidget(list_frame, 1, 0)
     
@@ -142,10 +145,7 @@ def show_courses(argv, host, port):
 
     # show initial list on start up
     update_list(window, lineedits, list, host, port)
-
-
-     
-
+    
     exit(app.exec_())
 
 
