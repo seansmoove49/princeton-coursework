@@ -185,18 +185,23 @@ def show_course_details(list_item, window, host, port):
         PyQt5.QtWidgets.QMessageBox.information(window,
          'Class Details', in_args["result"])
 
+def args_parser():
+    parser = argparse.ArgumentParser(description='''Client for
+    the registrar application''', allow_abbrev=False)
+
+    parser.add_argument(dest='host', help='''the host on which the
+    server is running''')
+
+    parser.add_argument(dest='port', help='''the port at which the
+    server is listening''', type=int)
+
+    args = parser.parse_args()
+    return args
+
+
 def main():
     try:
-        parser = argparse.ArgumentParser(description='''Client for
-        the registrar application''', allow_abbrev=False)
-
-        parser.add_argument(dest='host', help='''the host on which the
-        server is running''')
-
-        parser.add_argument(dest='port', help='''the port at which the
-        server is listening''', type=int)
-
-        args = parser.parse_args()
+        args = args_parser()
 
         host = args.host
         port = int(args.port)
