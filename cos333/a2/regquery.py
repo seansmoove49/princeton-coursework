@@ -144,12 +144,14 @@ def format_table(rows):
     titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
 
     for row in rows:
+        temp = ""
         for i, element in enumerate(list(row)):
             if i < len(titles) - 1:
-                formatted_rows.append(('{:>' + str(len(titles[i])) +'}')
-                .format(element), end=" ")
+                temp+=('{:>' + str(len(titles[i])) +'}').format(element)
+                temp+=" "
             else:
-                formatted_rows.append(element)
+                temp+=element
+        formatted_rows.append(temp)
     return formatted_rows
 
 
