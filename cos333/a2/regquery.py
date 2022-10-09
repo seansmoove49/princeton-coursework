@@ -140,10 +140,16 @@ def query_details(args):
 
 def format_table(rows):
     formatted_rows = []
-    # left align to add white space
+
+    titles = ["ClsId", "Dept", "CrsNum", "Area", "Title"]
+
     for row in rows:
-        formatted_rows.append('{:<8} {:<7} {:<7} {:<4} {}'.format(row[0], 
-        row[1], row[2], row[3], row[4]))
+        for i, element in enumerate(list(row)):
+            if i < len(titles) - 1:
+                formatted_rows.append(('{:>' + str(len(titles[i])) +'}')
+                .format(element), end=" ")
+            else:
+                formatted_rows.append(element)
     return formatted_rows
 
 
@@ -163,21 +169,10 @@ def format_details(rows):
     res += '\n'
     res += f"Area: {row[8]}\n\n"
 
-    if row[9]:
-        res += f"Title: {row[9]}\n"
-    else:
-        res += "Title:\n"
-    res += '\n'
-    if row[10]:
-        res += f"Description: {row[10]}\n"
-    else:
-        res += "Description:\n"
-    res += '\n'
-    if row[11]:
-        res += f"Prerequisites: {row[11]}\n"
-    else:
-        res += "Prerequisites:\n"
-    res += '\n'
+    res += f"Title: {row[9]}\n\n"
+    res += f"Description: {row[10]}\n\n"
+    res += f"Prerequisites: {row[11]}\n\n"
+
     return res
 
 def format_profs(rows):
