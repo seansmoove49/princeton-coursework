@@ -23,8 +23,6 @@ N = 1
 A = 2
 T = 3
 
-#-----------------------------------------------------------------------
-
 def socket_request(host, port, out_args):
     with socket.socket() as sock:
         sock.connect((host, port))
@@ -36,27 +34,27 @@ def socket_request(host, port, out_args):
         in_flo = sock.makefile(mode='rb')
         in_args = pickle.load(in_flo)
         return in_args
-#-----------------------------------------------------------------------
+
 
 def create_label(text):
     label = PyQt5.QtWidgets.QLabel(text)
-    label.setAlignment(PyQt5.QtCore.Qt.AlignRight | PyQt5.QtCore.Qt.AlignVCenter) # prolly need to change this
+    label.setAlignment(PyQt5.QtCore.Qt.AlignRight | PyQt5.QtCore.Qt.AlignVCenter) 
     return label
-#-----------------------------------------------------------------------
+
 def create_labels():
     dept_label = create_label("Dept:")
     number_label = create_label("Number:")
     area_label = create_label("Area:")
     title_label = create_label("Title:")
     return (dept_label, number_label, area_label, title_label)
-#-----------------------------------------------------------------------
+
 def create_lineedits():
     dept_lineedit = PyQt5.QtWidgets.QLineEdit('')
     number_lineedit = PyQt5.QtWidgets.QLineEdit('')
     area_lineedit = PyQt5.QtWidgets.QLineEdit('')
     title_lineedit = PyQt5.QtWidgets.QLineEdit('')
     return (dept_lineedit, number_lineedit, area_lineedit, title_lineedit) 
-#-----------------------------------------------------------------------
+
 
 def create_controlframe(labels, lineedits, button):
     control_frame_layout = PyQt5.QtWidgets.QGridLayout()
@@ -76,7 +74,6 @@ def create_controlframe(labels, lineedits, button):
     control_frame.setLayout(control_frame_layout)
     return control_frame
     
-#-----------------------------------------------------------------------
 
 def create_button():
     button = PyQt5.QtWidgets.QPushButton("Submit")
@@ -119,20 +116,41 @@ def show_courses(argv, host, port):
     lineedits = create_lineedits()
     button = create_button()
     list = create_list()
-
+    
     central_frame = create_centralframe(labels, lineedits, button, list)
     window = create_window(central_frame)
     
     window.show()
 
-    
+    # necessary as cannot input function with parameters
+    def update_list_submit():
+        update_list(window, lineedits, list, host, port)
+
+    def course_details_clicked(list_item):
+        show_course_details(list_item, window, host, port)
+   
+     
+     # handle new searches when user clicks submit
+    button.clicked.connect(update_list_submit)
+    # handle new searches when users hits enter button
+    for lineedit in lineedits:
+        lineedit.returnPressed.connect(update_list_submit)
+    # handle when user activates course details
+    list.itemActivated.connect(course_details_clicked)
+
 
     # show initial list on start up
     update_list(window, lineedits, list, host, port)
 
 
+     
+
     exit(app.exec_())
 
+
+def show_error(window, error_message):
+    PyQt5.QtWidgets.QMessageBox.critical(window, 
+    'Server Error', error_message)
 
 def update_list(window, lineedits, list, host, port):
     out_args = {
@@ -146,15 +164,28 @@ def update_list(window, lineedits, list, host, port):
     list.clear()
 
     in_args = socket_request(host, port, out_args)
-    print(in_args)
-    
-    list.addItems(in_args)
-    
 
+    if in_args["error"]:
+        show_error(window, in_args["result"])
+    else:
+        list.addItems(in_args["result"])
+    
+    # highlight first row in list
+    list.setCurrentRow(0)
+    
+def show_course_details(list_item, window, host, port):
+    class_id = list_item.text().split()[0]
+    out_args = {"request": "query_details", "class_id": class_id}
+    in_args = socket_request(host, port, out_args)
+
+    if in_args['error']:
+        show_error(window, in_args["result"])
+    else:
+        PyQt5.QtWidgets.QMessageBox.information(window, 'Class Details', in_args["result"])
 
 def main():
     try:
-        parser = argparse.ArgumentParser(description='''Server for 
+        parser = argparse.ArgumentParser(description='''Client for 
         the registrar application''', allow_abbrev=False)
 
         parser.add_argument(dest='host', help='''the host on which the 

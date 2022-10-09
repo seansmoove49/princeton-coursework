@@ -19,7 +19,8 @@ def handle_client(sock):
     in_args = pickle.load(in_flo)
     if in_args["request"] == "query_courses":
         out_args = query_courses(in_args)
-        print('lebron')
+    elif in_args["request"] == "query_details":
+        out_args = query_details(in_args)
     # write to socket
     out_flo = sock.makefile(mode='wb')
     pickle.dump(out_args, out_flo)

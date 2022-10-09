@@ -79,14 +79,12 @@ def query_courses(args):
 
                 cursor.execute(select_stmt, prepared_variables)
 
-                return format(cursor.fetchall())
-
-
-
+                return {"error": False, "result":format_table(cursor.fetchall())}
 
     except Exception as ex:
         print(ex, file=sys.stderr)
-        sys.exit(1)
+        return {"error": True, 'result': '''A server error occurred. 
+        Please contact the system administrator'''}
 
 def query_details(args):
     try:
@@ -109,16 +107,16 @@ def query_details(args):
                 select_stmt_1 += " WHERE classes.classid = ?"
                 select_stmt_1 += ''' ORDER BY crosslistings.dept,
                 crosslistings.coursenum'''
-                cursor.execute(select_stmt_1, [args['classid']])
+                cursor.execute(select_stmt_1, [args['class_id']])
 
                 rows = cursor.fetchall()
+                # class id does not exist
                 if len(rows) == 0:
-                    error_message = f"no class with classid {args['classid']}"
-                    # need more stuff later
-
+                    err = f"no class with classid {args['class_id']}"
+                    print(err, file=sys.stderr)
+                    return {"error": True, "result": err}
                 
-
-
+                res += format_details(rows)
 
                 select_stmt_2 = '''SELECT profs.profname
                 FROM profs 
@@ -127,17 +125,20 @@ def query_details(args):
                 JOIN classes on courses.courseid = classes.courseid '''
                 select_stmt_2 += '''WHERE classes.classid =
                 ? ORDER BY profs.profname'''
-                cursor.execute(select_stmt_2, [args['classid']])
+                cursor.execute(select_stmt_2, [args['class_id']])
 
+                rows = cursor.fetchall()
+                res += format_profs(rows)
 
-
+                return {"error": False, "result": res}
 
 
     except Exception as ex:
         print(ex, file=sys.stderr)
-        sys.exit(1)
+        return {"error": True, 'result': '''A server error occurred. 
+        Please contact the system administrator'''}
 
-def format(rows):
+def format_table(rows):
     formatted_rows = []
     # left align to add white space
     for row in rows:
@@ -145,8 +146,46 @@ def format(rows):
         row[1], row[2], row[3], row[4]))
     return formatted_rows
 
+def format_details(rows):
+    res = ""
+    row = rows[0]
 
+    res += "Course Id: {}\n\n".format(str(row[0]))
+    res += "Days: {}\n".format(str(row[1]))
+    res += "Start time: {}\n".format(str(row[2]))
+    res += "End time: {}\n".format(str(row[3]))
+    res += "Building: {}\n".format(str(row[4]))
+    res += "Room: {}\n\n".format(str(row[5]))
+    for r in rows:
+        res += "Dept and Number: {} {}".format(str(r[6]), 
+        str(r[7])) + '\n'
+    res += '\n'
+    res += "Area: {}\n\n".format(str(row[8]))
 
+    if len(row[9]) == 0:
+        res += "Title:\n"
+    else:
+        res += "Title: {}".format(str(row[9])) + '\n'
+    res += '\n'
+    if len(row[10]) == 0:
+        res += "Description:\n"
+    else:
+        res += "Description: {}".format(
+            str(row[10])) + '\n'
+    res += '\n'
+    if len(row[11]) == 0:
+        res += "Prerequisites:\n"
+    else:
+        res += "Prerequisites: {}".format(
+            str(row[11])) + '\n'
+    res += '\n'
+    return res
+
+def format_profs(rows):
+    res = ""
+    for row in rows:
+        res += "Professor: {}".format(str(row[0])) + '\n'
+    return res
 def __replace_var(args_var, prepared_variables):
     variable = args_var.lower()
     if "_" in variable:
