@@ -12,6 +12,7 @@ import argparse
 import pickle
 import PyQt5.QtWidgets
 import PyQt5.QtCore
+import PyQt5.QtGui
 
 
 
@@ -80,6 +81,7 @@ def create_button():
     return button
 def create_list():
     list = PyQt5.QtWidgets.QListWidget()
+    list.setFont(PyQt5.QtGui.QFont("Courier", 10))
     return list
 def create_listframe(list):
     grid_layout = PyQt5.QtWidgets.QGridLayout()
