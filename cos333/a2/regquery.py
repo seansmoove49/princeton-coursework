@@ -77,11 +77,12 @@ def query_courses(args):
 
                 cursor.execute(select_stmt, prepared_variables)
 
-                return {"error": False, "result":format_table(cursor.fetchall())}
+                return {"error": False,
+                "result":format_table(cursor.fetchall())}
 
     except Exception as ex:
         print(f"{sys.argv[0]}: {ex}", file=sys.stderr)
-        return {"error": True, 'result': '''A server error occurred. 
+        return {"error": True, 'result': '''A server error occurred.
         Please contact the system administrator'''}
 
 def query_details(args):
@@ -113,7 +114,7 @@ def query_details(args):
                     err = f"no class with classid {args['class_id']}"
                     print(f"{sys.argv[0]}: {err}", file=sys.stderr)
                     return {"error": True, "result": err}
-                
+
                 res += format_details(rows)
 
                 select_stmt_2 = '''SELECT profs.profname
@@ -133,7 +134,7 @@ def query_details(args):
 
     except Exception as ex:
         print(f"{sys.argv[0]}: {ex}", file=sys.stderr)
-        return {"error": True, 'result': '''A server error occurred. 
+        return {"error": True, 'result': '''A server error occurred.
         Please contact the system administrator'''}
 
 def format_table(rows):
@@ -161,8 +162,8 @@ def format_details(rows):
     res += f"Building: {row[4]}\n"
     res += f"Room: {row[5]}\n\n"
 
-    for r in rows:
-        res += f"Dept and Number: {r[6]} {r[7]}\n"
+    for dept_row in rows:
+        res += f"Dept and Number: {dept_row[6]} {dept_row[7]}\n"
     res += '\n'
     res += f"Area: {row[8]}\n\n"
 

@@ -38,7 +38,8 @@ def socket_request(host, port, out_args):
 
 def create_label(text):
     label = PyQt5.QtWidgets.QLabel(text)
-    label.setAlignment(PyQt5.QtCore.Qt.AlignRight | PyQt5.QtCore.Qt.AlignVCenter) 
+    label.setAlignment(PyQt5.QtCore.Qt.AlignRight |
+    PyQt5.QtCore.Qt.AlignVCenter)
     return label
 
 def create_labels():
@@ -53,7 +54,8 @@ def create_lineedits():
     number_lineedit = PyQt5.QtWidgets.QLineEdit('')
     area_lineedit = PyQt5.QtWidgets.QLineEdit('')
     title_lineedit = PyQt5.QtWidgets.QLineEdit('')
-    return (dept_lineedit, number_lineedit, area_lineedit, title_lineedit) 
+    return (dept_lineedit, number_lineedit,
+    area_lineedit, title_lineedit)
 
 
 def create_controlframe(labels, lineedits, button):
@@ -73,7 +75,6 @@ def create_controlframe(labels, lineedits, button):
     control_frame = PyQt5.QtWidgets.QFrame()
     control_frame.setLayout(control_frame_layout)
     return control_frame
-    
 
 def create_button():
     button = PyQt5.QtWidgets.QPushButton("Submit")
@@ -88,23 +89,23 @@ def create_listframe(list):
     grid_layout.setContentsMargins(0, 0, 0, 0)
     list_frame = PyQt5.QtWidgets.QFrame()
     list_frame.setLayout(grid_layout)
-    return list_frame 
-    
+    return list_frame
+
 def create_centralframe(labels, lineedits, button, list):
     control_frame = create_controlframe(labels, lineedits, button)
-    list_frame = create_listframe(list)   
+    list_frame = create_listframe(list)
 
     grid_layout = PyQt5.QtWidgets.QGridLayout()
     grid_layout.setSpacing(0)
     grid_layout.setContentsMargins(0, 0, 0, 0)
     grid_layout.addWidget(control_frame, 0, 0)
     grid_layout.addWidget(list_frame, 1, 0)
-    
+
     frame = PyQt5.QtWidgets.QFrame()
     frame.setLayout(grid_layout)
 
     return frame
-    
+
 def create_window(central_frame):
     window = PyQt5.QtWidgets.QMainWindow()
     window.setWindowTitle('Princeton University Class Search')
@@ -120,10 +121,10 @@ def show_courses(argv, host, port):
     lineedits = create_lineedits()
     button = create_button()
     list = create_list()
-    
+
     central_frame = create_centralframe(labels, lineedits, button, list)
     window = create_window(central_frame)
-    
+
     window.show()
 
     # necessary as cannot input function with parameters
@@ -132,8 +133,7 @@ def show_courses(argv, host, port):
 
     def course_details_clicked(list_item):
         show_course_details(list_item, window, host, port)
-   
-     
+
      # handle new searches when user clicks submit
     button.clicked.connect(update_list_submit)
     # handle new searches when users hits enter button
@@ -145,12 +145,12 @@ def show_courses(argv, host, port):
 
     # show initial list on start up
     update_list(window, lineedits, list, host, port)
-    
-    exit(app.exec_())
+
+    sys.exit(app.exec_())
 
 
 def show_error(window, error_message):
-    PyQt5.QtWidgets.QMessageBox.critical(window, 
+    PyQt5.QtWidgets.QMessageBox.critical(window,
     'Server Error', error_message)
 
 def update_list(window, lineedits, list, host, port):
@@ -170,10 +170,10 @@ def update_list(window, lineedits, list, host, port):
         show_error(window, in_args["result"])
     else:
         list.addItems(in_args["result"])
-    
+
     # highlight first row in list
     list.setCurrentRow(0)
-    
+
 def show_course_details(list_item, window, host, port):
     class_id = list_item.text().split()[0]
     out_args = {"request": "query_details", "class_id": class_id}
@@ -182,25 +182,26 @@ def show_course_details(list_item, window, host, port):
     if in_args['error']:
         show_error(window, in_args["result"])
     else:
-        PyQt5.QtWidgets.QMessageBox.information(window, 'Class Details', in_args["result"])
+        PyQt5.QtWidgets.QMessageBox.information(window,
+         'Class Details', in_args["result"])
 
 def main():
     try:
-        parser = argparse.ArgumentParser(description='''Client for 
+        parser = argparse.ArgumentParser(description='''Client for
         the registrar application''', allow_abbrev=False)
 
-        parser.add_argument(dest='host', help='''the host on which the 
+        parser.add_argument(dest='host', help='''the host on which the
         server is running''')
 
-        parser.add_argument(dest='port', help='''the port at which the 
+        parser.add_argument(dest='port', help='''the port at which the
         server is listening''', type=int)
-        
+
         args = parser.parse_args()
 
         host = args.host
         port = int(args.port)
-        
-        show_courses(sys.argv, host, port)    
+
+        show_courses(sys.argv, host, port)
 
     except Exception as ex:
         print(f"{sys.argv[0]}: {ex}", file=sys.stderr)
