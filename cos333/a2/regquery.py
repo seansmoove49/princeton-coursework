@@ -148,7 +148,6 @@ def format_table(rows):
         for i, element in enumerate(list(row)):
             if i < len(titles) - 1:
                 temp+=('{:>' + str(len(titles[i])) +'}').format(element)
-                temp+=" "
             else:
                 temp+=element
         formatted_rows.append(temp)
