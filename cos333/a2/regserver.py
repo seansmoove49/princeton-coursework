@@ -38,19 +38,15 @@ def handle_client(sock):
     out_flo.flush()
     print('Wrote results to client')
 
-def args_parser():
-    parser = argparse.ArgumentParser(description=
-        '''Server for the registrar application''', allow_abbrev=False)
-
-    parser.add_argument(dest='port',
-    help='''the port at which the server should listen''', type=int)
-
-    args = parser.parse_args()
-    return args
-
 def main():
     try:
-        args = args_parser()
+        parser = argparse.ArgumentParser(description=
+        '''Server for the registrar application''', allow_abbrev=False)
+
+        parser.add_argument(dest='port',
+        help='''the port at which the server should listen''', type=int)
+
+        args = parser.parse_args()
 
         port = int(args.port)
 
