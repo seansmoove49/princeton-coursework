@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import flask
 from regquery import query_courses
+from regquerydetails import get_details
 # current directory
 app = flask.Flask(__name__, template_folder='./')
 
@@ -34,31 +35,21 @@ def index():
     response = flask.make_response(html_code)
     return response
 
-@app.route('/class_details', methods=['GET'])
+@app.route('/classdetails', methods=['GET'])
 def class_details():
-    course_id = flask.request.args.get('course_id')
-    if course_id is None:
-        course_id = ''
+    class_id = flask.request.args.get('class_id')
+    if class_id is None:
+        class_id = ''
+    class_id = class_id.strip()
 
-    days = flask.request.args.get('days')
-    if days is None:
-        days = ''
+    details = get_details(class_id)
+    html_code = flask.render_template('classdetails.html', details=details)
+    response = flask.make_response(html_code)
+    return response
+    
 
-    start_time = flask.request.args.get('start_time')
-    if start_time is None:
-        start_time = ''   
     
-    end_time = flask.request.args.get('end_time')
-    if end_time is None:
-        end_time = ''   
-    
-    building = flask.request.args.get('building')
-    if building is None:
-        building = ''   
-    
-    room = flask.request.args.get('room')
-    if room is None:
-        room = ''   
+
     
     
     
