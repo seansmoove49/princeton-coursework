@@ -42,8 +42,8 @@ def class_details():
         class_id = ''
     class_id = class_id.strip()
 
-    details = get_details(class_id)
-    html_code = flask.render_template('classdetails.html', details=details)
+    regclass, course = get_details(class_id)
+    html_code = flask.render_template('classdetails.html', regclass=regclass, course=course)
     response = flask.make_response(html_code)
     return response
     

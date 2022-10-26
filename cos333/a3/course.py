@@ -6,16 +6,17 @@ import py_compile
 
 class Course:
 
-    def __init__(self, id, dept_nums, area, title, description, professors):
-        self._id = id
+    def __init__(self, course_id, dept_nums, area, title, description, prerequisites, professors):
+        self._course_id = course_id
         self._dept_nums = dept_nums
         self._area = area
         self._title = title
         self._description = description
+        self._prerequisites = prerequisites
         self._professors = professors
     
-    def get_id(self):
-        return self._id
+    def get_course_id(self):
+        return self._course_id
 
     def get_dept_nums(self):
         return self._dept_nums
