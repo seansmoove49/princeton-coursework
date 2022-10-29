@@ -15,6 +15,29 @@ import sqlite3
 
 DATABASE_URL = 'file:reg.sqlite?mode=ro'
 
+class Course:
+    def __init__(self, row):
+        self._classid = row[0]
+        self._dept = row[1]
+        self._num = row[2]
+        self._area = row[3]
+        self._title = row[4]
+
+    def get_classid(self):
+        return self._classid
+
+    def get_dept(self):
+        return self._dept
+
+    def get_num(self):
+        return self._num
+
+    def get_area(self):
+        return self._area
+
+    def get_title(self):
+        return self._title
+
 
 def query_courses(args):
     try:
@@ -76,9 +99,14 @@ def query_courses(args):
                 classes.classid'''
 
                 cursor.execute(select_stmt, prepared_variables)
+                rows = cursor.fetchall()
+                courses = []
 
-                return {"error": False,
-                "result":cursor.fetchall()}
+                for row in rows:
+                    course = Course(row)
+                    courses.append(course)
+                print(courses)
+                return {"error": False, "courses":courses}
 
     except Exception as ex:
         print(f"{sys.argv[0]}: {ex}", file=sys.stderr)

@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+#-----------------------------------------------------------------------
+# runserver.py
+# Author: Sean Wang, Alina Chen
+#-----------------------------------------------------------------------
 import sys
 import app
 import argparse
@@ -16,22 +20,12 @@ def args_parser():
     return args
 
 def main():
-
-    if len(sys.argv) != 2:
-        print('Usage: ' + sys.argv[0] + ' port', file=sys.stderr)
-        sys.exit(1)
-
-    try:
-        args = args_parser()
-        port = int(args.port)
-    except Exception:
-        print('Port must be an integer.', file=sys.stderr)
-        sys.exit(1)
-
+    args = args_parser()
+    port = int(args.port)
     try:
         app.app.run(host='0.0.0.0', port=port, debug=True)
     except Exception as ex:
-        print(ex, file=sys.stderr)
+        print(f"{sys.argsv[0]}: {str(ex)}", file=sys.stderr)
         sys.exit(1)
 
 if __name__ == '__main__':

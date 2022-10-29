@@ -1,12 +1,13 @@
-import py_compile
 #-----------------------------------------------------------------------
-# course.py
+# classdetails.py
 # Author: Alina Chen, Sean Wang
 #-----------------------------------------------------------------------
 
-class Class:
+class ClassDetails:
 
-    def __init__(self, class_id, course_id, days, start_time, end_time, building, room):
+    def __init__(self, class_id, course_id, days, 
+    start_time, end_time, building, room):
+    
         self._class_id = class_id
         self._course_id = course_id
         self._days = days

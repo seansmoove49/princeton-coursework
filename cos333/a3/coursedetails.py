@@ -1,12 +1,13 @@
-import py_compile
 #-----------------------------------------------------------------------
-# course.py
+# coursedetails.py
 # Author: Alina Chen, Sean Wang
 #-----------------------------------------------------------------------
 
-class Course:
+class CourseDetails:
 
-    def __init__(self, course_id, dept_nums, area, title, description, prerequisites, professors):
+    def __init__(self, course_id, dept_nums, area, 
+    title, description, prerequisites, professors):
+    
         self._course_id = course_id
         self._dept_nums = dept_nums
         self._area = area
@@ -29,6 +30,9 @@ class Course:
 
     def get_description(self):
         return self._description
+    
+    def get_prerequisites(self):
+        return self._prerequisites
     
     def get_professors(self):
         return self._professors

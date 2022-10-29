@@ -1,5 +1,18 @@
 <!DOCTYPE html>
  <html>
+   {% if error %}
+   <head>
+      <title>Registrar's Office Error</title>
+  </head>
+  <body>
+   <h1>Registrar's Office</h1> 
+      <p>A server error occurred. Please contact the system administrator.</p>
+      <hr>
+      <p>Created by Sean Wang and Alina Chen.</p>
+      <hr>
+  </body>
+
+  {% else %}
    <head>
       <title>Registrar's Office Class Search</title>
       </head>
@@ -7,8 +20,65 @@
     <h1>Registrar's Office</h1> 
     <h2>Class Search</h2>
     <hr>
-    {% include 'searchform.html' %}
+    <form action="" method="get">
+      <table>
+         <tr>
+         <td align="right">Dept:</td>
+         <td><input type="text" value="{{dept}}" name=dept><br></td>
+         </tr>
+  
+         <tr>
+         <td align="right">Number:</td>
+         <td>
+            <input type="text" value="{{num}}" name=num><br>
+         </td>
+         </tr>
+  
+         <tr>
+         <td align="right">Area:</td>
+         <td><input type="text" value="{{area}}" name=area><br></td>
+         </tr>
+  
+         <tr>
+         <td align="right">Title:</td>
+         <td>
+            <input type="text" value="{{title}}" name=title><br>
+         </td>
+         </tr>
+  
+         <tr>
+         <td></td>
+         <td><input type="submit"></td>
+         </tr>
+  
+      </table>
+   </form>
+
     <hr>
-    {% include 'table.html' %}
+    <table>
+      <tr>
+          <td><strong>ClassId</strong></td>
+          <td><strong>Dept</strong></td>
+          <td><strong>Num</strong></td>
+          <td><strong>Area</strong></td>
+          <td><strong>Title</strong></td>
+     </tr>
+     {% for course in courses %}
+     <tr>
+      <td> <a href="{{'/regdetails?classid=%s'%course.get_classid()}}">{{course.get_classid()}}</a></td>
+
+      <td>{{course.get_dept()}}</td>
+      <td>{{course.get_num()}}</td>
+      <td>{{course.get_area()}}</td>
+      <td>{{course.get_title()}}</td>
+  
+     </tr>
+     {% endfor %}
+  </table>
+   <hr>
+   <p>Created by Sean Wang and Alina Chen.</p>
+   <hr>
    </body>
+   {% endif %}
+
  </html>
