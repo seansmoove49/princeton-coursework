@@ -18,9 +18,9 @@ def index():
     dept = flask.request.args.get('dept')
     if dept is None:
         dept = ''
-    num = flask.request.args.get('num')
-    if num is None:
-        num = ''
+    coursenum = flask.request.args.get('coursenum')
+    if coursenum is None:
+        coursenum = ''
     area = flask.request.args.get('area')
     if area is None:
         area = ''
@@ -29,7 +29,7 @@ def index():
         title = ''
     search = {
         "d": dept,
-        "n": num,
+        "n": coursenum,
         "a": area,
         "t": title
     }
@@ -37,11 +37,11 @@ def index():
     if not courses_query["error"]:
         courses = courses_query['courses']
         html_code = flask.render_template('index.html', 
-        courses = courses, dept = dept, num = num, 
+        courses = courses, dept = dept, coursenum = coursenum, 
         area = area, title = title, error=False)
         response = flask.make_response(html_code)
         response.set_cookie('dept', dept)
-        response.set_cookie('num', num)
+        response.set_cookie('coursenum', coursenum)
         response.set_cookie('area', area)
         response.set_cookie('title', title)
         return response
@@ -56,9 +56,9 @@ def reg_details():
     dept = flask.request.cookies.get('dept')
     if dept is None:
         dept = ''
-    num = flask.request.cookies.get('num')
-    if num is None:
-        num = ''
+    coursenum = flask.request.cookies.get('coursenum')
+    if coursenum is None:
+        coursenum = ''
     area = flask.request.cookies.get('area')
     if area is None:
         area = ''
@@ -84,7 +84,7 @@ def reg_details():
         class_details = details_query["class_details"]
         course_details = details_query["course_details"]
 
-        return_link = f"/?dept={dept}&coursenum={num}&area={area}&title={title}"
+        return_link = f"/?dept={dept}&coursenum={coursenum}&area={area}&title={title}"
 
         html_code = flask.render_template('regdetails.html', 
         class_details=class_details, 
