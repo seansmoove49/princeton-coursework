@@ -27,4 +27,3 @@ class CourseDetails:
         return self._prerequisites
     def get_professors(self):
         return self._professors
-    

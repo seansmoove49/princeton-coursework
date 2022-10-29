@@ -46,12 +46,12 @@ def query_courses(args):
 
             with contextlib.closing(connection.cursor()) as cursor:
                 select_stmt = '''SELECT classes.classid,
-                crosslistings.dept, crosslistings.coursenum, 
-                courses.area, courses.title 
-                FROM classes 
-                INNER JOIN courses 
-                ON classes.courseid = courses.courseid 
-                INNER JOIN crosslistings 
+                crosslistings.dept, crosslistings.coursenum,
+                courses.area, courses.title
+                FROM classes
+                INNER JOIN courses
+                ON classes.courseid = courses.courseid
+                INNER JOIN crosslistings
                 ON crosslistings.courseid = classes.courseid '''
 
                 is_first = True
@@ -95,7 +95,7 @@ def query_courses(args):
 
 
                 select_stmt += '''ORDER BY crosslistings.dept,
-                crosslistings.coursenum, 
+                crosslistings.coursenum,
                 classes.classid'''
 
                 cursor.execute(select_stmt, prepared_variables)
@@ -122,4 +122,3 @@ def __replace_var(args_var, prepared_variables):
     if "%" in variable:
         variable = variable.replace('%', '+%')
     prepared_variables.append(f"%{variable}%")
-

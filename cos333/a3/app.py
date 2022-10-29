@@ -36,8 +36,8 @@ def index():
     courses_query = query_courses(search)
     if not courses_query["error"]:
         courses = courses_query['courses']
-        html_code = flask.render_template('index.html', 
-        courses = courses, dept = dept, coursenum = coursenum, 
+        html_code = flask.render_template('index.html',
+        courses = courses, dept = dept, coursenum = coursenum,
         area = area, title = title, error=False)
         response = flask.make_response(html_code)
         response.set_cookie('dept', dept)
@@ -86,25 +86,24 @@ def reg_details():
 
         return_link = f"/?dept={dept}&coursenum={coursenum}&area={area}&title={title}"
 
-        html_code = flask.render_template('regdetails.html', 
-        class_details=class_details, 
+        html_code = flask.render_template('regdetails.html',
+        class_details=class_details,
         course_details=course_details, return_link=return_link)
     else:
         if details_query["database_error"]:
             html_code = flask.render_template("index.html", error=True)
         else:
 
-            html_code = flask.render_template("classid_error.html", 
+            html_code = flask.render_template("classid_error.html",
             message=details_query["result"])
 
     response = flask.make_response(html_code)
     return response
-    
 
-    
 
-    
-    
-    
-    
-    
+
+
+
+
+
+

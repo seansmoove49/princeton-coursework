@@ -13,7 +13,7 @@ class ClassDetails:
         self._end_time = str(row[3])
         self._building = str(row[4])
         self._room = str(row[5])
-        
+
     def get_class_id(self):
         return self._class_id
     def get_course_id(self):
@@ -28,4 +28,3 @@ class ClassDetails:
         return self._building
     def get_room(self):
         return self._room
-    
