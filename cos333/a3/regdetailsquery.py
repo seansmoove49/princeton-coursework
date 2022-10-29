@@ -39,14 +39,15 @@ def query_details(class_id):
 
                 rows = cursor.fetchall()
 
-                row = rows[0]
-
-                class_details = ClassDetails(row, str(class_id))
                 # class id does not exist
                 if len(rows) == 0:
                     err = f"no class with classid {class_id} exists"
                     print(f"{sys.argv[0]}: {err}", file=sys.stderr)
                     return {"error": True, "result": err, "database_error":False}
+
+                row = rows[0]
+
+                class_details = ClassDetails(row, str(class_id))
                 select_stmt_2 = '''SELECT profs.profname
                 FROM profs
                 JOIN coursesprofs on profs.profid = coursesprofs.profid
