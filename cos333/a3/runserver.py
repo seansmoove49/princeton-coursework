@@ -5,8 +5,8 @@
 # Author: Sean Wang, Alina Chen
 #-----------------------------------------------------------------------
 import sys
-import app
 import argparse
+import app
 
 
 def args_parser():
@@ -25,7 +25,7 @@ def main():
     try:
         app.app.run(host='0.0.0.0', port=port, debug=True)
     except Exception as ex:
-        print(f"{sys.argsv[0]}: {str(ex)}", file=sys.stderr)
+        print(f"{sys.argv[0]}: {str(ex)}", file=sys.stderr)
         sys.exit(1)
 
 if __name__ == '__main__':

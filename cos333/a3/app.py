@@ -27,54 +27,44 @@ def index():
     title = flask.request.args.get('title')
     if title is None:
         title = ''
-    
     search = {
         "d": dept,
         "n": num,
         "a": area,
         "t": title
     }
-    
     courses_query = query_courses(search)
     if not courses_query["error"]:
         courses = courses_query['courses']
-        html_code = flask.render_template('index.html', courses = courses,
-        dept = dept, num = num, area = area, title = title, error=False)
-
+        html_code = flask.render_template('index.html', 
+        courses = courses, dept = dept, num = num, 
+        area = area, title = title, error=False)
         response = flask.make_response(html_code)
-
         response.set_cookie('dept', dept)
         response.set_cookie('num', num)
         response.set_cookie('area', area)
         response.set_cookie('title', title)
+        return response
 
-        return response
-    else:
-        html = flask.render_template('index.html', error=True)
-        response = flask.make_response(html)
-        return response
+    html_code = flask.render_template('index.html', error=True)
+    response = flask.make_response(html_code)
+    return response
 
 @app.route('/regdetails', methods=['GET'])
-def class_details():
+def reg_details():
     class_id = flask.request.args.get('classid')
-
     dept = flask.request.cookies.get('dept')
     if dept is None:
         dept = ''
-
     num = flask.request.cookies.get('num')
     if num is None:
         num = ''
-
     area = flask.request.cookies.get('area')
     if area is None:
         area = ''
-
     title = flask.request.cookies.get('title')
     if title is None:
         title = ''
-
-
 
     if class_id is None or len(class_id) == 0:
         html_code = flask.render_template("classid_error.html",
@@ -96,7 +86,8 @@ def class_details():
 
         return_link = f"/?dept={dept}&coursenum={num}&area={area}&title={title}"
 
-        html_code = flask.render_template('regdetails.html', class_details=class_details, 
+        html_code = flask.render_template('regdetails.html', 
+        class_details=class_details, 
         course_details=course_details, return_link=return_link)
     else:
         if details_query["database_error"]:
