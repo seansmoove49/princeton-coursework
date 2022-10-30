@@ -43,7 +43,7 @@ def query_details(class_id):
                 if len(rows) == 0:
                     err = f"no class with classid {class_id} exists"
                     print(f"{sys.argv[0]}: {err}", file=sys.stderr)
-                    return {"error": True, "result": err, 
+                    return {"error": True, "result": err,
                     "database_error":False}
 
                 class_details = ClassDetails(rows[0], str(class_id))
@@ -64,10 +64,11 @@ def query_details(class_id):
 
                 dept_nums = []
                 for dept_row in rows:
-                    dept_nums.append(str(dept_row[6]) + " " + 
+                    dept_nums.append(str(dept_row[6]) + " " +
                     str(dept_row[7]))
 
-                course_details = CourseDetails(rows[0], dept_nums, profs)
+                course_details = CourseDetails(rows[0], dept_nums,
+                profs)
 
                 return {"error":False, "class_details": class_details,
                 "course_details":course_details}
@@ -75,5 +76,5 @@ def query_details(class_id):
     except Exception as ex:
         print(sys.argv[0] + ': ' + str(ex), file=sys.stderr)
         return {'error': True, "result": '''A server error occurred.
-        Please contact the system administrator.''', 
+        Please contact the system administrator.''',
         'database_error':True}
