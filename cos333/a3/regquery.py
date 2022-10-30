@@ -122,3 +122,4 @@ def __replace_var(args_var, prepared_variables):
     if "%" in variable:
         variable = variable.replace('%', '+%')
     prepared_variables.append(f"%{variable}%")
+    

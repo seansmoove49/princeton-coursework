@@ -43,11 +43,10 @@ def query_details(class_id):
                 if len(rows) == 0:
                     err = f"no class with classid {class_id} exists"
                     print(f"{sys.argv[0]}: {err}", file=sys.stderr)
-                    return {"error": True, "result": err, "database_error":False}
+                    return {"error": True, "result": err, 
+                    "database_error":False}
 
-                row = rows[0]
-
-                class_details = ClassDetails(row, str(class_id))
+                class_details = ClassDetails(rows[0], str(class_id))
                 select_stmt_2 = '''SELECT profs.profname
                 FROM profs
                 JOIN coursesprofs on profs.profid = coursesprofs.profid
@@ -65,14 +64,16 @@ def query_details(class_id):
 
                 dept_nums = []
                 for dept_row in rows:
-                    dept_nums.append(str(dept_row[6]) + " " + str(dept_row[7]))
+                    dept_nums.append(str(dept_row[6]) + " " + 
+                    str(dept_row[7]))
 
-                course_details = CourseDetails(row, dept_nums, profs)
+                course_details = CourseDetails(rows[0], dept_nums, profs)
 
                 return {"error":False, "class_details": class_details,
                 "course_details":course_details}
 
     except Exception as ex:
         print(sys.argv[0] + ': ' + str(ex), file=sys.stderr)
-        return {'error': True, "result": '''A server error occurred.Please
-        contact the system administrator.''', 'database_error':True}
+        return {'error': True, "result": '''A server error occurred.
+        Please contact the system administrator.''', 
+        'database_error':True}

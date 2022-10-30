@@ -9,7 +9,10 @@ course details from server side. Finally, he worked on error handling
 and testing.
 
 Alina's Contribution: 
-
+Alina worked on the course details page, setting up the Jinja2 template 
+for the details, and creating the Python classes. She also worked on
+regdetailsquery.py, contributed to the front page frontend, worked on
+argument handling, and did some testing and style modifications.
 
 Help Received:
 We did not receive any help from other people while doing the assignment.

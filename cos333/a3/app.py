@@ -84,7 +84,8 @@ def reg_details():
         class_details = details_query["class_details"]
         course_details = details_query["course_details"]
 
-        return_link = f"/?dept={dept}&coursenum={coursenum}&area={area}&title={title}"
+        return_link = f'''/?dept={dept}&coursenum={coursenum}&area=
+        {area}&title={title}'''
 
         html_code = flask.render_template('regdetails.html',
         class_details=class_details,
@@ -99,11 +100,3 @@ def reg_details():
 
     response = flask.make_response(html_code)
     return response
-
-
-
-
-
-
-
-
