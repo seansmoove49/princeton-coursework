@@ -105,7 +105,6 @@ def query_courses(args):
                 for row in rows:
                     course = Course(row)
                     courses.append(course)
-                print(courses)
                 return {"error": False, "courses":courses}
 
     except Exception as ex:
