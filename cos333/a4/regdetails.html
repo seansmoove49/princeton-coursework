@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+      <title>Registrar's Office Class Details</title>
+      </head>
+   <body>
+    <h1>Registrar's Office</h1> 
+    <hr>
+    <h2>Class Details (class id {{class_details.get_class_id()}})</h2>
+        <strong>Course Id: </strong>{{class_details.get_course_id()}}<br>
+        <strong>Days: </strong>{{class_details.get_days()}}<br>
+        <strong>Start time: </strong>{{class_details.get_start_time()}}<br>
+        <strong>End time: </strong>{{class_details.get_end_time()}}<br>
+        <strong>Building: </strong>{{class_details.get_building()}}<br>
+        <strong>Room: </strong>{{class_details.get_room()}}<br>
+    <hr>
+    <h2>Course Details (course id {{course_details.get_course_id()}})</h2>
+      {% for dept_num in course_details.get_dept_nums(): %}
+        <strong>Dept and Number: </strong>{{dept_num}}<br>
+      {% endfor %}
+
+      <strong>Area: </strong>{{course_details.get_area()}}<br>
+      <strong>Title: </strong>{{course_details.get_title()}}<br>
+      <strong>Description: </strong>{{course_details.get_description()}}<br>
+      <strong>Prerequisites: </strong>{{course_details.get_prerequisites()}}<br>
+      {% for prof in course_details.get_professors(): %}
+        <strong>Professor: </strong>{{prof}}<br>
+      {% endfor %}
+    <hr>
+    
+    <p>Click here to do <a href={{return_link}}>another class search</a></p>
+    <hr>
+    Created by Sean Wang and Alina Chen
+   </body>
+ </html>
