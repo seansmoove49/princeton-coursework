@@ -15,6 +15,7 @@ app = flask.Flask(__name__, template_folder='./')
 
 @app.route('/', methods=['GET'])
 def index():
+    """  
     dept = flask.request.args.get('dept')
     if dept is None:
         dept = ''
@@ -45,10 +46,12 @@ def index():
         response.set_cookie('area', area)
         response.set_cookie('title', title)
         return response
-
-    html_code = flask.render_template('index.html', error=True)
+    """
+    html_code = flask.render_template('index.html')
     response = flask.make_response(html_code)
     return response
+
+#-----------------------------------------------------------------------
 
 @app.route('/regdetails', methods=['GET'])
 def reg_details():
@@ -100,10 +103,46 @@ def reg_details():
     response = flask.make_response(html_code)
     return response
 
+#-----------------------------------------------------------------------
 
-
-
-
+@app.route('/reg', methods=['GET'])
+def reg():
+    dept = flask.request.args.get('dept')
+    if dept is None:
+        dept = ''
+    coursenum = flask.request.args.get('coursenum')
+    if coursenum is None:
+        coursenum = ''
+    area = flask.request.args.get('area')
+    if area is None:
+        area = ''
+    title = flask.request.args.get('title')
+    if title is None:
+        title = ''
+    if ((dept is None) or (dept.strip() == 
+    '')) and ((coursenum is None) or (coursenum.strip() == 
+    '')) and ((area is None) or (area.strip() == 
+    '')) and ((title is None) or (title.strip() == 
+    '')):
+        response = flask.make_response('')
+        return response
+    search = {
+        "d": dept,
+        "n": coursenum,
+        "a": area,
+        "t": title
+    }    
+    courses_query = query_courses(search)
+    if not courses_query["error"]:
+        courses = courses_query['courses']
+        html_code = flask.render_template('table.html',
+       courses = courses)
+        response = flask.make_response(html_code)
+        response.set_cookie('dept', dept)
+        response.set_cookie('coursenum', coursenum)
+        response.set_cookie('area', area)
+        response.set_cookie('title', title)
+        return response
 
 
 
