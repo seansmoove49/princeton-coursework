@@ -15,7 +15,7 @@ app = flask.Flask(__name__, template_folder='./')
 
 @app.route('/', methods=['GET'])
 def index():
-    """  
+    """ 
     dept = flask.request.args.get('dept')
     if dept is None:
         dept = ''
@@ -45,9 +45,9 @@ def index():
         response.set_cookie('coursenum', coursenum)
         response.set_cookie('area', area)
         response.set_cookie('title', title)
-        return response
-    """
-    html_code = flask.render_template('index.html')
+        return response """
+
+    html_code = flask.render_template('index.html', error=False)
     response = flask.make_response(html_code)
     return response
 
@@ -119,13 +119,6 @@ def reg():
     title = flask.request.args.get('title')
     if title is None:
         title = ''
-    if ((dept is None) or (dept.strip() == 
-    '')) and ((coursenum is None) or (coursenum.strip() == 
-    '')) and ((area is None) or (area.strip() == 
-    '')) and ((title is None) or (title.strip() == 
-    '')):
-        response = flask.make_response('')
-        return response
     search = {
         "d": dept,
         "n": coursenum,

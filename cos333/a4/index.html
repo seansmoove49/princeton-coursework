@@ -37,20 +37,20 @@
          <form>
          <div class="row">
             <div class="col">
-               <input class="form-control" type="text" placeholder="Department" id="deptInput" autofocus>
+               <input class="form-control" type="text" placeholder="Department" id="deptInput" autoFocus>
             </div>
 
             <div class="col">
-               <input class="form-control" type="text" placeholder="Number" id="numInput" autofocus>
+               <input class="form-control" type="text" placeholder="Number" id="numInput" autoFocus>
             </div>
 
             <div class="col">
-               <input class="form-control" type = "text" placeholder="Area" id="areaInput" autofocus>
+               <input class="form-control" type = "text" placeholder="Area" id="areaInput" autoFocus>
             </div>
 
 
             <div class="col">
-               <input class="form-control" type = "text" placeholder="Title" id="titleInput" autofocus>
+               <input class="form-control" type = "text" placeholder="Title" id="titleInput" autoFocus>
             </div>
 
 
@@ -62,20 +62,20 @@
 
       </div>
 
-      <div id="queryResults"></div>
+      <div id="queryResults">
+         
+      </div>
 
 
    <div class="container-fluid" style="background-color:#295078; color:white">
       <center>Created by Sean Wang and Alina Chen</center>
     </div>
 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script>
    'use strict';
-   function handleResponse() 
+   function handleResponse(response) 
    {
       $('#queryResults').html(response)
    }
@@ -84,15 +84,14 @@
    {
       let dept = $('#deptInput').val();
       let coursenum = $('#numInput').val();
-      let area = $('#numInput').val();
-      let title = $('$titleInput').val();
+      let area = $('#areaInput').val();
+      let title = $('#titleInput').val();
       dept = encodeURIComponent(dept)
-      coursenum = encodeURIComponent(number)
+      coursenum = encodeURIComponent(coursenum)
       area = encodeURIComponent(area)
       title = encodeURIComponent(title)
       let url = '/reg?dept=' + dept + '&coursenum=' + coursenum 
       + '&area=' + area + '&title=' + title
-      print(url)
       if (request != null) 
          request.abort();
       
@@ -107,11 +106,11 @@
    let request = null;
    function setup()
    {
-      $('#deptInput').on('input', getResults)
-      $('#numInput').on('input', getResults)
-      $('#areaInput').on('input', getResults)
-      $('#titleInput').on('input', getResults)
-
+      $('#deptInput').on('input', getResults);
+      $('#numInput').on('input', getResults);
+      $('#areaInput').on('input', getResults);
+      $('#titleInput').on('input', getResults);
+      getResults();
    }
 
    $('document').ready(setup);
