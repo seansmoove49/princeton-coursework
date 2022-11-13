@@ -110,8 +110,5 @@ def reg():
 
         return response
     # error
-    else:
-        return "<p>A server error occurred. Please contact the system administrator.</p>"
-
-
-
+    return '''<p>A server error occurred.
+        Please contact the system administrator.</p>'''
