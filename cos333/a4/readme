@@ -1,15 +1,19 @@
 sw42_ac63
 
-Sean Wang, Alina Chen, 3
+Sean Wang, Alina Chen, 4
 
 Sean's Contribution:
-Sean worked on setting up the Flask server and modifying the course
-queries. On the frontend,he helped with getting the courses and 
-course details from server side. Finally, he worked on error handling 
-and testing.
+Sean worked on the formatting for both the index.html page and the
+reg details page. This involved looking up Bootstrap documentation
+and using Bootstrap/css for divs and the tables.
+He also worked on error handling and testing. This
+included setting up the error specific pages.
 
-Alina's Contribution: 
-
+Alina's Contribution:
+Alina worked on using JQuery and Ajax to generate new output on
+the index.html page each time the user typed a new input character.
+This involved modifying GET request code from A3.
+She also worked on testing and code styling.
 
 Help Received:
 We did not receive any help from other people while doing the assignment.
@@ -19,7 +23,8 @@ Python documentation, Stack Overflow, course handouts and lecture slides
 
 Hours spent: 8
 
-Assessment of assignment: This assignment was useful for learning HTML and Jinja. 
+Assessment of assignment: This assignment was useful for learning Ajax
+and Bootstrap.
 It was also helpful for getting used to Python and modularizing code.
 
 

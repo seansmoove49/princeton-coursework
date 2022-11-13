@@ -8,7 +8,7 @@
      </tr>
      {% for course in courses %}
      <tr>
-      <td> <a href="{{'/regdetails?classid=%s'%course.get_classid()}}">{{course.get_classid()}}</a></td>
+      <td> <a href="{{'/regdetails?classid=%s'%course.get_classid()}}" target="_blank">{{course.get_classid()}}</a></td>
 
       <td>{{course.get_dept()}}</td>
       <td>{{course.get_num()}}</td>

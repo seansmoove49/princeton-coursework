@@ -15,38 +15,6 @@ app = flask.Flask(__name__, template_folder='./')
 
 @app.route('/', methods=['GET'])
 def index():
-    """ 
-    dept = flask.request.args.get('dept')
-    if dept is None:
-        dept = ''
-    coursenum = flask.request.args.get('coursenum')
-    if coursenum is None:
-        coursenum = ''
-    area = flask.request.args.get('area')
-    if area is None:
-        area = ''
-    title = flask.request.args.get('title')
-    if title is None:
-        title = ''
-    search = {
-        "d": dept,
-        "n": coursenum,
-        "a": area,
-        "t": title
-    }
-    courses_query = query_courses(search)
-    if not courses_query["error"]:
-        courses = courses_query['courses']
-        html_code = flask.render_template('index.html',
-        courses = courses, dept = dept, coursenum = coursenum,
-        area = area, title = title, error=False)
-        response = flask.make_response(html_code)
-        response.set_cookie('dept', dept)
-        response.set_cookie('coursenum', coursenum)
-        response.set_cookie('area', area)
-        response.set_cookie('title', title)
-        return response """
-
     html_code = flask.render_template('index.html', error=False)
     response = flask.make_response(html_code)
     return response
@@ -56,6 +24,7 @@ def index():
 @app.route('/regdetails', methods=['GET'])
 def reg_details():
     class_id = flask.request.args.get('classid')
+
     dept = flask.request.cookies.get('dept')
     if dept is None:
         dept = ''
@@ -69,12 +38,14 @@ def reg_details():
     if title is None:
         title = ''
 
+    # check that class_id is empty
     if class_id is None or len(class_id) == 0:
         html_code = flask.render_template("classid_error.html",
         message = "missing classid")
         response = flask.make_response(html_code)
         return response
 
+    # check that class_id is a digit
     if not class_id.isdigit():
         html_code = flask.render_template("classid_error.html",
         message = "non-integer classid")
@@ -83,20 +54,21 @@ def reg_details():
 
     details_query = query_details(class_id)
 
+    # no error
     if not details_query["error"]:
         class_details = details_query["class_details"]
         course_details = details_query["course_details"]
 
-        return_link = f"/?dept={dept}&coursenum={coursenum}&area={area}&title={title}"
-
         html_code = flask.render_template('regdetails.html',
         class_details=class_details,
-        course_details=course_details, return_link=return_link)
+        course_details=course_details)
+    # error
     else:
+        # database error
         if details_query["database_error"]:
-            html_code = flask.render_template("index.html", error=True)
+            html_code = flask.render_template("database_error.html")
+        # class id does not exist in database
         else:
-
             html_code = flask.render_template("classid_error.html",
             message=details_query["result"])
 
@@ -119,23 +91,27 @@ def reg():
     title = flask.request.args.get('title')
     if title is None:
         title = ''
+
     search = {
         "d": dept,
         "n": coursenum,
         "a": area,
         "t": title
-    }    
+    }
     courses_query = query_courses(search)
+    # no error
     if not courses_query["error"]:
         courses = courses_query['courses']
+
         html_code = flask.render_template('table.html',
        courses = courses)
+
         response = flask.make_response(html_code)
-        response.set_cookie('dept', dept)
-        response.set_cookie('coursenum', coursenum)
-        response.set_cookie('area', area)
-        response.set_cookie('title', title)
+
         return response
+    # error
+    else:
+        return "<p>A server error occurred. Please contact the system administrator.</p>"
 
 
 
