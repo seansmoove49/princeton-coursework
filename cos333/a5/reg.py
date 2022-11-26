@@ -12,8 +12,9 @@ import pickle
 import PyQt5.QtWidgets
 import PyQt5.QtCore
 import PyQt5.QtGui
-import queue
+import queue as queuemod
 import threading
+from PyQt5.QtGui import QFont
 
 
 
@@ -72,8 +73,6 @@ def create_controlframe(labels, lineedits):
     control_frame_layout.addWidget(lineedits[A], 2, 1)
     control_frame_layout.addWidget(lineedits[T], 3, 1)
 
-    control_frame_layout.addWidget(0,2,4,1)
-
     control_frame = PyQt5.QtWidgets.QFrame()
     control_frame.setLayout(control_frame_layout)
     return control_frame
@@ -81,8 +80,9 @@ def create_controlframe(labels, lineedits):
 
 def create_list():
     list = PyQt5.QtWidgets.QListWidget()
-    list.setFont(PyQt5.QtGui.QFont("Courier", 10))
+    list.setFont(QFont("Courier", 10))
     return list
+
 def create_listframe(list):
     grid_layout = PyQt5.QtWidgets.QGridLayout()
     grid_layout.addWidget(list)
@@ -142,10 +142,9 @@ def poll_queue_helper(queue, lst, window):
     while True:
         try:
             in_args = queue.get(block=False)
-        except queue.Empty:
+        except queuemod.Empty:
             break
         lst.clear()
-
         # no server error
         if not in_args['error']:
             lst.addItems(in_args['result'])
@@ -159,8 +158,6 @@ def poll_queue_helper(queue, lst, window):
 
 
 def show_courses(argv, host, port):
-
-
     # Create and lay out the widgets.
     app = PyQt5.QtWidgets.QApplication(argv)
 
@@ -173,7 +170,7 @@ def show_courses(argv, host, port):
 
 
     # Create a queue and a timer that polls it.
-    queue = queue.Queue()
+    queue = queuemod.Queue()
     def poll_queue():
         poll_queue_helper(queue, list, window)
     timer = PyQt5.QtCore.QTimer()

@@ -30,7 +30,6 @@ def handle_client(sock, delay):
 
     # Consume delay seconds of CPU time.
     consume_cpu_time(delay)
-
     if in_args["request"] == "query_courses":
         out_args = query_courses(in_args)
     elif in_args["request"] == "query_details":
@@ -40,7 +39,6 @@ def handle_client(sock, delay):
         sys.stderr)
         # return to avoid writing to socket
         return
-
     # write to socket data from server side
     out_flo = sock.makefile(mode='wb')
     pickle.dump(out_args, out_flo)
