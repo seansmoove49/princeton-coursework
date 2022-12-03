@@ -26,9 +26,9 @@ N = 1
 A = 2
 T = 3
 
-def socket_request(host, port, out_args):
+def socket_request(host, port, out_args, window):
     with socket.socket() as sock:
-        sock.connect((host, port))
+        sock.connect((host, port))      
         out_flo = sock.makefile(mode='wb')
         pickle.dump(out_args, out_flo)
         out_flo.flush()
@@ -36,7 +36,7 @@ def socket_request(host, port, out_args):
             str(port))
         in_flo = sock.makefile(mode='rb')
         in_args = pickle.load(in_flo)
-        return in_args
+    return in_args
 
 
 def create_label(text):
@@ -121,36 +121,42 @@ def show_error(window, text):
 
 
 class WorkerThread (threading.Thread):
-    def __init__(self, out_args, queue, host, port):
+    def __init__(self, out_args, queue, host, port, window):
         threading.Thread.__init__(self)
         self._host = host
         self._port = port
         self._out_args = out_args
         self._queue = queue
         self._stop_thread = False
+        self._window = window
 
     def stop(self):
         self._stop_thread = True
 
     def run(self):
-        in_args = socket_request(self._host, self._port,self._out_args)
-        if not self._stop_thread:
-            self._queue.put(in_args)
-
+        try:
+            in_args = socket_request(self._host, self._port,self._out_args, self._window)
+            if not self._stop_thread:
+                self._queue.put((True,in_args))
+        except Exception as ex:
+            if not self._stop_thread:
+                self._queue.put((False, ex))
 
 def poll_queue_helper(queue, lst, window):
     while True:
         try:
-            in_args = queue.get(block=False)
+            item = queue.get(block=False)
         except queuemod.Empty:
             break
         lst.clear()
+        successful, in_args = item
         # no server error
-        if not in_args['error']:
+        if successful:
             lst.addItems(in_args['result'])
         # display server error
         else:
-            show_error(window, str(in_args['result']))
+            ex = in_args
+            show_error(window, str(ex))
 
         # highlight first row in list
         lst.setCurrentRow(0)
@@ -193,7 +199,7 @@ def show_courses(argv, host, port):
         # stop thread if there is already an existing thread
         if worker_thread is not None:
             worker_thread.stop()
-        worker_thread = WorkerThread(out_args, queue, host, port)
+        worker_thread = WorkerThread(out_args, queue, host, port, window)
         worker_thread.start()
 
     for lineedit in lineedits:
@@ -219,13 +225,12 @@ def show_courses(argv, host, port):
 def show_course_details(list_item, window, host, port):
     class_id = list_item.text().split()[0]
     out_args = {"request": "query_details", "class_id": class_id}
-    in_args = socket_request(host, port, out_args)
-
-    if in_args['error']:
-        show_error(window, in_args["result"])
-    else:
+    try:
+        in_args = socket_request(host, port, out_args, window)
         PyQt5.QtWidgets.QMessageBox.information(window,
          'Class Details', in_args["result"])
+    except Exception as ex:
+         show_error(window, str(ex))
 
 def main():
     try:
