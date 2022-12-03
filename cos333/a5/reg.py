@@ -9,11 +9,11 @@ import sys
 import socket
 import argparse
 import pickle
+import queue as queuemod
+import threading
 import PyQt5.QtWidgets
 import PyQt5.QtCore
 import PyQt5.QtGui
-import queue as queuemod
-import threading
 from PyQt5.QtGui import QFont
 
 
@@ -26,9 +26,9 @@ N = 1
 A = 2
 T = 3
 
-def socket_request(host, port, out_args, window):
+def socket_request(host, port, out_args):
     with socket.socket() as sock:
-        sock.connect((host, port))      
+        sock.connect((host, port))
         out_flo = sock.makefile(mode='wb')
         pickle.dump(out_args, out_flo)
         out_flo.flush()
@@ -121,21 +121,21 @@ def show_error(window, text):
 
 
 class WorkerThread (threading.Thread):
-    def __init__(self, out_args, queue, host, port, window):
+    def __init__(self, out_args, queue, host, port):
         threading.Thread.__init__(self)
         self._host = host
         self._port = port
         self._out_args = out_args
         self._queue = queue
         self._stop_thread = False
-        self._window = window
 
     def stop(self):
         self._stop_thread = True
 
     def run(self):
         try:
-            in_args = socket_request(self._host, self._port,self._out_args, self._window)
+            in_args = socket_request(self._host,
+            self._port, self._out_args)
             if not self._stop_thread:
                 self._queue.put((True,in_args))
         except Exception as ex:
@@ -167,11 +167,11 @@ def show_courses(argv, host, port):
     # Create and lay out the widgets.
     app = PyQt5.QtWidgets.QApplication(argv)
 
-    labels = create_labels()
     lineedits = create_lineedits()
     list = create_list()
 
-    central_frame = create_centralframe(labels, lineedits, list)
+    central_frame = create_centralframe(create_labels()
+    , lineedits, list)
     window = create_window(central_frame)
 
 
@@ -199,7 +199,7 @@ def show_courses(argv, host, port):
         # stop thread if there is already an existing thread
         if worker_thread is not None:
             worker_thread.stop()
-        worker_thread = WorkerThread(out_args, queue, host, port, window)
+        worker_thread = WorkerThread(out_args, queue, host, port)
         worker_thread.start()
 
     for lineedit in lineedits:
@@ -226,11 +226,11 @@ def show_course_details(list_item, window, host, port):
     class_id = list_item.text().split()[0]
     out_args = {"request": "query_details", "class_id": class_id}
     try:
-        in_args = socket_request(host, port, out_args, window)
+        in_args = socket_request(host, port, out_args)
         PyQt5.QtWidgets.QMessageBox.information(window,
          'Class Details', in_args["result"])
     except Exception as ex:
-         show_error(window, str(ex))
+        show_error(window, str(ex))
 
 def main():
     try:

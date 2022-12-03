@@ -1,0 +1,20 @@
+sw42_ac63
+
+Sean Wang, Alina Chen, 5
+
+Sean's Contribution:
+Sean worked on the artificial delays for this assignment, based off the lecture examples. He also worked on setting up multiple processes and multiple threads. This entailed adding the WorkerThread class, forking a child process for each query, and making sure a new thread was spawned at each keystroke input. 
+
+Alina's Contribution: 
+Alina worked on fixing the bugs from Assignment 2 and error handling for A5. She worked on the poll queue handler and ensuring that dialogs are displayed in the main/GUI thread. She helped Sean with spawning new
+worker threads. She also did testing and styling. 
+
+Help Received:
+We did not receive any help from other people while doing the assignment.
+
+Sources of information:
+Python documentation, Stack Overflow, course handouts and lecture slides
+
+Hours spent: 4
+
+Assessment of assignment: This assignment was helpful for learning and practicing using multiple processes and threads in Python. We enjoyed this one as a last assignment.

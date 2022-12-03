@@ -11,9 +11,9 @@ import socket
 import argparse
 import pickle
 
-from regquery import query_courses, query_details
 from multiprocessing import Process, cpu_count
 from time import process_time
+from regquery import query_courses, query_details
 
 #-----------------------------------------------------------------------
 
@@ -85,7 +85,8 @@ def main():
                         sock.getsockname())
                     print('Client IP addr and port:', client_addr)
 
-                    process = Process(target=handle_client, args=[sock, delay])
+                    process = Process(target=handle_client,
+                    args=[sock, delay])
                     process.start()
 
             except Exception as ex:
