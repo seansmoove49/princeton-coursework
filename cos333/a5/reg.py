@@ -186,8 +186,7 @@ def show_courses(argv, host, port):
     timer.start()
 
     worker_thread = None
-    # handle class list population upon new searches
-    def update_list_slot():
+    def update_list():
         nonlocal worker_thread
         out_args = {
             "d": lineedits[D].text(),
@@ -203,7 +202,7 @@ def show_courses(argv, host, port):
         worker_thread.start()
 
     for lineedit in lineedits:
-        lineedit.textChanged.connect(update_list_slot)
+        lineedit.textChanged.connect(update_list)
 
 
 
@@ -213,9 +212,11 @@ def show_courses(argv, host, port):
     list.itemActivated.connect(course_details_clicked)
 
 
-
     # Start up.
     window.show()
+    # show initial list on start up
+    update_list()
+
     sys.exit(app.exec_())
 
 
