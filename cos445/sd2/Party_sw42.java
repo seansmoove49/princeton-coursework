@@ -40,13 +40,11 @@ public class Party_sw42 implements Party {
             // if it is beta
             if (_isBeta) {
                 if (num_b / total > 1 / 2) {
-                    // List<Block> district0 = new ArrayList<Block>();
                     // // districtSize
                     remaining = new ArrayList<Block>(remaining); // get mutability
                     Collections.sort(remaining, new Block.BlockComparator(true, true, true));
                     // now sorted in decreasing order of partisanship
                     final int districtSize = remaining.size() / r;
-                    // List<List<Block>> ret = new ArrayList<List<Block>>();
                     long[] betaSwings = new long[r];
                     for (int i = 0; i < r; ++i) {
                     List<Block> district = new ArrayList<Block>();
@@ -82,7 +80,6 @@ public class Party_sw42 implements Party {
                     remaining = new ArrayList<Block>(remaining); // get mutability
                     Collections.sort(remaining, new Block.BlockComparator(false, true, !_isBeta));
                     // now sorted in increasing order of how many more votes the other party gets
-                    // List<List<Block>> ret = new ArrayList<List<Block>>();
                     final int districtSize = remaining.size() / r;
                     for (int i = 0; i < r; ++i) {
                     List<Block> district = new ArrayList<Block>();
@@ -98,13 +95,11 @@ public class Party_sw42 implements Party {
 
             else {
                 if (num_a / total > 1 / 2) {
-                     // List<Block> district0 = new ArrayList<Block>();
                     // // districtSize
                     remaining = new ArrayList<Block>(remaining); // get mutability
                     Collections.sort(remaining, new Block.BlockComparator(true, true, true));
                     // now sorted in decreasing order of partisanship
                     final int districtSize = remaining.size() / r;
-                    // List<List<Block>> ret = new ArrayList<List<Block>>();
                     long[] betaSwings = new long[r];
                     for (int i = 0; i < r; ++i) {
                     List<Block> district = new ArrayList<Block>();
@@ -141,7 +136,6 @@ public class Party_sw42 implements Party {
                     remaining = new ArrayList<Block>(remaining); // get mutability
                     Collections.sort(remaining, new Block.BlockComparator(false, true, !_isBeta));
                     // now sorted in increasing order of how many more votes the other party gets
-                    // List<List<Block>> ret = new ArrayList<List<Block>>();
                     final int districtSize = remaining.size() / r;
                     for (int i = 0; i < r; ++i) {
                     List<Block> district = new ArrayList<Block>();
@@ -268,14 +262,9 @@ public class Party_sw42 implements Party {
             }
 
             long total = num_a + num_b;
-            // long to_remove = 0;
             long alpha = 0;
             long beta = 0; 
 
-
-    
-
-            // if (_isBeta) {
             if (closestWinDistrict != null) {
                 for (Block block : closestWinDistrict) {
                     beta += block.beta();
@@ -321,9 +310,6 @@ public class Party_sw42 implements Party {
         return (closestWinDistrict != null) ? closestWinDistrict : furthestLossDistrict;
 
     }
-
-       
-
 
     // inform the active party of the choice made by the nonactive party
     public void accept(List<Block> chosen) {
