@@ -25,7 +25,7 @@ public class Party_sw42 implements Party {
     public List<List<Block>> cut(int r, List<Block> remaining) {
         List<List<Block>> ret = new ArrayList<List<Block>>();
 
-        if (remaining.size() > 3) {
+        if (remaining.size() == 3) {
             long num_a = 0;
             long num_b = 0;
 
@@ -36,46 +36,121 @@ public class Party_sw42 implements Party {
 
             long total = num_a + num_b;
 
-            // temp code:
-            remaining = new ArrayList<Block>(remaining); // get mutability
-
-            // left alpha, right beta
-            Collections.sort(remaining, new Block.BlockComparator(false, false, false));
-            // now sorted in increasing order of how many more votes the other party gets
-            final int districtSize = remaining.size() / r;
-            for (int i = 0; i < r; ++i) {
-                List<Block> district = new ArrayList<Block>();
-                for (int j = 0; j < districtSize; ++j) {
-                    district.add(remaining.get(i * districtSize + j));
-                }
-                ret.add(district);
-            }
-
-            // temp code end
 
             // if it is beta
             if (_isBeta) {
-                if (num_b / total > 3 / 4) {
-                    List<Block> district0 = new ArrayList<Block>();
-                    // districtSize
-
-                }
                 if (num_b / total > 1 / 2) {
+                    // List<Block> district0 = new ArrayList<Block>();
+                    // // districtSize
+                    remaining = new ArrayList<Block>(remaining); // get mutability
+                    Collections.sort(remaining, new Block.BlockComparator(true, true, true));
+                    // now sorted in decreasing order of partisanship
+                    final int districtSize = remaining.size() / r;
+                    // List<List<Block>> ret = new ArrayList<List<Block>>();
+                    long[] betaSwings = new long[r];
+                    for (int i = 0; i < r; ++i) {
+                    List<Block> district = new ArrayList<Block>();
+                    ret.add(district);
+                    }
+                    // this is inefficient, but idrc
+                    for (Block block : remaining) {
+                    int extremum = -1;
+                    for (int i = 0; i < r; ++i) {
+                        List<Block> district = ret.get(i);
+                        if (district.size() == districtSize)
+                        continue;
+                        if (extremum == -1)
+                        extremum = i;
+                        // we swing beta and this is the most alpha blockyet
+                        if (block.betaSwing() > 0 && betaSwings[i] < betaSwings[extremum])
+                        extremum = i;
+                        // we swing alpha and this is the most beta block yet
+                        if (block.betaSwing() < 0 && betaSwings[i] > betaSwings[extremum])
+                        extremum = i;
+                        // if we hit zero swing blocks then it doesn't matter anyhow;
+                    }
+                    ret.get(extremum).add(block);
+                    // pulls down the swing on the beta swing
+                    betaSwings[extremum] += block.betaSwing();
+                    }
+                    return ret;
 
                 }
-                if (num_b / total > 1 / 3) {
+
+                // }
+                else {
+                    remaining = new ArrayList<Block>(remaining); // get mutability
+                    Collections.sort(remaining, new Block.BlockComparator(false, true, !_isBeta));
+                    // now sorted in increasing order of how many more votes the other party gets
+                    // List<List<Block>> ret = new ArrayList<List<Block>>();
+                    final int districtSize = remaining.size() / r;
+                    for (int i = 0; i < r; ++i) {
+                    List<Block> district = new ArrayList<Block>();
+                    for (int j = 0; j < districtSize; ++j) {
+                        district.add(remaining.get(i * districtSize + j));
+                    }
+                    ret.add(district);
+                    }
+                    return ret;
 
                 }
             }
 
             else {
-                if (num_a / total > 3 / 4) {
-
-                }
                 if (num_a / total > 1 / 2) {
+                     // List<Block> district0 = new ArrayList<Block>();
+                    // // districtSize
+                    remaining = new ArrayList<Block>(remaining); // get mutability
+                    Collections.sort(remaining, new Block.BlockComparator(true, true, true));
+                    // now sorted in decreasing order of partisanship
+                    final int districtSize = remaining.size() / r;
+                    // List<List<Block>> ret = new ArrayList<List<Block>>();
+                    long[] betaSwings = new long[r];
+                    for (int i = 0; i < r; ++i) {
+                    List<Block> district = new ArrayList<Block>();
+                    ret.add(district);
+                    }
+                    // this is inefficient, but idrc
+                    for (Block block : remaining) {
+                    int extremum = -1;
+                    for (int i = 0; i < r; ++i) {
+                        List<Block> district = ret.get(i);
+                        if (district.size() == districtSize)
+                        continue;
+                        if (extremum == -1)
+                        extremum = i;
+                        // we swing beta and this is the most alpha blockyet
+                        if (block.betaSwing() > 0 && betaSwings[i] < betaSwings[extremum])
+                        extremum = i;
+                        // we swing alpha and this is the most beta block yet
+                        if (block.betaSwing() < 0 && betaSwings[i] > betaSwings[extremum])
+                        extremum = i;
+                        // if we hit zero swing blocks then it doesn't matter anyhow;
+                    }
+                    ret.get(extremum).add(block);
+                    // pulls down the swing on the beta swing
+                    betaSwings[extremum] += block.betaSwing();
+                    }
+                    return ret;
 
                 }
-                if (num_a / total > 1 / 3) {
+                // if (num_a / total > 1 / 3) {
+
+                // }
+                else {
+                    remaining = new ArrayList<Block>(remaining); // get mutability
+                    Collections.sort(remaining, new Block.BlockComparator(false, true, !_isBeta));
+                    // now sorted in increasing order of how many more votes the other party gets
+                    // List<List<Block>> ret = new ArrayList<List<Block>>();
+                    final int districtSize = remaining.size() / r;
+                    for (int i = 0; i < r; ++i) {
+                    List<Block> district = new ArrayList<Block>();
+                    for (int j = 0; j < districtSize; ++j) {
+                        district.add(remaining.get(i * districtSize + j));
+                    }
+                    ret.add(district);
+                    }
+                    return ret;
 
                 }
 
@@ -191,36 +266,42 @@ public class Party_sw42 implements Party {
                     num_b += block.beta();
                 }
             }
+
             long total = num_a + num_b;
-            long to_remove = 0;
+            // long to_remove = 0;
+            long alpha = 0;
+            long beta = 0; 
 
-            if (_isBeta) {
-                for (Block block : closestWinDistrict) {
-                    to_remove += block.beta();
-                }
-            } else {
-                for (Block block : closestWinDistrict) {
-                    to_remove += block.alpha();
-                }
 
+    
+
+            // if (_isBeta) {
+            if (closestWinDistrict != null) {
+                for (Block block : closestWinDistrict) {
+                    beta += block.beta();
+                    alpha += block.alpha();
+                }
             }
+            
+            long to_remove = _isBeta ? beta : alpha;
+
 
             long remaining = 0;
-
             if (_isBeta) {
                 if ((num_b - to_remove) / (total - to_remove) < 1 / 4) {
+                    
 
                     for (Block block : furthestLossDistrict) {
                         remaining += block.beta();
                     }
 
-                    if ((num_b - remaining) / (total - remaining) > 1 / 2) {
+                }
+                if ((num_b - remaining) / (total - remaining) > 1 / 2) {
 
-                        return furthestLossDistrict;
-
-                    }
+                    return furthestLossDistrict;
 
                 }
+
 
             } else {
                 if ((num_a - to_remove) / (total - to_remove) < 1 / 4) {
@@ -228,21 +309,21 @@ public class Party_sw42 implements Party {
                     for (Block block : furthestLossDistrict) {
                         remaining += block.alpha();
                     }
-
-                    if ((num_a - remaining) / (total - remaining) > 1 / 2) {
-
-                        return furthestLossDistrict;
-
-                    }
+                
                 }
+                if ((num_a - remaining) / (total - remaining) > 1 / 2) {
 
+                    return furthestLossDistrict;
+
+                }
             }
-
         }
-
         return (closestWinDistrict != null) ? closestWinDistrict : furthestLossDistrict;
 
     }
+
+       
+
 
     // inform the active party of the choice made by the nonactive party
     public void accept(List<Block> chosen) {
