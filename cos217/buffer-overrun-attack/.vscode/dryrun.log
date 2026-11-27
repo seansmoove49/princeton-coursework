@@ -1,0 +1,11 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/shaochenwang/Documents/GitHub/COS-217/Assignment6'
+gcc217 -O -fomit-frame-pointer grader.c -o grader
+gcc217 testminiassembler.c miniassembler.c -o testminiassembler
+./testminiassembler > testminiassembler.out
+make: Leaving directory `/Users/shaochenwang/Documents/GitHub/COS-217/Assignment6'
+ 
+make: *** No rule to make target `createdataB.c', needed by `createdataB'.
+make: *** No rule to make target `createdataA.c', needed by `createdataA'.
+make: *** No rule to make target `createdataAplus.c', needed by `createdataAplus'.
+ 
