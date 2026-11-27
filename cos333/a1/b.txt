@@ -1,0 +1,29 @@
+Course Id: 4614
+
+Days: TTh
+Start time: 01:00 PM
+End time: 02:25 PM
+Building: FIRES
+Room: 36J
+
+Dept and Number: POP 508
+Dept and Number: WWS 598
+
+Area: 
+
+Title: Epidemiology
+
+Description: Course covers the basic concepts and methods of
+epidemiology and demonstrates how these can be applied to improve
+population health and reduce health inequities. Topics include:
+measuring the health of the population, understanding the causes of poor
+health, developing interventions for improving health, translating
+evidence into practice, and evaluating the impact of policies and
+programs. Key epidemiological concepts such as association, bias and
+confounding are covered, as well as the main epidemiological study
+designs.
+
+Prerequisites: This is a required course for graduate students in the
+Health and Health Policy certificate program.
+
+Professor: Anne Andermann
