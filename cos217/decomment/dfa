@@ -1,0 +1,40 @@
+NORMAL (accept) <-- the start state
+	/: STARTCOMMENT (nothing)
+	": INSTRING (print ")
+	': INCHAR (print ')
+	other (all char except /"'): NORMAL (print the char)
+
+STARTCOMMENT (accept)
+	*: INCOMMENT (print space)
+	/: STARTCOMMENT (print /)
+	": INSTRING (print /")
+	': INCHAR (print /')
+	other (all char except */"'): NORMAL (print /char)
+
+INCOMMENT (reject)
+	new line char: INCOMMENT (print new line char)
+	*: ENDCOMMENT (nothing)
+	other (all char except new line char, *): INCOMMENT (nothing)
+
+ENDCOMMENT (reject)
+	new line char: INCOMMENT (print new line char)
+	*: ENDCOMMENT (nothing)
+	/: NORMAL (nothing)
+	other (all char except new line char /*): INCOMMENT (nothing)
+
+INSTRING (accept)
+	": NORMAL (print ")
+	\: BACKSLASH_INSTRING (print \)
+	other (all char except ",\): INSTRING (print char)
+
+BACKSLASH_INSTRING (accept)
+	all char: INSTRING (print char)
+
+INCHAR (accept)
+	': NORMAL (print ')
+	\: BACKSLASH_INCHAR (print \)
+	other (all char except ',\): INCHAR (print char)
+
+BACKSLASH_INCHAR (accept)
+	all char: INCHAR (print char)
+
