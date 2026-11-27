@@ -1,0 +1,271 @@
+Assignment 4 readme File
+
+------------------------------------------------------------------------
+Student 1: What is your name?
+
+Sean Wang
+
+------------------------------------------------------------------------
+Student 2: What is your name?
+
+Giao Vu Dinh
+
+------------------------------------------------------------------------
+How many late days are you using on this assignment?
+
+0
+
+------------------------------------------------------------------------
+Student 1: What authorized sources of information did you use to
+complete the assignment? COPY THE LIST of authorized sources of
+information given in the "Policies" web page to this section of the
+readme file, and edit it as appropriate.
+
+The course's lectures.
+The course's precepts.
+The course's website.
+Documents that are referenced directly by the course's website. 
+Such documents include the course's lecture slides and precept handouts.
+The course's current staff members outside of class time through office 
+hours.
+
+------------------------------------------------------------------------
+Student 2: What authorized sources of information did you use to
+complete the assignment? COPY THE LIST of authorized sources of
+information given in the "Policies" web page to this section of the
+readme file, and edit it as appropriate.
+
+The course's lectures.
+The course's precepts.
+The course's website.
+Documents that are referenced directly by the course's website. 
+Such documents include the course's lecture slides and precept handouts.
+The course's current staff members outside of class time through office 
+hours.
+
+------------------------------------------------------------------------
+Student 1: What unauthorized sources of information did you use to
+complete the assignment? List any unauthorized sources of information
+that you used to complete the assignment, and describe how you used
+them. The course "Policies" web page defines unauthorized sources of
+information, and any source that you have used but not listed in the
+authorized sources should be included here. Please note that using an
+unauthorized source may trigger a course penalty, and depending on the
+nature of the interaction, may additionally require the interaction
+being reported to the Committee on Discipline. Write "None" if you used
+no unauthorized sources of information.
+
+None
+
+------------------------------------------------------------------------
+Student 2: What unauthorized sources of information did you use to
+complete the assignment? List any unauthorized sources of information
+that you used to complete the assignment, and describe how you used
+them. The course "Policies" web page defines unauthorized sources of
+information, and any source that you have used but not listed in the
+authorized sources should be included here. Please note that using an
+unauthorized source may trigger a course penalty, and depending on the
+nature of the interaction, may additionally require the interaction
+being reported to the Committee on Discipline. Write "None" if you used
+no unauthorized sources of information.
+
+None
+
+------------------------------------------------------------------------
+Student 1: What is your assessment of the assignment? Was it helpful?
+Was it fun?
+
+I found this assignment to be very helpful in learning how to use gdb 
+in real-life debugging applications. Part 2 was especially enjoyable 
+because it was sort of like solving a puzzle. 
+
+------------------------------------------------------------------------
+Student 2: What is your assessment of the assignment? Was it helpful?
+Was it fun?
+
+I definitely struggled a lot at times, but I now feel a lot more 
+comfortable with using gdb to debug both my own and other people's code.
+Analyzing code other people was really helpful because it helped me 
+understand how to critique and refactor my own code. 
+
+------------------------------------------------------------------------
+(optional) What information can you provide about your submission that
+will help your grader to grade it in the most favorable light? In
+particular, what bugs are in your submission?
+
+None that we are aware of. 
+
+------------------------------------------------------------------------
+What warnings does splint generate for Part 2's checker, and what are
+your disagreements with them? Copy the splint warnings here, and
+express your disagreement after each warning. If there are no
+warnings, then write "None."
+
+None.
+
+------------------------------------------------------------------------
+What warnings does critTer generate on checkerDT.c, and what are your
+disagreements with them? Copy the critTer warnings here, and express
+your disagreement after each warning. If there are no warnings, then
+write "None."
+
+None. 
+
+------------------------------------------------------------------------
+What warnings does splint generate on your Part 3 code, and what are
+your disagreements with them? Copy the splint warnings here, and
+express your disagreement after each warning. If there are no
+warnings, then write "None."
+
+ft.c: (in function FT_insertRestOfPath)
+ft.c:157:9: Unallocated storage copyPath passed as out parameter: 
+            copyPath
+We have allocated the copyPath memory prior to the free call on line 157
+and the allocation is not within any condition. Furthermore, the 
+function in question calls free(copyPath) on two other occasions and 
+neither of those triggered this warning. 
+
+------------------------------------------------------------------------
+What warnings does critTer generate on your Part 3 code, and what are
+your disagreements with them? Copy the critTer warnings here, and
+express your disagreement after each warning. If there are no
+warnings, then write "None."
+
+in node.c:
+
+node.c: line 463: low priority: 
+A file should contain no more than 15 functions;
+We believe the number of functions makes sense for our implementation.
+
+all of the assert warnings:
+We do not want to call assert on the parameters specified because this 
+would be an incorrect implementation.
+
+in ft.c:
+
+file function number: same as node.c.
+
+ft.c: line 529: low priority: 
+   A source code file should contain fewer than 500 lines;
+We need this number of lines for our working implementation + comments.
+
+assert warnings: see node.c. 
+
+------------------------------------------------------------------------
+For each of the first three faulty BDT implementations required by Step
+1.5, identify the function where there is a bug. You do not have to
+identify the bug itself, only its location, but note that this must be
+the location of the underlying error, which is not necessarily where
+the error manifests itself or is "noticed" by the client.
+
+
+      Executable         Function with the underlying error
+===============================================================
+         ./bdtBad1        BDT_insertPath()
+---------------------------------------------------------------
+         ./bdtBad2        BDT_newNode()
+---------------------------------------------------------------
+         ./bdtBad3        BDT_unlinkParentToChild()
+===============================================================
+
+For bdtBad4, you do not have to find the bug. Instead, indicate what
+is different about trying to debug this executable in gdb versus the
+other three:
+
+The bug here is that in BDT_toString(), the programmer never 
+initialized the memory that they malloced and then passed it to a 
+function that concatenated characters to what was already in the
+memory rather than overwriting it. Debugging this was different 
+because this bug was dependent on memory in the heap being reused;
+the programmer may not have had this happen to them and therefore 
+the bug may never have manifested when they ran it on their 
+operating system. 
+
+The first three bad executables failed on specific function calls in 
+the gdb. We could identify which specific functions had the error. 
+This executable has an error that doesn't manifest until we print the
+BDT. Debugging with gdb allows us to find which specific block of code
+contains the bug and which function likely has issues (rmPath), but we 
+cannot identify the specific line where it occurs. 
+
+For bdtBad5, you do not have to find the bug. Instead, indicate one
+hypothesis for how the program could crash within the DynArray module,
+which we promise is itself correct:
+
+The bug is located in BDT_toString(). Assuming that the implementation
+is similar to that of dtGood, the BDT_toString function relies on three
+DynArray functions: free, map, and new. We know these three functions
+to be implemented correctly, and free and new do not rely on any 
+information from BDT while map does. Therefore, we can infer that the 
+bug occurs sometime during the calling of map().
+
+When the client code calls map(), one of the parameters passed is a 
+callback function. The assert failing here is within this callback. 
+Since the client is controlling what happens in dynarray_map(), if they
+do not pass dynarray correct parameters, then the function will fail. 
+In particular, if the client does not write a callback function that 
+aligns with how they have set up the nodes in the rest of their 
+implementation, then when map() runs the callback function in these 
+nodes, it will fail an assert. 
+
+------------------------------------------------------------------------
+What are your critiques of the given DT implementations, as
+specified in Step 2.5?
+
+First off there is a commented out function for Node_getPath in 
+nodeGood.c. This is bad style and if we were to use this implementation
+rather than the uncommented out implementation,
+it would fail resource management as it does not free allocated memory 
+(pathCopy) and does not include a comment in node.h mentioning 
+that the caller is responsible for freeing it.
+
+We can also see there is an issue of consistency. In node.h, the 
+parameter order is not consistent in the functions 
+Node_T Node_create(const char* dir, Node_T parent) and 
+int Node_addChild(Node_T parent, const char* dir). Another quibble has 
+to do with the parameter naming convention for 
+int Node_compare(Node_T node1, Node_T node2). To remain consistent 
+with the other function parameters, it would be better to rename the 
+parameters as n1 and n2. 
+
+There are also many functions in dtGood.c that are redundant or 
+unnecessary. For instance, there is no need to have separate functions 
+for DT_traversePathFrom and DT_traversePath. DT_traversePath is just a 
+more specific version of DT_traversePathFrom. 
+
+Similarly, there is no need for separate functions DT_rmPathAt and 
+DT_rmPath. The functionality for DT_rmPathAt can just be placed inside
+DT_rmPath, considering that only 1 function, DT_rmPath uses DT_rmPathAt. 
+
+Another function which seems unnecessary is DT_linkParentToChild. The 
+caller can simply just call Node_linkChild and call Node_destroy on the 
+child if the link is unsucessful. 
+
+There are also a lot of asserts which are redundant because the inputs
+don't change. For instance, in Node_linkChild it calls the 
+assert(CheckerDT_Node_isValid(parent)) and 
+assert(CheckerDT_Node_isValid(child)) multiple times in the conditionals
+despite parent and child not changing at all. Furthermore, in the case 
+of the parameter (parent) not changing in the function, it would be 
+better to make the parameter const. 
+
+Another critique is that the function Node_hasChild is a public function
+despite it not being used outside of nodeGood.c. To prevent the client 
+from understanding more of the uderlying structure of nodeGood.c it is 
+best that we make this a static function.
+
+In nodeGood.c, Node_addChild essentially does the same job as Node_create 
+and Node_linkChild in conjunction. As a result, it would be better to 
+make Node_create and Node_linkChild be static functions, used internally 
+in Node_addChild. Or we can also choose to get rid Node_addChild and 
+simply have the caller use Node_create and Node_linkChild.
+
+Lastly, there are very few local comments in both dtGood.c and nodeGood, 
+which makes it very difficult to understand.
+It is good that there are comments describing the static functions, 
+however, for clarity purposes it would be better to make comments 
+describing work performed in long functions like DT_insertRestOfPath.
+
+
+
+------------------------------------------------------------------------
