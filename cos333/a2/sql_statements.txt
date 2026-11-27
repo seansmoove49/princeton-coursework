@@ -1,0 +1,67 @@
+SELECT
+classes.courseid, classes.days, classes.starttime, classes.endtime, classes.bldg, classes.roomnum, 
+crosslistings.dept, crosslistings.coursenum,
+courses.area,  courses.title,  courses.descrip, courses.prereqs
+FROM courses 
+INNER JOIN crosslistings on courses.courseid = crosslistings.courseid
+INNER JOIN classes on crosslistings.courseid = classes.courseid
+WHERE classes.classid = "10188"
+ORDER BY crosslistings.dept, crosslistings.coursenum
+
+
+SELECT
+profs.profname
+FROM profs 
+JOIN coursesprofs on profs.profid = coursesprofs.profid
+JOIN courses on coursesprofs.courseid = courses.courseid
+JOIN classes on courses.courseid = classes.courseid
+WHERE classes.classid = "9032"
+ORDER BY profs.profname
+
+
+
+
+
+
+
+-d contains cos
+SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title
+from classes
+inner join courses 
+on classes.courseid = courses.courseid
+inner join crosslistings 
+on crosslistings.courseid = classes.courseid 
+where crosslistings.dept like "%cos%"
+order by crosslistings.dept, crosslistings.coursenum, classes.classid
+
+
+
+-n contains 333
+SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title
+from classes
+inner join courses 
+on classes.courseid = courses.courseid
+inner join crosslistings 
+on crosslistings.courseid = classes.courseid 
+where crosslistings.coursenum like "%33%"
+order by crosslistings.dept, crosslistings.coursenum, classes.classid
+
+-a contains qr
+SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title
+from classes
+inner join courses 
+on classes.courseid = courses.courseid
+inner join crosslistings 
+on crosslistings.courseid = classes.courseid 
+where courses.area like "%qr%"
+order by crosslistings.dept, crosslistings.coursenum, classes.classid
+
+-t contains intro
+SELECT classes.classid, crosslistings.dept, crosslistings.coursenum, courses.area, courses.title
+from classes
+inner join courses 
+on classes.courseid = courses.courseid
+inner join crosslistings 
+on crosslistings.courseid = classes.courseid 
+where courses.title like "%intro%"
+order by crosslistings.dept, crosslistings.coursenum, classes.classid
