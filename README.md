@@ -21,7 +21,7 @@ My assignments from Princeton CS and ORF courses, combined from 18 separate repo
 | [`cos333/a4`](cos333/a4) | cos333_A4 | 2022-11-13 | ch-alina |
 | [`cos333/a5`](cos333/a5) | cos333_A5 | 2022-12-04 | ch-alina |
 | [`cos445/sd2`](cos445/sd2) | cos445_sd2 | 2023-03-05 | stephendongg |
-| [`orf307/companion`](orf307/companion) | companion | 2023-02-07 | solo |
+| [`orf307/companion`](orf307/companion) | companion | 2023-02-07 | course material |
 
 Notes:
 - `orf307/companion` is the ORF307 course's own material (lectures, precepts, homework), not my work.
